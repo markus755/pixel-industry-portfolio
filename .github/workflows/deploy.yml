@@ -1,0 +1,32 @@
+# GitHub Action zur automatischen Bereitstellung Ihrer statischen Seite (GitHub Pages)
+
+name: Deploy Static Portfolio
+
+on:
+  push:
+    branches:
+      - main  # Startet den Prozess, wenn Code in den 'main'-Branch gepusht wird
+  workflow_dispatch: # Ermöglicht das manuelle Starten der Action
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        
+      # Hier werden die statischen Dateien für die Bereitstellung vorbereitet
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # Hier wird der 'public'-Ordner erstellt, der alle Dateien enthält
+      # Da Ihr Portfolio ein reines HTML/CSS-Projekt ist, ist der gesamte Ordner der 'public'-Ordner.
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './' # Uploadet den gesamten Wurzelordner als Artefakt
+          
+      # Die Bereitstellung zu GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
