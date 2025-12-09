@@ -1,135 +1,498 @@
-/* Grundlegende Zurücksetzung für konsistentes Styling */
+/* Reset */
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-/* GLOBALE SCHRIFTART: ROBOTO */
 body {
     font-family: 'Roboto', sans-serif;
+    background-color: #ffffff;
+    color: #333;
     line-height: 1.6;
-    color: #333; /* Dunkle Schriftfarbe */
-    background-color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Zentraler Inhalts-Container */
-.container {
-    width: 90%;
-    max-width: 1200px; /* Maximale Breite der Seite */
-    margin: 0 auto;
-    padding: 20px 0;
+/* Wrapper für Content um Footer nach unten zu drücken */
+#header-placeholder,
+main {
+    flex-shrink: 0;
 }
 
-/* Header und Navigation */
+#footer-placeholder {
+    margin-top: auto;
+}
+
+/* Header Navigation */
 header {
-    background-color: #f8f8f8;
-    border-bottom: 1px solid #eee;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    z-index: 1000;
+    border-bottom: 1px solid #e0e0e0;
+    transition: all 0.3s ease-in-out;
 }
 
-.nav-bar {
+header.header-sticky {
+    position: fixed;
+    top: 0;
+}
+
+header.header-hidden {
+    transform: translateY(-100%);
+}
+
+nav {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 0;
 }
 
-header h1 a {
+.logo {
+    height: 40px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+}
+
+.nav-links a {
     text-decoration: none;
     color: #333;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 400;
+    transition: opacity 0.3s;
 }
 
-nav ul {
-    list-style: none;
+.nav-links a:hover {
+    opacity: 0.6;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+    padding: 5px;
+    z-index: 1002;
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f5f5f5;
+    z-index: 1001;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.mobile-menu-overlay.active {
     display: flex;
 }
 
-nav ul li {
-    margin-left: 20px;
+.mobile-menu-overlay .nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    list-style: none;
+    text-align: center;
+    margin-bottom: 60px;
 }
 
-nav ul li a {
-    text-decoration: none;
-    color: #555;
+.mobile-menu-overlay .nav-links a {
+    font-size: 28px;
     font-weight: 400;
+    color: #333;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mobile-menu-overlay .nav-links a:hover {
+    opacity: 0.6;
+}
+
+.mobile-social-links {
+    display: flex;
+    gap: 40px;
+}
+
+.mobile-social-links a {
+    font-size: 32px;
+    color: #999;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.mobile-social-links a:hover {
+    color: #333;
+}
+
+.mobile-menu-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 36px;
+    cursor: pointer;
+    color: #333;
+    padding: 10px;
+    line-height: 1;
+}
+
+/* Main Content */
+main {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 140px 40px 60px 40px;
+}
+
+/* Hero Section */
+.hero {
+    margin-bottom: 80px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    font-weight: 300;
+    margin-bottom: 30px;
+    color: #000;
+}
+
+.hero p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #666;
+    max-width: 900px;
+}
+
+/* Content Section (für Imprint, Contact etc.) */
+.content-section {
+    max-width: 900px;
+}
+
+.content-section h1 {
+    font-size: 48px;
+    font-weight: 300;
+    margin-bottom: 40px;
+    color: #000;
+}
+
+.content-section p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.content-section a {
+    color: #333;
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.content-section a:hover {
+    opacity: 0.6;
+}
+
+/* Contact Page Specific */
+#contact {
+    min-height: calc(100vh - 240px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 110px 40px 80px 40px;
+}
+
+.contact-hero {
+    margin-bottom: 60px;
+    max-width: 900px;
+}
+
+.contact-hero h1 {
+    font-size: 42px;
+    font-weight: 300;
+    line-height: 1.4;
+    color: #000;
+    margin: 0;
+}
+
+.contact-info {
+    max-width: 600px;
+}
+
+.contact-info h2 {
+    font-size: 32px;
+    font-weight: 300;
+    margin-bottom: 30px;
+    color: #000;
+}
+
+.contact-info p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.contact-info a {
+    color: #333;
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.contact-info a:hover {
+    opacity: 0.6;
+}
+
+.download-cv {
+    display: inline-block;
+    padding: 12px 30px;
+    border: 1px solid #333;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.download-cv:hover {
+    background: #333;
+    color: #fff;
+    opacity: 1;
 }
 
 /* Portfolio Grid */
 .portfolio-grid {
     display: grid;
-    /* Responsive Grid: Spalten passen sich an, Mindestbreite 300px */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin-bottom: 80px;
 }
 
 .portfolio-item {
-    background-color: #fff;
-    border: 1px solid #ddd;
+    position: relative;
     overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
 }
 
 .portfolio-item img {
     width: 100%;
     height: auto;
+    aspect-ratio: 1400/1094;
+    object-fit: cover;
+    transition: transform 0.5s ease;
     display: block;
-    transition: transform 0.3s ease;
 }
 
-.portfolio-item img:hover {
-    transform: scale(1.05); /* Leichter Zoom-Effekt beim Hover */
+.portfolio-item:hover img {
+    transform: scale(1.05);
 }
 
-.portfolio-item a {
-    text-decoration: none;
+.portfolio-item h3 {
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 400;
     color: #333;
 }
 
-.portfolio-item h4 {
-    padding: 15px;
-    font-weight: 400;
-    font-size: 1.1em;
+/* Back to Top */
+.back-to-top {
+    text-align: center;
+    margin: 60px 0;
 }
 
-/* Allgemeines Layout und Typografie */
-h2, h3 {
-    font-weight: 700;
-    margin-top: 30px;
-    margin-bottom: 10px;
+.back-to-top a {
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: opacity 0.3s;
 }
 
-.intro {
-    padding-top: 50px;
-    padding-bottom: 50px;
-}
-
-.full-width-image {
-    width: 100%;
-    height: auto;
-    margin: 20px 0;
+.back-to-top a:hover {
+    opacity: 0.6;
 }
 
 /* Footer */
 footer {
+    background: #f5f5f5;
+    padding: 40px 40px;
     text-align: center;
-    padding: 20px 0;
-    border-top: 1px solid #eee;
-    margin-top: 50px;
-    font-size: 0.9em;
-    color: #777;
+    border-top: 1px solid #e0e0e0;
 }
 
-/* Media Queries für Mobilgeräte */
-@media (max-width: 600px) {
-    .nav-bar {
+footer p {
+    font-size: 14px;
+    color: #666;
+}
+
+footer a {
+    color: #666;
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+footer a:hover {
+    opacity: 0.6;
+}
+
+/* Cookie Banner */
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    padding: 20px 40px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1001;
+    display: none;
+}
+
+.cookie-banner.show {
+    display: flex;
+}
+
+.cookie-banner p {
+    font-size: 14px;
+    color: #666;
+    margin-right: 20px;
+}
+
+.cookie-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.cookie-buttons button {
+    padding: 10px 25px;
+    border: 1px solid #333;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.cookie-buttons button:first-child {
+    background: #333;
+    color: #fff;
+}
+
+.cookie-buttons button:hover {
+    opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    nav {
+        padding: 20px 30px;
+    }
+
+    main {
+        padding: 140px 30px 60px 30px;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+    }
+
+    .portfolio-grid {
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    main {
+        padding: 120px 20px 40px 20px;
+    }
+
+    nav {
+        padding: 20px;
+    }
+
+    footer {
+        padding: 30px 20px;
+    }
+
+    .cookie-banner {
         flex-direction: column;
-        text-align: center;
+        align-items: flex-start;
+        padding: 20px;
     }
-    nav ul {
-        margin-top: 10px;
+
+    .cookie-banner p {
+        margin-bottom: 15px;
+        margin-right: 0;
     }
-    nav ul li {
-        margin: 0 10px;
+
+    /* Contact Page Mobile */
+    #contact {
+        padding: 100px 20px 60px 20px;
+        min-height: auto;
+    }
+
+    .contact-hero h1 {
+        font-size: 28px;
+    }
+
+    .contact-info h2 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 28px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    .portfolio-grid {
+        gap: 30px;
     }
 }
