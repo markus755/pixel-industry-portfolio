@@ -55,26 +55,70 @@ nav {
     align-items: center;
 }
 
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
 .logo {
     height: 40px;
 }
 
 .nav-links {
     display: flex;
-    gap: 40px;
+    gap: 20px;
     list-style: none;
+    margin-right: 55px;
 }
 
 .nav-links a {
     text-decoration: none;
-    color: #333;
-    font-size: 14px;
-    font-weight: 400;
+    color: #000000;
+    font-size: 18px;
+    font-weight: 300;
     transition: opacity 0.3s;
 }
 
 .nav-links a:hover {
     opacity: 0.6;
+}
+
+.cv-link {
+    text-decoration: none;
+    color: #AAAAAA;
+    font-size: 14px;
+    font-weight: 400;
+    transition: opacity 0.3s;
+}
+
+.cv-link:hover {
+    opacity: 0.6;
+}
+
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.icon-link {
+    display: flex;
+    align-items: center;
+    transition: opacity 0.3s;
+}
+
+.icon-link:hover {
+    opacity: 0.6;
+}
+
+.header-icon {
+    height: 18px;
+    width: auto;
+}
+
+.header-icon[alt="Email"] {
+    height: 12px;
 }
 
 .mobile-menu-btn {
@@ -218,15 +262,14 @@ main {
 /* Contact Page Specific */
 #contact {
     min-height: calc(100vh - 240px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 110px 40px 80px 40px;
+    padding: 140px 40px 80px 40px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .contact-hero {
     margin-bottom: 60px;
-    max-width: 900px;
 }
 
 .contact-hero h1 {
@@ -235,6 +278,11 @@ main {
     line-height: 1.4;
     color: #000;
     margin: 0;
+    max-width: 900px;
+}
+
+.contact-info {
+    max-width: 900px;
 }
 
 .contact-info {
@@ -428,7 +476,7 @@ footer a:hover {
 }
 
 @media (max-width: 768px) {
-    .nav-links {
+    .nav-right {
         display: none;
     }
 
