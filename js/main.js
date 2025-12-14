@@ -1,20 +1,95 @@
 // Header und Footer laden
 document.addEventListener('DOMContentLoaded', function() {
+    // Prüfe ob wir in einem Unterordner sind
+    const path = window.location.pathname;
+    const isInProjects = path.includes('/projects/');
+    const basePath = isInProjects ? '../' : '';
+    
     // Header laden
-    fetch('header.html')
-        .then(response => response.text())
+    fetch(basePath + 'header.html')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Header konnte nicht geladen werden: ' + response.status);
+            }
+            return response.text();
+        })
         .then(data => {
-            document.getElementById('header-placeholder').innerHTML = data;
-            initHeaderScroll();
-        });
+            const headerPlaceholder = document.getElementById('header-placeholder');
+            if (headerPlaceholder) {
+                headerPlaceholder.innerHTML = data;
+                
+                // WICHTIG: Pfade im Header korrigieren NACHDEM er eingefügt wurde
+                fixHeaderPaths(basePath);
+                
+                // Warte kurz bis Header vollständig geladen ist
+                setTimeout(() => {
+                    initHeaderScroll();
+                }, 100);
+            }
+        })
+        .catch(error => console.error('Fehler beim Laden des Headers:', error));
 
     // Footer laden
-    fetch('footer.html')
-        .then(response => response.text())
+    fetch(basePath + 'footer.html')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Footer konnte nicht geladen werden: ' + response.status);
+            }
+            return response.text();
+        })
         .then(data => {
-            document.getElementById('footer-placeholder').innerHTML = data;
-        });
+            const footerPlaceholder = document.getElementById('footer-placeholder');
+            if (footerPlaceholder) {
+                footerPlaceholder.innerHTML = data;
+            }
+        })
+        .catch(error => console.error('Fehler beim Laden des Footers:', error));
 });
+
+// Funktion um Header-Pfade zu korrigieren
+function fixHeaderPaths(basePath) {
+    console.log('Korrigiere Header-Pfade mit basePath:', basePath);
+    
+    // Logo
+    const logoLink = document.querySelector('.logo-link');
+    const logo = document.querySelector('.logo');
+    if (logoLink) {
+        logoLink.href = basePath + 'index.html';
+        console.log('Logo Link:', logoLink.href);
+    }
+    if (logo) {
+        logo.src = basePath + 'images/pixel_industry_logo.svg';
+        console.log('Logo Src:', logo.src);
+    }
+    
+    // Desktop Navigation
+    const navHome = document.querySelector('.nav-home');
+    const navContact = document.querySelector('.nav-contact');
+    const cvLink = document.querySelector('.cv-link');
+    if (navHome) navHome.href = basePath + 'index.html';
+    if (navContact) navContact.href = basePath + 'contact.html';
+    if (cvLink) cvLink.href = basePath + 'cv.html';
+    
+    // Header Icons
+    const linkedinIcon = document.querySelector('.linkedin-icon');
+    const mailIcon = document.querySelector('.mail-icon');
+    if (linkedinIcon) {
+        linkedinIcon.src = basePath + 'images/linkedin_icon.svg';
+        console.log('LinkedIn Icon:', linkedinIcon.src);
+    }
+    if (mailIcon) {
+        mailIcon.src = basePath + 'images/mail.svg';
+        console.log('Mail Icon:', mailIcon.src);
+    }
+    
+    // Mobile Menu
+    const mobileNavHome = document.querySelector('.mobile-nav-home');
+    const mobileNavContact = document.querySelector('.mobile-nav-contact');
+    const mobileNavCv = document.querySelector('.mobile-nav-cv');
+    if (mobileNavHome) mobileNavHome.href = basePath + 'index.html';
+    if (mobileNavContact) mobileNavContact.href = basePath + 'contact.html';
+    if (mobileNavCv) mobileNavCv.href = basePath + 'cv.html';
+}
 
 // Mobile Menu Toggle
 function toggleMobileMenu() {
