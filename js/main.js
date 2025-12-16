@@ -44,7 +44,56 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => console.error('Fehler beim Laden des Footers:', error));
+
+    // Scroll-Animationen initialisieren nach kurzer Verzögerung
+    setTimeout(initProjectAnimations, 250);
 });
+
+// Projekt-Animationen
+function initProjectAnimations() {
+    console.log('initProjectAnimations wird aufgerufen');
+    
+    const animatedElements = document.querySelectorAll('.animate-fade, .animate-slide-left, .animate-slide-right, .animate-slide-up');
+    
+    console.log('Gefundene animierte Elemente:', animatedElements.length);
+    
+    if (animatedElements.length === 0) {
+        console.log('Keine Animationen auf dieser Seite');
+        return; // Keine Animationen auf dieser Seite
+    }
+
+    const observerOptions = {
+        threshold: 0.15,
+        rootMargin: '0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            console.log('Element beobachtet:', entry.target.className, 'isIntersecting:', entry.isIntersecting);
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                    console.log('visible Klasse hinzugefügt zu:', entry.target.className);
+                }, 100);
+            }
+        });
+    }, observerOptions);
+
+    animatedElements.forEach(el => {
+        observer.observe(el);
+        
+        // Prüfe ob Element bereits im Viewport
+        const rect = el.getBoundingClientRect();
+        console.log('Element Position:', el.className, 'top:', rect.top, 'viewport height:', window.innerHeight);
+        
+        if (rect.top < window.innerHeight * 0.8) {
+            console.log('Element ist bereits im Viewport, Animation starten');
+            setTimeout(() => {
+                el.classList.add('visible');
+            }, 200);
+        }
+    });
+}
 
 // Funktion um Header-Pfade zu korrigieren
 function fixHeaderPaths(basePath) {
