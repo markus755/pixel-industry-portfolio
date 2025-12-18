@@ -99,17 +99,23 @@ function initProjectAnimations() {
 function fixHeaderPaths(basePath) {
     console.log('Korrigiere Header-Pfade mit basePath:', basePath);
     
-    // Logo
-    const logoLink = document.querySelector('.logo-link');
-    const logo = document.querySelector('.logo');
-    if (logoLink) {
-        logoLink.href = basePath + 'index.html';
-        console.log('Logo Link:', logoLink.href);
-    }
-    if (logo) {
-        logo.src = basePath + 'images/pixel_industry_logo.svg';
-        console.log('Logo Src:', logo.src);
-    }
+    // Logo (beide Instanzen: Header und Mobile Menu)
+    const logoLinks = document.querySelectorAll('.logo-link');
+    const logos = document.querySelectorAll('.logo');
+    
+    logoLinks.forEach(logoLink => {
+        if (logoLink) {
+            logoLink.href = basePath + 'index.html';
+            console.log('Logo Link:', logoLink.href);
+        }
+    });
+    
+    logos.forEach(logo => {
+        if (logo) {
+            logo.src = basePath + 'images/pixel_industry_logo.svg';
+            console.log('Logo Src:', logo.src);
+        }
+    });
     
     // Desktop Navigation
     const navHome = document.querySelector('.nav-home');
@@ -143,7 +149,15 @@ function fixHeaderPaths(basePath) {
 // Mobile Menu Toggle
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
+    const menuBtns = document.querySelectorAll('.mobile-menu-btn');
+    
     mobileMenu.classList.toggle('active');
+    
+    // Toggle active class on all menu buttons for animation
+    menuBtns.forEach(btn => {
+        btn.classList.toggle('active');
+    });
+    
     // Body scroll verhindern wenn Menu offen ist
     if (mobileMenu.classList.contains('active')) {
         document.body.style.overflow = 'hidden';
