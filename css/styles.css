@@ -73,8 +73,17 @@ nav {
 }
 
 .logo {
-    width: 170px;
-    height: auto;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: #0a0a0d;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: opacity 0.3s;
+}
+
+.logo:hover {
+    opacity: 0.6;
 }
 
 .nav-links {
@@ -209,8 +218,12 @@ nav {
 }
 
 .mobile-menu-header .logo {
-    width: 170px;
-    height: auto;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: #0a0a0d;
+    text-decoration: none;
+    text-transform: uppercase;
 }
 
 .mobile-menu-header .mobile-menu-btn {
@@ -981,5 +994,136 @@ footer a:hover {
 
     .portfolio-grid {
         gap: 30px;
+    }
+}
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #0a0a0d;
+        color: #ffffff;
+    }
+    
+    /* Header */
+    header {
+        background: #0a0a0d;
+    }
+    
+    .logo,
+    .nav-links a,
+    .cv-link {
+        color: #ffffff;
+    }
+    
+    .mobile-menu-header .logo {
+        color: #ffffff;
+    }
+    
+    .header-icon {
+        filter: invert(1) brightness(100);
+    }
+    
+    .mobile-menu-btn::before,
+    .mobile-menu-btn::after {
+        background-color: #ffffff;
+    }
+    
+    /* Mobile Menu */
+    .mobile-menu-overlay {
+        background: #0a0a0d;
+    }
+    
+    .mobile-menu-overlay .nav-links a {
+        color: #ffffff;
+    }
+    
+    .mobile-menu-footer {
+        background: #1a1a1d;
+    }
+    
+    .mobile-social-links svg path {
+        fill: #ffffff;
+    }
+    
+    /* Main Content */
+    .hero h1,
+    .hero p,
+    .content-section h1,
+    .content-section p,
+    .content-section a {
+        color: #ffffff;
+    }
+    
+    /* Portfolio */
+    .portfolio-item h3 {
+        color: #ffffff;
+    }
+    
+    /* Project Detail */
+    .project-header h1,
+    .project-meta p,
+    .project-intro h2,
+    .project-intro p,
+    .project-content h2,
+    .project-content p,
+    .project-column h2,
+    .project-column p {
+        color: #ffffff;
+    }
+    
+    .project-intro h2::after,
+    .project-content h2::after,
+    .project-column h2::after {
+        background-color: #ffffff;
+    }
+    
+    /* Contact Page */
+    .contact-hero h1,
+    .contact-info h2,
+    .contact-info p,
+    .contact-info a,
+    .contact-info-section a {
+        color: #ffffff;
+    }
+    
+    .download-cv {
+        border-color: #ffffff;
+        color: #ffffff;
+    }
+    
+    .download-cv:hover {
+        background: #ffffff;
+        color: #0a0a0d;
+    }
+    
+    /* Footer */
+    footer {
+        background: #0a0a0d;
+        border-top: 1px solid #333;
+    }
+    
+    footer p,
+    footer a {
+        color: #ffffff;
+    }
+    
+    /* Cookie Banner */
+    .cookie-banner {
+        background: #0a0a0d;
+        border-top: 1px solid #333;
+    }
+    
+    .cookie-banner p {
+        color: #ffffff;
+    }
+    
+    .cookie-buttons button {
+        border-color: #ffffff;
+        background: #0a0a0d;
+        color: #ffffff;
+    }
+    
+    .cookie-buttons button:first-child {
+        background: #ffffff;
+        color: #0a0a0d;
     }
 }
