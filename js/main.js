@@ -151,11 +151,14 @@ function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
     const menuBtns = document.querySelectorAll('.mobile-menu-btn');
     
+    console.log('Toggle called, found buttons:', menuBtns.length);
+    
     mobileMenu.classList.toggle('active');
     
     // Toggle active class on all menu buttons for animation
-    menuBtns.forEach(btn => {
+    menuBtns.forEach((btn, index) => {
         btn.classList.toggle('active');
+        console.log(`Button ${index} is now active:`, btn.classList.contains('active'));
     });
     
     // Body scroll verhindern wenn Menu offen ist

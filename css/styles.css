@@ -19,6 +19,7 @@ body {
     flex-direction: column;
     font-size: 16px;
     font-weight: 300;
+    scrollbar-gutter: stable;
 }
 
 /* Headlines use Space Grotesk */
@@ -159,29 +160,34 @@ nav {
     content: '';
     position: absolute;
     left: 0;
+    right: 0;
     width: 40px;
     height: 1px;
     background-color: #0a0a0d;
-    transition: all 0.3s ease;
+    transition-property: top, bottom, transform;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
 }
 
 .mobile-menu-btn::before {
-    top: 0;
+    top: 0px;
+    transform: rotate(0deg);
 }
 
 .mobile-menu-btn::after {
-    bottom: 0;
+    bottom: 0px;
+    transform: rotate(0deg);
 }
 
 /* Animated X state */
 .mobile-menu-btn.active::before {
-    top: 50%;
-    transform: translateY(-50%) rotate(45deg);
+    top: 7.5px;
+    transform: rotate(45deg);
 }
 
 .mobile-menu-btn.active::after {
-    bottom: 50%;
-    transform: translateY(50%) rotate(-45deg);
+    bottom: 7.5px;
+    transform: rotate(-45deg);
 }
 
 /* Mobile Menu Overlay */
