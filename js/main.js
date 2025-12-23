@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // WICHTIG: Pfade im Header korrigieren NACHDEM er eingefügt wurde
                 fixHeaderPaths(basePath);
                 
+                // Dark Mode Icon Swapping
+                updateMobileIconsForDarkMode(basePath);
+                
                 // Warte kurz bis Header vollständig geladen ist
                 setTimeout(() => {
                     initHeaderScroll();
@@ -41,6 +44,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const footerPlaceholder = document.getElementById('footer-placeholder');
             if (footerPlaceholder) {
                 footerPlaceholder.innerHTML = data;
+                
+                // Footer-Links korrigieren
+                fixFooterPaths(basePath);
             }
         })
         .catch(error => console.error('Fehler beim Laden des Footers:', error));
@@ -123,7 +129,7 @@ function fixHeaderPaths(basePath) {
     const cvLink = document.querySelector('.cv-link');
     if (navHome) navHome.href = basePath + 'index.html';
     if (navContact) navContact.href = basePath + 'contact.html';
-    if (cvLink) cvLink.href = basePath + 'cv.html';
+    if (cvLink) cvLink.href = basePath + 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQD2rpc3exawS5t6pRzmk5TdARDYgCiikTHYAOdvqE2BV2g?e=hq2Qhj';
     
     // Header Icons
     const linkedinIcon = document.querySelector('.linkedin-icon');
@@ -137,13 +143,40 @@ function fixHeaderPaths(basePath) {
         console.log('Mail Icon:', mailIcon.src);
     }
     
+    // Mobile Menu Icons
+    const mobileLinkedinIcon = document.querySelector('.mobile-linkedin-icon');
+    const mobileMailIcon = document.querySelector('.mobile-mail-icon');
+    if (mobileLinkedinIcon) {
+        mobileLinkedinIcon.src = basePath + 'images/linkedin_icon_mobile.svg';
+        console.log('Mobile LinkedIn Icon:', mobileLinkedinIcon.src);
+    }
+    if (mobileMailIcon) {
+        mobileMailIcon.src = basePath + 'images/mail_mobile.svg';
+        console.log('Mobile Mail Icon:', mobileMailIcon.src);
+    }
+    
     // Mobile Menu
     const mobileNavHome = document.querySelector('.mobile-nav-home');
     const mobileNavContact = document.querySelector('.mobile-nav-contact');
     const mobileNavCv = document.querySelector('.mobile-nav-cv');
     if (mobileNavHome) mobileNavHome.href = basePath + 'index.html';
     if (mobileNavContact) mobileNavContact.href = basePath + 'contact.html';
-    if (mobileNavCv) mobileNavCv.href = basePath + 'cv.html';
+    if (mobileNavCv) mobileNavCv.href = basePath + 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQD2rpc3exawS5t6pRzmk5TdARDYgCiikTHYAOdvqE2BV2g?e=hq2Qhj';
+}
+
+// Footer Pfade korrigieren
+function fixFooterPaths(basePath) {
+    console.log('Korrigiere Footer-Pfade mit basePath:', basePath);
+    
+    // Imprint Link im Footer
+    const imprintLink = document.querySelector('footer a[href*="imprint"]');
+    if (imprintLink) {
+        imprintLink.href = basePath + 'imprint.html';
+        console.log('Imprint Link:', imprintLink.href);
+    }
+    
+    // Falls es weitere Footer-Links gibt, hier hinzufügen
+    // z.B. Privacy Policy, Terms, etc.
 }
 
 // Mobile Menu Toggle
@@ -166,6 +199,38 @@ function toggleMobileMenu() {
         document.body.style.overflow = 'hidden';
     } else {
         document.body.style.overflow = '';
+    }
+}
+
+// Update Mobile Icons für Dark Mode
+function updateMobileIconsForDarkMode(basePath) {
+    const mobileLinkedinIcon = document.querySelector('.mobile-linkedin-icon');
+    const mobileMailIcon = document.querySelector('.mobile-mail-icon');
+    
+    // Check if dark mode is enabled
+    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (mobileLinkedinIcon) {
+        if (isDarkMode) {
+            mobileLinkedinIcon.src = basePath + 'images/linkedin_icon_mobile_white.svg';
+        } else {
+            mobileLinkedinIcon.src = basePath + 'images/linkedin_icon_mobile.svg';
+        }
+    }
+    
+    if (mobileMailIcon) {
+        if (isDarkMode) {
+            mobileMailIcon.src = basePath + 'images/mail_mobile_white.svg';
+        } else {
+            mobileMailIcon.src = basePath + 'images/mail_mobile.svg';
+        }
+    }
+    
+    // Listen for dark mode changes
+    if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            updateMobileIconsForDarkMode(basePath);
+        });
     }
 }
 
