@@ -129,7 +129,7 @@ function fixHeaderPaths(basePath) {
     const cvLink = document.querySelector('.cv-link');
     if (navHome) navHome.href = basePath + 'index.html';
     if (navContact) navContact.href = basePath + 'contact.html';
-    if (cvLink) cvLink.href = basePath + 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQD2rpc3exawS5t6pRzmk5TdARDYgCiikTHYAOdvqE2BV2g?e=hq2Qhj';
+    if (cvLink) cvLink.href = basePath + 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQCKhnvWmNR4R4VP2yiDYz0dATEzXS2l7o5YwwvfKttRozI?e=38Hl1E';
     
     // Header Icons
     const linkedinIcon = document.querySelector('.linkedin-icon');
@@ -161,7 +161,7 @@ function fixHeaderPaths(basePath) {
     const mobileNavCv = document.querySelector('.mobile-nav-cv');
     if (mobileNavHome) mobileNavHome.href = basePath + 'index.html';
     if (mobileNavContact) mobileNavContact.href = basePath + 'contact.html';
-    if (mobileNavCv) mobileNavCv.href = basePath + 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQD2rpc3exawS5t6pRzmk5TdARDYgCiikTHYAOdvqE2BV2g?e=hq2Qhj';
+    if (mobileNavCv) mobileNavCv.href = basePath + 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQCKhnvWmNR4R4VP2yiDYz0dATEzXS2l7o5YwwvfKttRozI?e=38Hl1E';
 }
 
 // Footer Pfade korrigieren
