@@ -599,6 +599,33 @@ main.content-page {
     display: block;
 }
 
+/* Project CTA Buttons */
+.project-cta-buttons {
+    display: flex;
+    gap: 30px;
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 12px 30px;
+    border: 1px solid #0a0a0d;
+    background: transparent;
+    color: #0a0a0d;
+    font-size: 16px;
+    font-weight: 400;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.cta-button:hover {
+    background: #0a0a0d;
+    color: #ffffff;
+}
+
 /* Portfolio Grid */
 .portfolio-grid {
     display: grid;
@@ -944,6 +971,12 @@ footer a:hover {
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
     }
+    
+    /* CTA Buttons Mobile */
+    .project-cta-buttons {
+        flex-direction: column;
+        gap: 20px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1050,6 +1083,16 @@ footer a:hover {
     }
     
     .download-cv:hover {
+        background: #ffffff;
+        color: #0a0a0d;
+    }
+    
+    .cta-button {
+        border-color: #ffffff;
+        color: #ffffff;
+    }
+    
+    .cta-button:hover {
         background: #ffffff;
         color: #0a0a0d;
     }

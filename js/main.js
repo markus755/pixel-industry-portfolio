@@ -1,3 +1,10 @@
+// === KONFIGURATION ===
+// Hier kannst du zentrale Links ändern
+const CONFIG = {
+    cvLink: 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQCKhnvWmNR4R4VP2yiDYz0dATEzXS2l7o5YwwvfKttRozI?e=Q1pLEg',
+    email: 'mueller@pixel-industry.de'
+};
+
 // Header und Footer laden
 document.addEventListener('DOMContentLoaded', function() {
     // Prüfe ob wir in einem Unterordner sind
@@ -53,6 +60,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Scroll-Animationen initialisieren nach kurzer Verzögerung
     setTimeout(initProjectAnimations, 250);
+    
+    // CTA Buttons mit Config-Links aktualisieren
+    setTimeout(fixCtaButtons, 300);
 });
 
 // Projekt-Animationen
@@ -129,7 +139,7 @@ function fixHeaderPaths(basePath) {
     const cvLink = document.querySelector('.cv-link');
     if (navHome) navHome.href = basePath + 'index.html';
     if (navContact) navContact.href = basePath + 'contact.html';
-    if (cvLink) cvLink.href = basePath + 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQCKhnvWmNR4R4VP2yiDYz0dATEzXS2l7o5YwwvfKttRozI?e=38Hl1E';
+    if (cvLink) cvLink.href = CONFIG.cvLink;
     
     // Header Icons
     const linkedinIcon = document.querySelector('.linkedin-icon');
@@ -161,7 +171,7 @@ function fixHeaderPaths(basePath) {
     const mobileNavCv = document.querySelector('.mobile-nav-cv');
     if (mobileNavHome) mobileNavHome.href = basePath + 'index.html';
     if (mobileNavContact) mobileNavContact.href = basePath + 'contact.html';
-    if (mobileNavCv) mobileNavCv.href = basePath + 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQCKhnvWmNR4R4VP2yiDYz0dATEzXS2l7o5YwwvfKttRozI?e=38Hl1E';
+    if (mobileNavCv) mobileNavCv.href = CONFIG.cvLink;
 }
 
 // Footer Pfade korrigieren
@@ -177,6 +187,33 @@ function fixFooterPaths(basePath) {
     
     // Falls es weitere Footer-Links gibt, hier hinzufügen
     // z.B. Privacy Policy, Terms, etc.
+}
+
+// CTA Buttons mit Config-Links aktualisieren
+function fixCtaButtons() {
+    console.log('Aktualisiere CTA Buttons mit Config-Links');
+    
+    // Alle "Open CV" Buttons finden und aktualisieren
+    const ctaButtons = document.querySelectorAll('.cta-button');
+    console.log('Gefundene CTA Buttons:', ctaButtons.length);
+    
+    ctaButtons.forEach((button, index) => {
+        const text = button.textContent.trim();
+        console.log(`Button ${index}: "${text}"`);
+        
+        // CV Button
+        if (text === 'Open CV') {
+            button.href = CONFIG.cvLink;
+            button.setAttribute('target', '_blank');
+            console.log('CV Button aktualisiert:', CONFIG.cvLink);
+        }
+        
+        // Email Button
+        if (text === 'Start a project') {
+            button.href = 'mailto:' + CONFIG.email;
+            console.log('Email Button aktualisiert:', CONFIG.email);
+        }
+    });
 }
 
 // Mobile Menu Toggle
@@ -277,8 +314,13 @@ function declineCookies() {
     document.querySelector('.cookie-banner').style.display = 'none';
 }
 
-// Smooth scroll
+// Smooth scroll - nur für echte Anker-Links, nicht für Platzhalter
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    // Ignoriere Links die nur "#" sind (Platzhalter)
+    if (anchor.getAttribute('href') === '#') {
+        return;
+    }
+    
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
