@@ -8,6 +8,12 @@ on:
       - main  # Startet den Prozess, wenn Code in den 'main'-Branch gepusht wird
   workflow_dispatch: # Ermöglicht das manuelle Starten der Action
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
