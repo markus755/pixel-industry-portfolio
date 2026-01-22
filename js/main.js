@@ -1,16 +1,44 @@
 // === KONFIGURATION ===
-// Hier kannst du zentrale Links ändern
+// Hier kannst du zentrale Links Ã¤ndern
 const CONFIG = {
     cvLink: 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQCKhnvWmNR4R4VP2yiDYz0dATEzXS2l7o5YwwvfKttRozI?e=Q1pLEg',
     email: 'mueller@pixel-industry.de'
 };
 
+// Scroll-Position Management
+function saveScrollPosition() {
+    const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+    sessionStorage.setItem('portfolioScrollPos', scrollPos);
+    console.log('Scroll position saved:', scrollPos);
+}
+
+function restoreScrollPosition() {
+    const savedPos = sessionStorage.getItem('portfolioScrollPos');
+    if (savedPos !== null) {
+        console.log('Restoring scroll position:', savedPos);
+        // Warte kurz bis Seite geladen ist
+        setTimeout(() => {
+            window.scrollTo({
+                top: parseInt(savedPos),
+                behavior: 'instant'
+            });
+            // Position nach Restore löschen
+            sessionStorage.removeItem('portfolioScrollPos');
+        }, 100);
+    }
+}
+
 // Header und Footer laden
 document.addEventListener('DOMContentLoaded', function() {
-    // Prüfe ob wir in einem Unterordner sind
+    // PrÃ¼fe ob wir in einem Unterordner sind
     const path = window.location.pathname;
     const isInProjects = path.includes('/projects/');
     const basePath = isInProjects ? '../' : '';
+    
+    // Scroll-Position wiederherstellen wenn auf index.html
+    if (path.includes('index.html') || path.endsWith('/')) {
+        restoreScrollPosition();
+    }
     
     // Header laden
     fetch(basePath + 'header.html')
@@ -25,13 +53,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (headerPlaceholder) {
                 headerPlaceholder.innerHTML = data;
                 
-                // WICHTIG: Pfade im Header korrigieren NACHDEM er eingefügt wurde
+                // WICHTIG: Pfade im Header korrigieren NACHDEM er eingefÃ¼gt wurde
                 fixHeaderPaths(basePath);
                 
                 // Dark Mode Icon Swapping
                 updateMobileIconsForDarkMode(basePath);
                 
-                // Warte kurz bis Header vollständig geladen ist
+                // Warte kurz bis Header vollstÃ¤ndig geladen ist
                 setTimeout(() => {
                     initHeaderScroll();
                 }, 100);
@@ -58,11 +86,14 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.error('Fehler beim Laden des Footers:', error));
 
-    // Scroll-Animationen initialisieren nach kurzer Verzögerung
+    // Scroll-Animationen initialisieren nach kurzer VerzÃ¶gerung
     setTimeout(initProjectAnimations, 250);
     
     // CTA Buttons mit Config-Links aktualisieren
     setTimeout(fixCtaButtons, 300);
+    
+    // Portfolio Items: Scroll-Position speichern vor Navigation
+    setTimeout(initPortfolioLinks, 300);
 });
 
 // Projekt-Animationen
@@ -89,7 +120,7 @@ function initProjectAnimations() {
             if (entry.isIntersecting) {
                 setTimeout(() => {
                     entry.target.classList.add('visible');
-                    console.log('visible Klasse hinzugefügt zu:', entry.target.className);
+                    console.log('visible Klasse hinzugefÃ¼gt zu:', entry.target.className);
                 }, 100);
             }
         });
@@ -98,7 +129,7 @@ function initProjectAnimations() {
     animatedElements.forEach(el => {
         observer.observe(el);
         
-        // Prüfe ob Element bereits im Viewport
+        // PrÃ¼fe ob Element bereits im Viewport
         const rect = el.getBoundingClientRect();
         console.log('Element Position:', el.className, 'top:', rect.top, 'viewport height:', window.innerHeight);
         
@@ -185,7 +216,7 @@ function fixFooterPaths(basePath) {
         console.log('Imprint Link:', imprintLink.href);
     }
     
-    // Falls es weitere Footer-Links gibt, hier hinzufügen
+    // Falls es weitere Footer-Links gibt, hier hinzufÃ¼gen
     // z.B. Privacy Policy, Terms, etc.
 }
 
@@ -216,6 +247,19 @@ function fixCtaButtons() {
     });
 }
 
+// Portfolio Links: Scroll-Position vor Navigation speichern
+function initPortfolioLinks() {
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    console.log('Portfolio Items gefunden:', portfolioItems.length);
+    
+    portfolioItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            // Speichere Position vor Navigation
+            saveScrollPosition();
+        });
+    });
+}
+
 // Mobile Menu Toggle
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
@@ -239,7 +283,7 @@ function toggleMobileMenu() {
     }
 }
 
-// Update Mobile Icons für Dark Mode
+// Update Mobile Icons fÃ¼r Dark Mode
 function updateMobileIconsForDarkMode(basePath) {
     const mobileLinkedinIcon = document.querySelector('.mobile-linkedin-icon');
     const mobileMailIcon = document.querySelector('.mobile-mail-icon');
@@ -277,7 +321,7 @@ function initHeaderScroll() {
     let scrollThreshold = 5;
     const header = document.querySelector('header');
     
-    // Warte kurz, damit der Header vollständig geladen ist
+    // Warte kurz, damit der Header vollstÃ¤ndig geladen ist
     setTimeout(() => {
         const headerHeight = header.offsetHeight;
         
@@ -314,7 +358,7 @@ function declineCookies() {
     document.querySelector('.cookie-banner').style.display = 'none';
 }
 
-// Smooth scroll - nur für echte Anker-Links, nicht für Platzhalter
+// Smooth scroll - nur fÃ¼r echte Anker-Links, nicht fÃ¼r Platzhalter
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     // Ignoriere Links die nur "#" sind (Platzhalter)
     if (anchor.getAttribute('href') === '#') {
