@@ -1,5 +1,5 @@
 // === KONFIGURATION ===
-// Hier kannst du zentrale Links Ã¤ndern
+// Hier kannst du zentrale Links ändern
 const CONFIG = {
     cvLink: 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQCKhnvWmNR4R4VP2yiDYz0dATEzXS2l7o5YwwvfKttRozI?e=Q1pLEg',
     email: 'mueller@pixel-industry.de'
@@ -30,7 +30,7 @@ function restoreScrollPosition() {
 
 // Header und Footer laden
 document.addEventListener('DOMContentLoaded', function() {
-    // PrÃ¼fe ob wir in einem Unterordner sind
+    // Prüfe ob wir in einem Unterordner sind
     const path = window.location.pathname;
     const isInProjects = path.includes('/projects/');
     const basePath = isInProjects ? '../' : '';
@@ -53,13 +53,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (headerPlaceholder) {
                 headerPlaceholder.innerHTML = data;
                 
-                // WICHTIG: Pfade im Header korrigieren NACHDEM er eingefÃ¼gt wurde
+                // WICHTIG: Pfade im Header korrigieren NACHDEM er eingefügt wurde
                 fixHeaderPaths(basePath);
                 
                 // Dark Mode Icon Swapping
                 updateMobileIconsForDarkMode(basePath);
                 
-                // Warte kurz bis Header vollstÃ¤ndig geladen ist
+                // Warte kurz bis Header vollständig geladen ist
                 setTimeout(() => {
                     initHeaderScroll();
                 }, 100);
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.error('Fehler beim Laden des Footers:', error));
 
-    // Scroll-Animationen initialisieren nach kurzer VerzÃ¶gerung
+    // Scroll-Animationen initialisieren nach kurzer Verzögerung
     setTimeout(initProjectAnimations, 250);
     
     // CTA Buttons mit Config-Links aktualisieren
@@ -120,7 +120,7 @@ function initProjectAnimations() {
             if (entry.isIntersecting) {
                 setTimeout(() => {
                     entry.target.classList.add('visible');
-                    console.log('visible Klasse hinzugefÃ¼gt zu:', entry.target.className);
+                    console.log('visible Klasse hinzugefügt zu:', entry.target.className);
                 }, 100);
             }
         });
@@ -129,7 +129,7 @@ function initProjectAnimations() {
     animatedElements.forEach(el => {
         observer.observe(el);
         
-        // PrÃ¼fe ob Element bereits im Viewport
+        // Prüfe ob Element bereits im Viewport
         const rect = el.getBoundingClientRect();
         console.log('Element Position:', el.className, 'top:', rect.top, 'viewport height:', window.innerHeight);
         
@@ -205,19 +205,28 @@ function fixHeaderPaths(basePath) {
     if (mobileNavCv) mobileNavCv.href = CONFIG.cvLink;
 }
 
-// Footer Pfade korrigieren
+// Footer Pfade korrigieren - UPDATED
 function fixFooterPaths(basePath) {
     console.log('Korrigiere Footer-Pfade mit basePath:', basePath);
     
-    // Imprint Link im Footer
-    const imprintLink = document.querySelector('footer a[href*="imprint"]');
-    if (imprintLink) {
-        imprintLink.href = basePath + 'imprint.html';
-        console.log('Imprint Link:', imprintLink.href);
-    }
+    // Footer Links
+    const footerLinks = document.querySelectorAll('footer a');
     
-    // Falls es weitere Footer-Links gibt, hier hinzufÃ¼gen
-    // z.B. Privacy Policy, Terms, etc.
+    footerLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        
+        // Imprint Link
+        if (href && href.includes('imprint')) {
+            link.href = basePath + 'imprint.html';
+            console.log('Imprint Link:', link.href);
+        }
+        
+        // Privacy Policy Link
+        if (href && href.includes('privacy')) {
+            link.href = basePath + 'privacy.html';
+            console.log('Privacy Policy Link:', link.href);
+        }
+    });
 }
 
 // CTA Buttons mit Config-Links aktualisieren
@@ -283,7 +292,7 @@ function toggleMobileMenu() {
     }
 }
 
-// Update Mobile Icons fÃ¼r Dark Mode
+// Update Mobile Icons für Dark Mode
 function updateMobileIconsForDarkMode(basePath) {
     const mobileLinkedinIcon = document.querySelector('.mobile-linkedin-icon');
     const mobileMailIcon = document.querySelector('.mobile-mail-icon');
@@ -321,7 +330,7 @@ function initHeaderScroll() {
     let scrollThreshold = 5;
     const header = document.querySelector('header');
     
-    // Warte kurz, damit der Header vollstÃ¤ndig geladen ist
+    // Warte kurz, damit der Header vollständig geladen ist
     setTimeout(() => {
         const headerHeight = header.offsetHeight;
         
@@ -358,7 +367,7 @@ function declineCookies() {
     document.querySelector('.cookie-banner').style.display = 'none';
 }
 
-// Smooth scroll - nur fÃ¼r echte Anker-Links, nicht fÃ¼r Platzhalter
+// Smooth scroll - nur für echte Anker-Links, nicht für Platzhalter
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     // Ignoriere Links die nur "#" sind (Platzhalter)
     if (anchor.getAttribute('href') === '#') {

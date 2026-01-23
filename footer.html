@@ -1,6 +1,36 @@
 <footer>
     <div class="footer-content">
         <p>© 2026 pixel-industry</p>
-        <a href="imprint.html">Imprint</a>
+        <div class="footer-links">
+            <a href="imprint.html">Imprint</a>
+            <a href="#" class="privacy-settings-link">Privacy settings</a>
+        </div>
     </div>
 </footer>
+
+<style>
+/* Footer Links Container */
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-links a {
+    color: #0a0a0d;
+    font-size: 14px;
+    font-weight: 300;
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.footer-links a:hover {
+    opacity: 0.6;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .footer-links a {
+        color: #ffffff;
+    }
+}
+</style>

@@ -9,6 +9,46 @@
     box-sizing: border-box;
 }
 
+/* Skip Link for Accessibility */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #0a0a0d;
+    color: #ffffff;
+    padding: 8px 16px;
+    text-decoration: none;
+    z-index: 10000;
+    font-size: 14px;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Privacy Page Specific Styles */
+.privacy-credit {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    color: #666;
+}
+
+/* Definition List Styling */
+dl {
+    margin: 20px 0;
+}
+
+dt {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+dd {
+    margin-left: 0;
+    margin-bottom: 20px;
+}
+
 body {
     font-family: 'Hanken Grotesk', sans-serif;
     background-color: #ffffff;
@@ -27,7 +67,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
 }
 
-/* Wrapper fÃ¼r Content um Footer nach unten zu drÃ¼cken */
+/* Wrapper für Content um Footer nach unten zu drücken */
 #header-placeholder,
 main {
     flex-shrink: 0;
@@ -709,6 +749,11 @@ footer p {
     margin: 0;
 }
 
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
 footer a {
     color: #0a0a0d;
     font-size: 14px;
@@ -887,6 +932,10 @@ footer a:hover {
     .footer-content {
         flex-direction: row;
         justify-content: space-between;
+    }
+    
+    .footer-links {
+        gap: 15px;
     }
 
     .cookie-banner {

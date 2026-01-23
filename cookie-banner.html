@@ -1,0 +1,157 @@
+<!-- Cookie Consent Banner -->
+<div id="cookie-consent-banner" class="cookie-consent-banner" style="display: none;">
+    <div class="cookie-consent-content">
+        <p class="cookie-consent-text">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+            <a href="privacy.html">Datenschutzerklärung</a>
+        </p>
+        <div class="cookie-consent-buttons">
+            <button type="button" class="cookie-btn cookie-btn-accept" onclick="acceptCookies()">Accept</button>
+            <button type="button" class="cookie-btn cookie-btn-deny" onclick="denyCookies()">Deny</button>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Cookie Consent Banner Styles */
+.cookie-consent-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: #0a0a0d;
+    color: #ffffff;
+    z-index: 9999;
+    padding: 20px 40px;
+    box-sizing: border-box;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.cookie-consent-banner.visible {
+    transform: translateY(0);
+}
+
+.cookie-consent-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.cookie-consent-text {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.5;
+    margin: 0;
+    flex: 1;
+}
+
+.cookie-consent-text a {
+    color: #ffffff;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: opacity 0.3s;
+}
+
+.cookie-consent-text a:hover {
+    opacity: 0.6;
+}
+
+.cookie-consent-buttons {
+    display: flex;
+    gap: 15px;
+    flex-shrink: 0;
+}
+
+.cookie-btn {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 10px 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid #ffffff;
+}
+
+.cookie-btn-accept {
+    background-color: #ffffff;
+    color: #0a0a0d;
+}
+
+.cookie-btn-accept:hover {
+    background-color: transparent;
+    color: #ffffff;
+}
+
+.cookie-btn-deny {
+    background-color: transparent;
+    color: #ffffff;
+}
+
+.cookie-btn-deny:hover {
+    background-color: #ffffff;
+    color: #0a0a0d;
+}
+
+/* Dark Mode - Inverted colors */
+@media (prefers-color-scheme: dark) {
+    .cookie-consent-banner {
+        background-color: #ffffff;
+        color: #0a0a0d;
+    }
+    
+    .cookie-consent-text a {
+        color: #0a0a0d;
+    }
+    
+    .cookie-btn {
+        border-color: #0a0a0d;
+    }
+    
+    .cookie-btn-accept {
+        background-color: #0a0a0d;
+        color: #ffffff;
+    }
+    
+    .cookie-btn-accept:hover {
+        background-color: transparent;
+        color: #0a0a0d;
+    }
+    
+    .cookie-btn-deny {
+        background-color: transparent;
+        color: #0a0a0d;
+    }
+    
+    .cookie-btn-deny:hover {
+        background-color: #0a0a0d;
+        color: #ffffff;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .cookie-consent-banner {
+        padding: 20px;
+    }
+    
+    .cookie-consent-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+    }
+    
+    .cookie-consent-text {
+        text-align: center;
+    }
+    
+    .cookie-consent-buttons {
+        justify-content: center;
+    }
+}
+</style>
