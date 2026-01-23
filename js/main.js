@@ -3,7 +3,7 @@
 const CONFIG = {
     cvLink: 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQCKhnvWmNR4R4VP2yiDYz0dATEzXS2l7o5YwwvfKttRozI?e=Q1pLEg',
     email: 'mueller@pixel-industry.de',
-    googleAnalyticsId: 'G-XXXXXXXXXX' // TODO: Replace with your actual GA4 ID
+    googleAnalyticsId: 'G-SFH038KZHN' // TODO: Replace with your actual GA4 ID
 };
 
 // Google Analytics Functions
