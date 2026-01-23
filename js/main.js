@@ -3,7 +3,7 @@
 const CONFIG = {
     cvLink: 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQCKhnvWmNR4R4VP2yiDYz0dATEzXS2l7o5YwwvfKttRozI?e=Q1pLEg',
     email: 'mueller@pixel-industry.de',
-    googleAnalyticsId: 'G-SFH038KZHN' // TODO: Replace with your actual GA4 ID
+    googleAnalyticsId: 'G-XXXXXXXXXX' // TODO: Replace with your actual GA4 ID
 };
 
 // Google Analytics Functions
@@ -408,6 +408,12 @@ function fixCtaButtons() {
         if (text === 'Open CV') {
             button.href = CONFIG.cvLink;
             button.setAttribute('target', '_blank');
+            
+            // Add Google Analytics tracking
+            button.addEventListener('click', function() {
+                trackCVClick('project_page');
+            });
+            
             console.log('CV Button aktualisiert:', CONFIG.cvLink);
         }
         
@@ -417,6 +423,34 @@ function fixCtaButtons() {
             console.log('Email Button aktualisiert:', CONFIG.email);
         }
     });
+    
+    // Header CV Link tracking
+    const headerCVLink = document.querySelector('.cv-link');
+    if (headerCVLink) {
+        headerCVLink.addEventListener('click', function() {
+            trackCVClick('header');
+        });
+    }
+    
+    // Mobile Menu CV Link tracking
+    const mobileNavCV = document.querySelector('.mobile-nav-cv');
+    if (mobileNavCV) {
+        mobileNavCV.addEventListener('click', function() {
+            trackCVClick('mobile_menu');
+        });
+    }
+}
+
+// Track CV clicks with Google Analytics
+function trackCVClick(origin) {
+    if (window.gtag && typeof window.gtag === 'function') {
+        gtag('event', 'cv_view', {
+            'button_origin': origin
+        });
+        console.log(`GA Event tracked: cv_view from ${origin}`);
+    } else {
+        console.log(`GA not loaded - would track: cv_view from ${origin}`);
+    }
 }
 
 // Portfolio Links: Scroll-Position vor Navigation speichern
