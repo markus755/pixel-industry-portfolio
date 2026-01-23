@@ -2,8 +2,54 @@
 // Hier kannst du zentrale Links ändern
 const CONFIG = {
     cvLink: 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQCKhnvWmNR4R4VP2yiDYz0dATEzXS2l7o5YwwvfKttRozI?e=Q1pLEg',
-    email: 'mueller@pixel-industry.de'
+    email: 'mueller@pixel-industry.de',
+    googleAnalyticsId: 'G-SFH038KZHN' // TODO: Replace with your actual GA4 ID
 };
+
+// Google Analytics Functions
+function initGoogleAnalytics() {
+    const functionalCookies = localStorage.getItem('functionalCookies') === 'true';
+    
+    if (functionalCookies && CONFIG.googleAnalyticsId !== 'G-XXXXXXXXXX') {
+        // Load Google Analytics script
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${CONFIG.googleAnalyticsId}`;
+        document.head.appendChild(script);
+        
+        // Initialize gtag
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
+        
+        gtag('js', new Date());
+        gtag('config', CONFIG.googleAnalyticsId, {
+            'anonymize_ip': true
+        });
+        
+        console.log('Google Analytics initialized');
+    } else {
+        console.log('Google Analytics disabled - no consent or invalid ID');
+    }
+}
+
+function disableGoogleAnalytics() {
+    // Disable Google Analytics
+    if (window.gtag) {
+        window[`ga-disable-${CONFIG.googleAnalyticsId}`] = true;
+        console.log('Google Analytics disabled');
+    }
+    
+    // Remove GA cookies
+    const gaCookies = document.cookie.split(';').filter(cookie => 
+        cookie.trim().startsWith('_ga') || cookie.trim().startsWith('_gid')
+    );
+    
+    gaCookies.forEach(cookie => {
+        const cookieName = cookie.split('=')[0].trim();
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    });
+}
 
 // Scroll-Position Management
 function saveScrollPosition() {
@@ -82,6 +128,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Footer-Links korrigieren
                 fixFooterPaths(basePath);
+                
+                // Cookie Banner initialisieren
+                initCookieBanner();
             }
         })
         .catch(error => console.error('Fehler beim Laden des Footers:', error));
@@ -94,7 +143,117 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Portfolio Items: Scroll-Position speichern vor Navigation
     setTimeout(initPortfolioLinks, 300);
+    
+    // Initialize Google Analytics if consent given
+    initGoogleAnalytics();
 });
+
+// Cookie Banner Funktionen
+function initCookieBanner() {
+    const cookieConsent = localStorage.getItem('cookieConsent');
+    const cookieBanner = document.getElementById('cookie-banner');
+    
+    if (cookieBanner) {
+        if (!cookieConsent) {
+            // Show banner after short delay
+            setTimeout(() => {
+                cookieBanner.classList.add('visible');
+            }, 1000);
+        }
+    }
+}
+
+function acceptCookies() {
+    localStorage.setItem('cookieConsent', 'accepted');
+    localStorage.setItem('functionalCookies', 'true');
+    hideCookieBanner();
+    initGoogleAnalytics();
+}
+
+function declineCookies() {
+    localStorage.setItem('cookieConsent', 'declined');
+    localStorage.setItem('functionalCookies', 'false');
+    hideCookieBanner();
+}
+
+function hideCookieBanner() {
+    const cookieBanner = document.getElementById('cookie-banner');
+    if (cookieBanner) {
+        cookieBanner.classList.remove('visible');
+    }
+}
+
+function openPrivacySettings() {
+    const panel = document.getElementById('privacy-settings-panel');
+    if (panel) {
+        panel.classList.add('visible');
+        document.body.style.overflow = 'hidden';
+        
+        // Load saved settings
+        const functionalCookies = localStorage.getItem('functionalCookies') === 'true';
+        const toggle = document.getElementById('analytics-toggle');
+        const icon = document.getElementById('analytics-toggle-icon');
+        
+        if (functionalCookies && toggle && icon) {
+            toggle.classList.add('active');
+            icon.textContent = 'toggle_on';
+        }
+        
+        // Reset save button to disabled
+        const saveBtn = document.getElementById('save-btn');
+        if (saveBtn) {
+            saveBtn.disabled = true;
+        }
+    }
+}
+
+function closePrivacySettings() {
+    const panel = document.getElementById('privacy-settings-panel');
+    if (panel) {
+        panel.classList.remove('visible');
+        document.body.style.overflow = '';
+    }
+}
+
+function toggleAnalytics() {
+    const toggle = document.getElementById('analytics-toggle');
+    const icon = document.getElementById('analytics-toggle-icon');
+    const saveBtn = document.getElementById('save-btn');
+    
+    if (toggle && icon && saveBtn) {
+        toggle.classList.toggle('active');
+        
+        if (toggle.classList.contains('active')) {
+            icon.textContent = 'toggle_on';
+        } else {
+            icon.textContent = 'toggle_off';
+        }
+        
+        // Enable save button when settings change
+        saveBtn.disabled = false;
+    }
+}
+
+function savePrivacySettings() {
+    const toggle = document.getElementById('analytics-toggle');
+    if (toggle) {
+        const analyticsEnabled = toggle.classList.contains('active');
+        
+        localStorage.setItem('functionalCookies', analyticsEnabled.toString());
+        localStorage.setItem('cookieConsent', 'custom');
+        
+        if (analyticsEnabled) {
+            // Enable Google Analytics
+            initGoogleAnalytics();
+        } else {
+            // Disable Google Analytics
+            disableGoogleAnalytics();
+        }
+        
+        closePrivacySettings();
+        hideCookieBanner();
+    }
+}
 
 // Projekt-Animationen
 function initProjectAnimations() {
@@ -205,28 +364,32 @@ function fixHeaderPaths(basePath) {
     if (mobileNavCv) mobileNavCv.href = CONFIG.cvLink;
 }
 
-// Footer Pfade korrigieren - UPDATED
+// Footer Pfade korrigieren
 function fixFooterPaths(basePath) {
     console.log('Korrigiere Footer-Pfade mit basePath:', basePath);
     
-    // Footer Links
+    // Alle Links im Footer
     const footerLinks = document.querySelectorAll('footer a');
-    
     footerLinks.forEach(link => {
         const href = link.getAttribute('href');
         
-        // Imprint Link
-        if (href && href.includes('imprint')) {
+        if (href === 'imprint.html') {
             link.href = basePath + 'imprint.html';
             console.log('Imprint Link:', link.href);
         }
         
-        // Privacy Policy Link
-        if (href && href.includes('privacy')) {
+        if (href === 'privacy.html') {
             link.href = basePath + 'privacy.html';
-            console.log('Privacy Policy Link:', link.href);
+            console.log('Privacy Link:', link.href);
         }
     });
+    
+    // Privacy Policy Link im Privacy Panel
+    const privacyPolicyLink = document.querySelector('.privacy-box a[href*="privacy"]');
+    if (privacyPolicyLink) {
+        privacyPolicyLink.href = basePath + 'privacy.html';
+        console.log('Privacy Policy Link im Panel:', privacyPolicyLink.href);
+    }
 }
 
 // CTA Buttons mit Config-Links aktualisieren
@@ -356,15 +519,6 @@ function initHeaderScroll() {
             lastScrollTop = scrollTop;
         });
     }, 100);
-}
-
-// Cookie Funktionen
-function acceptCookies() {
-    document.querySelector('.cookie-banner').style.display = 'none';
-}
-
-function declineCookies() {
-    document.querySelector('.cookie-banner').style.display = 'none';
 }
 
 // Smooth scroll - nur für echte Anker-Links, nicht für Platzhalter
