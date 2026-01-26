@@ -3,7 +3,7 @@
 const CONFIG = {
     cvLink: 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQCKhnvWmNR4R4VP2yiDYz0dATEzXS2l7o5YwwvfKttRozI?e=Q1pLEg',
     email: 'mueller@pixel-industry.de',
-    googleAnalyticsId: 'G-SFH038KZHN' // TODO: Replace with your actual GA4 ID
+    googleAnalyticsId: 'G-XXXXXXXXXX' // TODO: Replace with your actual GA4 ID
 };
 
 // Google Analytics Functions
@@ -396,6 +396,11 @@ function fixFooterPaths(basePath) {
 function fixCtaButtons() {
     console.log('Aktualisiere CTA Buttons mit Config-Links');
     
+    // Detect current page name for tracking
+    const path = window.location.pathname;
+    const pageName = path.split('/').pop().replace('.html', '') || 'index';
+    const isProjectPage = path.includes('/projects/');
+    
     // Alle "Open CV" Buttons finden und aktualisieren
     const ctaButtons = document.querySelectorAll('.cta-button');
     console.log('Gefundene CTA Buttons:', ctaButtons.length);
@@ -409,9 +414,13 @@ function fixCtaButtons() {
             button.href = CONFIG.cvLink;
             button.setAttribute('target', '_blank');
             
-            // Add Google Analytics tracking
+            // Add Google Analytics tracking with page name
             button.addEventListener('click', function() {
-                trackCVClick('project_page');
+                if (isProjectPage) {
+                    trackCVClick('project_page', pageName);
+                } else {
+                    trackCVClick('other_page', pageName);
+                }
             });
             
             console.log('CV Button aktualisiert:', CONFIG.cvLink);
@@ -428,7 +437,7 @@ function fixCtaButtons() {
     const headerCVLink = document.querySelector('.cv-link');
     if (headerCVLink) {
         headerCVLink.addEventListener('click', function() {
-            trackCVClick('header');
+            trackCVClick('header', pageName);
         });
     }
     
@@ -436,20 +445,21 @@ function fixCtaButtons() {
     const mobileNavCV = document.querySelector('.mobile-nav-cv');
     if (mobileNavCV) {
         mobileNavCV.addEventListener('click', function() {
-            trackCVClick('mobile_menu');
+            trackCVClick('mobile_menu', pageName);
         });
     }
 }
 
 // Track CV clicks with Google Analytics
-function trackCVClick(origin) {
+function trackCVClick(origin, pageName) {
     if (window.gtag && typeof window.gtag === 'function') {
         gtag('event', 'cv_view', {
-            'button_origin': origin
+            'button_origin': origin,
+            'page_name': pageName
         });
-        console.log(`GA Event tracked: cv_view from ${origin}`);
+        console.log(`GA Event tracked: cv_view from ${origin} on page ${pageName}`);
     } else {
-        console.log(`GA not loaded - would track: cv_view from ${origin}`);
+        console.log(`GA not loaded - would track: cv_view from ${origin} on page ${pageName}`);
     }
 }
 
