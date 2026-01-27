@@ -1498,8 +1498,9 @@ footer a:hover {
 }
 
 .privacy-toggle .toggle-icon {
-    font-size: 40px;
-    color: #ffffff !important;
+    width: 40px;
+    height: auto;
+    display: block;
     transition: all 0.3s;
 }
 
@@ -1513,7 +1514,7 @@ footer a:hover {
     opacity: 0.5;
 }
 
-.privacy-toggle-blocked .toggle-blocked-icon {
+.privacy-toggle-blocked .toggle-icon {
     width: 40px;
     height: auto;
     display: block;
@@ -1587,14 +1588,6 @@ footer a:hover {
     }
     
     .privacy-card-link {
-        color: #0a0a0d;
-    }
-    
-    .privacy-toggle .toggle-icon {
-        color: #0a0a0d;
-    }
-    
-    .privacy-toggle-blocked .toggle-icon {
         color: #0a0a0d;
     }
     

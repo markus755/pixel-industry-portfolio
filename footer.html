@@ -9,17 +9,6 @@
     </div>
 </footer>
 
-<!-- Cookie Consent Banner -->
-<div id="cookie-banner" class="cookie-banner">
-    <div class="cookie-banner-content">
-        <p>We use cookies to analyze website usage via Google Analytics and improve our services. You can manage your preferences at any time.</p>
-        <div class="cookie-banner-buttons">
-            <button type="button" class="cookie-btn cookie-btn-decline" onclick="declineCookies()">Deny</button>
-            <button type="button" class="cookie-btn cookie-btn-accept" onclick="acceptCookies()">Accept</button>
-        </div>
-    </div>
-</div>
-
 <!-- Privacy Settings Panel -->
 <div id="privacy-settings-panel" class="privacy-settings-panel">
     <div class="privacy-settings-container">
@@ -43,7 +32,7 @@
                     </p>
                 </div>
                 <button type="button" class="privacy-toggle" id="analytics-toggle" onclick="toggleAnalytics()" aria-label="Toggle Google Analytics">
-                    <span class="material-symbols-outlined toggle-icon" id="analytics-toggle-icon">toggle_off</span>
+                    <img src="images/toggle_off.svg" alt="Toggle off" class="toggle-icon" id="analytics-toggle-icon">
                 </button>
             </div>
             
@@ -56,7 +45,7 @@
                     </p>
                 </div>
                 <div class="privacy-toggle-blocked">
-                    <img src="images/toggle_block.svg" alt="Always enabled" class="toggle-blocked-icon">
+                    <img src="images/toggle_on_disabled.svg" alt="Always enabled" class="toggle-icon">
                 </div>
             </div>
         </div>

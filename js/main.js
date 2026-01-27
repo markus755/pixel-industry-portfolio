@@ -3,7 +3,7 @@
 const CONFIG = {
     cvLink: 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQCKhnvWmNR4R4VP2yiDYz0dATEzXS2l7o5YwwvfKttRozI?e=Q1pLEg',
     email: 'mueller@pixel-industry.de',
-    googleAnalyticsId: 'G-XXXXXXXXXX' // TODO: Replace with your actual GA4 ID
+    googleAnalyticsId: 'G-SFH038KZHN' // TODO: Replace with your actual GA4 ID
 };
 
 // Google Analytics Functions
@@ -194,9 +194,19 @@ function openPrivacySettings() {
         const toggle = document.getElementById('analytics-toggle');
         const icon = document.getElementById('analytics-toggle-icon');
         
+        // Store original state for comparison
+        if (toggle) {
+            toggle.dataset.originalState = functionalCookies ? 'true' : 'false';
+        }
+        
         if (functionalCookies && toggle && icon) {
             toggle.classList.add('active');
-            icon.textContent = 'toggle_on';
+            icon.src = 'images/toggle_on.svg';
+            icon.alt = 'Toggle on';
+        } else if (toggle && icon) {
+            toggle.classList.remove('active');
+            icon.src = 'images/toggle_off.svg';
+            icon.alt = 'Toggle off';
         }
         
         // Reset save button to disabled
@@ -224,13 +234,19 @@ function toggleAnalytics() {
         toggle.classList.toggle('active');
         
         if (toggle.classList.contains('active')) {
-            icon.textContent = 'toggle_on';
+            icon.src = 'images/toggle_on.svg';
+            icon.alt = 'Toggle on';
         } else {
-            icon.textContent = 'toggle_off';
+            icon.src = 'images/toggle_off.svg';
+            icon.alt = 'Toggle off';
         }
         
-        // Enable save button when settings change
-        saveBtn.disabled = false;
+        // Check if current state differs from original state
+        const currentState = toggle.classList.contains('active') ? 'true' : 'false';
+        const originalState = toggle.dataset.originalState || 'false';
+        
+        // Enable save button only if state has changed
+        saveBtn.disabled = (currentState === originalState);
     }
 }
 
