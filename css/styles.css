@@ -753,6 +753,17 @@ footer a:hover {
     margin-right: 20px;
 }
 
+.cookie-banner a,
+.cookie-banner-content a {
+    color: #0a0a0d;
+    text-decoration: underline;
+}
+
+.cookie-banner a:hover,
+.cookie-banner-content a:hover {
+    opacity: 0.6;
+}
+
 .cookie-buttons {
     display: flex;
     gap: 15px;
@@ -1245,6 +1256,17 @@ footer a:hover {
     line-height: 1.5;
     flex: 1;
     color: #ffffff !important;
+}
+
+.cookie-banner a,
+.cookie-banner-content a {
+    color: #ffffff !important;
+    text-decoration: underline;
+}
+
+.cookie-banner a:hover,
+.cookie-banner-content a:hover {
+    opacity: 0.8;
 }
 
 .cookie-banner-buttons {
