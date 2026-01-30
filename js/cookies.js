@@ -91,6 +91,72 @@ function openPrivacySettings() {
         panel.classList.add('visible');
         document.body.style.overflow = 'hidden';
         
+        // Get all ACTUALLY focusable elements (not disabled, not hidden)
+        const getFocusableElements = () => {
+            const elements = Array.from(panel.querySelectorAll('button, a, [tabindex]:not([tabindex="-1"])'));
+            // Filter out disabled buttons and elements outside the panel
+            return elements.filter(el => {
+                return !el.disabled && 
+                       el.offsetParent !== null && // Element is visible
+                       panel.contains(el); // Element is inside panel
+            });
+        };
+        
+        // Focus first element (close button)
+        const focusableElements = getFocusableElements();
+        const firstFocusable = focusableElements[0];
+        
+        if (firstFocusable && typeof firstFocusable.focus === 'function') {
+            setTimeout(() => {
+                try {
+                    firstFocusable.focus();
+                } catch (e) {
+                    console.log('Could not focus first element:', e);
+                }
+            }, 100);
+        }
+        
+        // Focus Trap - Tab bleibt im Panel gefangen
+        const handleTab = (e) => {
+            if (e.key === 'Tab') {
+                // Re-get focusable elements (in case Save button became enabled/disabled)
+                const currentFocusable = getFocusableElements();
+                const firstElement = currentFocusable[0];
+                const lastElement = currentFocusable[currentFocusable.length - 1];
+                
+                if (e.shiftKey) {
+                    // Shift + Tab (rückwärts)
+                    if (document.activeElement === firstElement) {
+                        e.preventDefault();
+                        lastElement.focus();
+                    }
+                } else {
+                    // Tab (vorwärts)
+                    if (document.activeElement === lastElement) {
+                        e.preventDefault();
+                        firstElement.focus();
+                    }
+                }
+            }
+        };
+        
+        // ESC key to close
+        const handleEscape = (e) => {
+            if (e.key === 'Escape') {
+                closePrivacySettings();
+                document.removeEventListener('keydown', handleTab);
+                document.removeEventListener('keydown', handleEscape);
+            }
+        };
+        
+        document.addEventListener('keydown', handleTab);
+        document.addEventListener('keydown', handleEscape);
+        
+        // Store handlers so we can remove them later
+        panel.dataset.trapActive = 'true';
+        panel._handleTab = handleTab;
+        panel._handleEscape = handleEscape;
+        
         // Load saved settings
         const functionalCookies = localStorage.getItem('functionalCookies') === 'true';
         const toggle = document.getElementById('analytics-toggle');
@@ -124,6 +190,55 @@ function closePrivacySettings() {
     if (panel) {
         panel.classList.remove('visible');
         document.body.style.overflow = '';
+        
+        // Remove focus trap event listeners
+        if (panel._handleTab) {
+            document.removeEventListener('keydown', panel._handleTab);
+            panel._handleTab = null;
+        }
+        if (panel._handleEscape) {
+            document.removeEventListener('keydown', panel._handleEscape);
+            panel._handleEscape = null;
+        }
+        panel.dataset.trapActive = 'false';
+        
+        // Return focus to Privacy Settings link
+        const privacySettingsLink = document.querySelector('a[onclick*="openPrivacySettings"]');
+        if (privacySettingsLink && typeof privacySettingsLink.focus === 'function') {
+            setTimeout(() => {
+                privacySettingsLink.focus();
+                
+                // Add one-time Tab handler to jump to logo
+                const handleNextTab = (e) => {
+                    if (e.key === 'Tab' && !e.shiftKey && document.activeElement === privacySettingsLink) {
+                        e.preventDefault();
+                        
+                        // Scroll to top and focus logo
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                        
+                        const logoLink = document.querySelector('.logo-link');
+                        if (logoLink) {
+                            setTimeout(() => {
+                                logoLink.focus();
+                            }, 300);
+                        }
+                        
+                        // Remove this listener after use
+                        document.removeEventListener('keydown', handleNextTab);
+                    }
+                };
+                
+                document.addEventListener('keydown', handleNextTab);
+                
+                // Clean up if user doesn't press Tab (e.g., clicks somewhere)
+                setTimeout(() => {
+                    document.removeEventListener('keydown', handleNextTab);
+                }, 5000);
+            }, 100);
+        }
     }
 }
 

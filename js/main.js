@@ -215,6 +215,39 @@ function fixHeaderPaths(basePath) {
     if (mobileNavContact) mobileNavContact.href = basePath + 'contact.html';
     if (mobileNavCv) mobileNavCv.href = CONFIG.cvLink;
     
+    // Tab-Navigation: Mobile Menu aus Tab-Reihenfolge auf Desktop nehmen
+    const isMobile = window.innerWidth <= 768;
+    
+    // Mobile Menu Button
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    if (mobileMenuBtn) {
+        mobileMenuBtn.tabIndex = isMobile ? 0 : -1;
+    }
+    
+    // Mobile Menu Links
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenuLinks = document.querySelectorAll('#mobileMenu a');
+    if (mobileMenuLinks && mobileMenuLinks.length > 0) {
+        mobileMenuLinks.forEach(link => {
+            const isMenuOpen = mobileMenu && mobileMenu.classList.contains('active');
+            link.tabIndex = (isMobile || isMenuOpen) ? 0 : -1;
+        });
+    }
+    
+    // Bei Fenster-Resize aktualisieren
+    window.addEventListener('resize', function() {
+        const isMobile = window.innerWidth <= 768;
+        if (mobileMenuBtn) {
+            mobileMenuBtn.tabIndex = isMobile ? 0 : -1;
+        }
+        if (mobileMenuLinks && mobileMenuLinks.length > 0) {
+            mobileMenuLinks.forEach(link => {
+                const isMenuOpen = mobileMenu && mobileMenu.classList.contains('active');
+                link.tabIndex = (isMobile || isMenuOpen) ? 0 : -1;
+            });
+        }
+    });
+    
     // Fix cookies.js script path in header
     const cookiesScript = document.querySelector('script[src*="cookies.js"]');
     if (cookiesScript && basePath) {
@@ -335,6 +368,7 @@ function initPortfolioLinks() {
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
     const menuBtns = document.querySelectorAll('.mobile-menu-btn');
+    const mobileMenuLinks = document.querySelectorAll('#mobileMenu a');
     
     console.log('Toggle called, found buttons:', menuBtns.length);
     
@@ -346,8 +380,16 @@ function toggleMobileMenu() {
         console.log(`Button ${index} is now active:`, btn.classList.contains('active'));
     });
     
+    // Update tabindex für mobile menu links
+    const isActive = mobileMenu.classList.contains('active');
+    if (mobileMenuLinks && mobileMenuLinks.length > 0) {
+        mobileMenuLinks.forEach(link => {
+            link.tabIndex = isActive ? 0 : -1;
+        });
+    }
+    
     // Body scroll verhindern wenn Menu offen ist
-    if (mobileMenu.classList.contains('active')) {
+    if (isActive) {
         document.body.style.overflow = 'hidden';
     } else {
         document.body.style.overflow = '';

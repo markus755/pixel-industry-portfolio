@@ -27,6 +27,27 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
 }
 
+/* Focus Outline - Schwarz statt Browser-Blau */
+*:focus {
+    outline: 2px solid #0a0a0d;
+    outline-offset: 2px;
+}
+
+*:focus:not(:focus-visible) {
+    outline: none;
+}
+
+*:focus-visible {
+    outline: 2px solid #0a0a0d;
+    outline-offset: 2px;
+}
+
+/* Privacy Panel - Immer weiße Outline (schwarzer Hintergrund) */
+.privacy-settings-panel *:focus,
+.privacy-settings-panel *:focus-visible {
+    outline-color: #ffffff !important;
+}
+
 /* Wrapper für Content um Footer nach unten zu drücken */
 #header-placeholder,
 main {
@@ -1590,6 +1611,15 @@ footer a:hover {
 
 /* Privacy Settings Dark Mode */
 @media (prefers-color-scheme: dark) {
+    /* Focus Outline - Weiß im Dark Mode */
+    *:focus {
+        outline-color: #ffffff;
+    }
+    
+    *:focus-visible {
+        outline-color: #ffffff;
+    }
+    
     .privacy-settings-panel {
         background-color: #ffffff;
         color: #0a0a0d;
