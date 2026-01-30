@@ -119,10 +119,18 @@ nav {
     font-size: 16px;
     font-weight: 200;
     transition: opacity 0.3s;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 4px;
 }
 
 .nav-links a:hover {
     opacity: 0.6;
+}
+
+/* Active State Indicator - 2px Strich unter dem aktiven Link */
+.nav-links a.active {
+    border-bottom: 2px solid #0a0a0d;
 }
 
 .cv-link {
@@ -1120,6 +1128,11 @@ footer a:hover {
     .nav-links a,
     .cv-link {
         color: #ffffff;
+    }
+    
+    /* Active State - Weiß im Dark Mode */
+    .nav-links a.active {
+        border-bottom-color: #ffffff;
     }
     
     .mobile-menu-header .logo {

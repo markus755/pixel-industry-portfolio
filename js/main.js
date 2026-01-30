@@ -183,6 +183,20 @@ function fixHeaderPaths(basePath) {
     if (navContact) navContact.href = basePath + 'contact.html';
     if (cvLink) cvLink.href = CONFIG.cvLink;
     
+    // Active State Indicator - zeigt aktuelle Seite
+    const currentPath = window.location.pathname;
+    const currentPage = currentPath.split('/').pop() || 'index.html';
+    
+    // Work (index.html oder /) ist aktiv
+    if (currentPage === 'index.html' || currentPage === '' || currentPath === '/') {
+        if (navHome) navHome.classList.add('active');
+    }
+    
+    // Contact ist aktiv
+    if (currentPage === 'contact.html') {
+        if (navContact) navContact.classList.add('active');
+    }
+    
     // Header Icons
     const linkedinIcon = document.querySelector('.linkedin-icon');
     const mailIcon = document.querySelector('.mail-icon');
