@@ -690,7 +690,7 @@ main.content-page {
     transform: scale(1.05);
 }
 
-.portfolio-item h3 {
+.portfolio-item h2 {
     margin-top: 15px;
     font-size: 18px;
     font-weight: 300;
@@ -1171,7 +1171,7 @@ footer a:hover {
     }
     
     /* Portfolio */
-    .portfolio-item h3 {
+    .portfolio-item h2 {
         color: #ffffff;
     }
     
