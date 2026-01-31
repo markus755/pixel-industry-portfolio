@@ -552,6 +552,61 @@ main.content-page {
     margin-bottom: 80px;
 }
 
+/* Description List Styles für Key Contributions */
+.contributions-list {
+    margin-top: 0;
+}
+
+.contributions-list dt {
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    color: #0a0a0d;
+    font-size: 16px;
+}
+
+.contributions-list dt:first-of-type {
+    margin-top: 0;
+}
+
+.contributions-list dd {
+    margin-left: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.5;
+    color: #0a0a0d;
+}
+
+/* Responsibilities List Styles */
+.responsibilities-list {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 0;
+}
+
+.responsibilities-list li {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.5;
+    color: #0a0a0d;
+    margin-bottom: 20px;
+    padding-left: 25px;
+    position: relative;
+}
+
+.responsibilities-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+    color: #0a0a0d;
+}
+
+.responsibilities-list li:last-child {
+    margin-bottom: 0;
+}
+
 /* Two Column Layout */
 .project-two-columns {
     display: grid;
@@ -690,7 +745,7 @@ main.content-page {
     transform: scale(1.05);
 }
 
-.portfolio-item h2 {
+.portfolio-item h3 {
     margin-top: 15px;
     font-size: 18px;
     font-weight: 300;
@@ -1171,7 +1226,7 @@ footer a:hover {
     }
     
     /* Portfolio */
-    .portfolio-item h2 {
+    .portfolio-item h3 {
         color: #ffffff;
     }
     
@@ -1220,6 +1275,18 @@ footer a:hover {
     
     .cta-button:hover {
         background: transparent;
+        color: #ffffff;
+    }
+    
+    /* Contributions List Dark Mode */
+    .contributions-list dt,
+    .contributions-list dd {
+        color: #ffffff;
+    }
+    
+    /* Responsibilities List Dark Mode */
+    .responsibilities-list li,
+    .responsibilities-list li::before {
         color: #ffffff;
     }
     

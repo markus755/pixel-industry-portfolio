@@ -388,14 +388,20 @@ function toggleMobileMenu() {
     
     mobileMenu.classList.toggle('active');
     
+    // Check if menu is now active
+    const isActive = mobileMenu.classList.contains('active');
+    
     // Toggle active class on all menu buttons for animation
     menuBtns.forEach((btn, index) => {
         btn.classList.toggle('active');
+        
+        // Update aria-expanded state
+        btn.setAttribute('aria-expanded', isActive);
+        
         console.log(`Button ${index} is now active:`, btn.classList.contains('active'));
     });
     
     // Update tabindex für mobile menu links
-    const isActive = mobileMenu.classList.contains('active');
     if (mobileMenuLinks && mobileMenuLinks.length > 0) {
         mobileMenuLinks.forEach(link => {
             link.tabIndex = isActive ? 0 : -1;
