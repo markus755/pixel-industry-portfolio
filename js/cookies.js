@@ -59,9 +59,63 @@ function initCookieBanner() {
             // Show banner after short delay
             setTimeout(() => {
                 cookieBanner.classList.add('visible');
+                
+                // Focus first button (Accept) for accessibility
+                const acceptBtn = cookieBanner.querySelector('.cookie-btn-accept');
+                if (acceptBtn) {
+                    setTimeout(() => {
+                        acceptBtn.focus();
+                    }, 100);
+                }
+                
+                // Add keyboard navigation support
+                setupCookieBannerKeyboardNav(cookieBanner);
             }, 1000);
         }
     }
+}
+
+// Keyboard Navigation für Cookie Banner
+function setupCookieBannerKeyboardNav(banner) {
+    const buttons = banner.querySelectorAll('.cookie-btn');
+    
+    // Tab zwischen Accept/Decline
+    banner.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+            e.preventDefault();
+            
+            const acceptBtn = banner.querySelector('.cookie-btn-accept');
+            const declineBtn = banner.querySelector('.cookie-btn-decline');
+            
+            if (document.activeElement === acceptBtn) {
+                declineBtn.focus();
+            } else {
+                acceptBtn.focus();
+            }
+        }
+        
+        // Enter/Space aktiviert fokussierten Button
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            
+            // Merke dass Tastatur genutzt wurde
+            lastInteractionWasKeyboard = true;
+            
+            if (document.activeElement.classList.contains('cookie-btn-accept')) {
+                acceptCookies();
+            } else if (document.activeElement.classList.contains('cookie-btn-decline')) {
+                declineCookies();
+            }
+        }
+    });
+    
+    // Track Maus-Klicks (setzen Flag NICHT)
+    buttons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // Bei Maus-Klick bleibt lastInteractionWasKeyboard = false
+            // onclick handler in HTML wird trotzdem ausgeführt
+        });
+    });
 }
 
 function acceptCookies() {
@@ -69,12 +123,35 @@ function acceptCookies() {
     localStorage.setItem('functionalCookies', 'true');
     hideCookieBanner();
     initGoogleAnalytics();
+    
+    // Fokus zurück nur bei Tastatur-Navigation
+    returnFocusAfterBanner();
 }
 
 function declineCookies() {
     localStorage.setItem('cookieConsent', 'declined');
     localStorage.setItem('functionalCookies', 'false');
     hideCookieBanner();
+    
+    // Fokus zurück nur bei Tastatur-Navigation
+    returnFocusAfterBanner();
+}
+
+// Track ob letzte Interaktion per Tastatur war
+let lastInteractionWasKeyboard = false;
+
+function returnFocusAfterBanner() {
+    // Nur fokussieren wenn User Tastatur nutzt
+    if (lastInteractionWasKeyboard) {
+        setTimeout(() => {
+            const logo = document.querySelector('.logo-link');
+            if (logo && typeof logo.focus === 'function') {
+                logo.focus();
+            }
+        }, 100);
+    }
+    // Reset flag
+    lastInteractionWasKeyboard = false;
 }
 
 function hideCookieBanner() {

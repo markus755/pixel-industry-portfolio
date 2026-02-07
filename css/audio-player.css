@@ -1,0 +1,291 @@
+/* ============================================
+   AUDIO PLAYER - Exakt nach Figma Design
+   pixel-industry by Markus Mueller
+   ============================================ */
+
+.audio-player {
+    margin: 10px 0 60px 0;
+    font-family: 'Hanken Grotesk', sans-serif;
+}
+
+/* Disclaimer-Text unter dem Player */
+.audio-player-disclaimer {
+    margin: 8px 0 0 0;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #0a0a0d;
+}
+
+/* ===== COLLAPSED STATE (Initial) ===== */
+.audio-player-collapsed {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 0;
+    width: 87px;
+    height: 32px;
+    background: #EDEDED;
+    border: none;
+    border-radius: 22px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    color: #000000;
+    position: relative;
+}
+
+.audio-player-collapsed:hover {
+    background: #e0e0e0;
+}
+
+.audio-player-collapsed:focus {
+    outline: 2px solid #0a0a0d;
+    outline-offset: 2px;
+}
+
+.audio-player-collapsed:focus-visible {
+    outline: 2px solid #0a0a0d;
+    outline-offset: 2px;
+}
+
+/* Play Icon im Collapsed State */
+.audio-player-collapsed .play-icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-left: 10px;
+}
+
+/* Duration Text im Collapsed State */
+.audio-player-collapsed .duration-text {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 20px;
+    color: #000000;
+    white-space: nowrap;
+}
+
+/* ===== EXPANDED STATE (Nach Klick) ===== */
+.audio-player-expanded {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 0;
+    width: 286px;
+    height: 32px;
+    background: #EDEDED;
+    border-radius: 22px;
+    position: relative;
+}
+
+/* Play/Pause Button im Expanded State */
+.play-pause-btn {
+    width: 18px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: 10px;
+    padding: 0;
+    transition: opacity 0.3s ease;
+}
+
+.play-pause-btn:hover {
+    opacity: 0.7;
+}
+
+.play-pause-btn:focus {
+    outline: 2px solid #0a0a0d;
+    outline-offset: 2px;
+}
+
+.play-pause-btn:focus-visible {
+    outline: 2px solid #0a0a0d;
+    outline-offset: 2px;
+}
+
+.play-pause-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Progress Container - hält Bar + Zeit */
+.progress-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 10px;
+}
+
+/* Progress Bar - Äußerer Container */
+.progress-bar {
+    position: relative;
+    width: 191px;
+    height: 4px;
+    background: #D9D9D9;
+    border-radius: 6px;
+    overflow: visible; /* Wichtig für den Punkt */
+}
+
+/* Progress Fill - Schwarzer Fortschrittsbalken */
+.progress-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 4px;
+    background: #000000;
+    border-radius: 6px;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* Progress Indicator - Der schwarze Punkt */
+.progress-indicator {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #000000;
+    border-radius: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 0%;
+    transition: left 0.1s linear;
+}
+
+/* Zeit-Anzeige */
+.time-display {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    color: #000000;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* ===== DARK MODE ===== */
+@media (prefers-color-scheme: dark) {
+    /* Collapsed State - Dark Mode */
+    .audio-player-collapsed {
+        background: #232324;
+        color: #FFFFFF;
+    }
+    
+    .audio-player-collapsed:hover {
+        background: #2a2a2b;
+    }
+    
+    .audio-player-collapsed .duration-text {
+        color: #FFFFFF;
+    }
+    
+    /* Expanded State - Dark Mode */
+    .audio-player-expanded {
+        background: #232324;
+    }
+    
+    /* Progress Bar Background */
+    .progress-bar {
+        background: #353535;
+    }
+    
+    /* Progress Fill & Indicator - Weiß */
+    .progress-fill,
+    .progress-indicator {
+        background: #FFFFFF;
+    }
+    
+    /* Zeit-Anzeige - Weiß */
+    .time-display {
+        color: #FFFFFF;
+    }
+    
+    /* Icons - Weiß */
+    .audio-player-collapsed .play-icon,
+    .play-pause-btn .play-icon,
+    .play-pause-btn .pause-icon {
+        color: #FFFFFF;
+    }
+    
+    /* Fokus-Rahmen - Weiß im Dark Mode */
+    .audio-player-collapsed:focus,
+    .audio-player-collapsed:focus-visible,
+    .play-pause-btn:focus,
+    .play-pause-btn:focus-visible {
+        outline-color: #FFFFFF;
+    }
+    
+    /* Disclaimer-Text - Weiß im Dark Mode */
+    .audio-player-disclaimer {
+        color: #FFFFFF;
+    }
+}
+
+/* ===== RESPONSIVE - Mobile ===== */
+@media (max-width: 768px) {
+    .audio-player {
+        margin: 10px 0 40px 0;
+    }
+    
+    /* Collapsed State bleibt gleich - bereits kompakt */
+    
+    /* Expanded State wird schmaler auf Mobile */
+    .audio-player-expanded {
+        width: 100%;
+        max-width: 286px;
+    }
+    
+    .progress-bar {
+        width: auto;
+        flex: 1;
+        min-width: 120px;
+    }
+}
+
+/* ===== ACCESSIBILITY ===== */
+
+/* Reduced Motion - keine Animationen */
+@media (prefers-reduced-motion: reduce) {
+    .audio-player-collapsed,
+    .play-pause-btn,
+    .progress-fill,
+    .progress-indicator {
+        transition: none;
+    }
+}
+
+/* High Contrast Mode (Windows) */
+@media (prefers-contrast: high) {
+    .audio-player-collapsed,
+    .audio-player-expanded {
+        border: 2px solid currentColor;
+    }
+    
+    .play-pause-btn {
+        border: 1px solid currentColor;
+    }
+}
+
+/* Fokus-Styles für bessere Tastatur-Navigation */
+.audio-player *:focus-visible {
+    outline: 2px solid #0a0a0d;
+    outline-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .audio-player *:focus-visible {
+        outline-color: #ffffff;
+    }
+}
