@@ -15,15 +15,15 @@ exports.handler = async (event) => {
 
     const request = {
       input: { text: text },
-      // Wir nutzen eine hochwertige Neural2-Stimme für beste UX
+      // Professional US English voice - optimized for case studies
       voice: { 
-        languageCode: 'de-DE', 
-        name: 'de-DE-Neural2-B' // Professionelle männliche Stimme
+        languageCode: 'en-US', 
+        name: 'en-US-Neural2-F' // Professional female voice (alternative: en-US-Neural2-D for male)
       },
       audioConfig: { 
         audioEncoding: 'MP3',
         pitch: 0,
-        speakingRate: 1.0 
+        speakingRate: 0.95 // Slightly slower for better comprehension
       },
     };
 
