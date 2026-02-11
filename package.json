@@ -1,5 +1,17 @@
 {
+  "name": "pixel-industry-audio-pregeneration",
+  "version": "1.0.0",
+  "description": "Pre-generates audio files for portfolio pages using Google Cloud TTS",
+  "scripts": {
+    "build:audio": "node netlify/build-audio.js"
+  },
   "dependencies": {
-    "@google-cloud/text-to-speech": "^5.0.0"
+    "@google-cloud/text-to-speech": "^5.0.0",
+    "glob": "^10.3.10",
+    "jsdom": "^23.0.1"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
