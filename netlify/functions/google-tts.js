@@ -15,10 +15,10 @@ exports.handler = async (event) => {
 
     const request = {
       input: { text: text },
-      // Professional US English voice - optimized for case studies
+      // Premium Studio Voice - Highest Quality
       voice: { 
         languageCode: 'en-US', 
-        name: 'en-US-Neural2-F' // Professional female voice (alternative: en-US-Neural2-D for male)
+        name: 'en-US-Studio-Q' // Premium male studio voice
       },
       audioConfig: { 
         audioEncoding: 'MP3',
