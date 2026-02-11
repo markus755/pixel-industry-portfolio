@@ -307,7 +307,7 @@ class PreGeneratedAudioPlayer {
         // Disclaimer
         const disclaimer = document.createElement('p');
         disclaimer.className = 'audio-player-disclaimer';
-        disclaimer.innerHTML = 'This audio version was generated using <strong>Google Cloud TTS</strong> (Studio-Q).';
+        disclaimer.innerHTML = '';
         
         // Zusammenbauen
         this.container.appendChild(this.collapsedView);
