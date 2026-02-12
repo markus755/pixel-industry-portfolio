@@ -1,7 +1,8 @@
 /**
- * Pre-Generated Audio Player v2
- * Lädt MP3-Dateinamen direkt aus data-audio-file Attribut
- * Kein Hash-Berechnen mehr - 100% zuverlässig!
+ * Pre-Generated Audio Player v3
+ * - Liest MP3-Dateinamen aus data-audio-file Attribut
+ * - Zeigt echte Dauer im Collapsed Button
+ * - Kein Disclaimer
  * WCAG 2.2 AA konform
  */
 
@@ -20,6 +21,7 @@ class PreGeneratedAudioPlayer {
         this.progressFill = null;
         this.progressIndicator = null;
         this.timeDisplay = null;
+        this.durationText = null;
     }
 
     /**
@@ -27,25 +29,39 @@ class PreGeneratedAudioPlayer {
      */
     init() {
         const projectDetail = document.querySelector('#project-detail');
-        if (!projectDetail) {
-            console.log('Pre-Gen Audio Player: Keine Projektseite erkannt');
-            return;
-        }
+        if (!projectDetail) return;
 
-        // Audio-Dateinamen direkt aus HTML lesen (gesetzt vom Build-Script)
-        // <main id="project-detail" data-audio-file="crm_system-3a69b30d.mp3">
+        // Audio-Dateinamen direkt aus HTML lesen
         this.audioFileName = projectDetail.getAttribute('data-audio-file');
-
         if (!this.audioFileName) {
-            console.log('Pre-Gen Audio Player: Kein data-audio-file Attribut gefunden');
+            console.log('Pre-Gen Audio Player: Kein data-audio-file gefunden');
             return;
         }
 
         console.log(`Pre-Gen Audio Player: ${this.audioFileName}`);
 
         this.createPlayer();
+        this.preloadDuration();
         this.attachEventListeners();
         this.attachCleanupListeners();
+    }
+
+    /**
+     * Lädt nur Metadaten vor, um Dauer zu bekommen
+     */
+    preloadDuration() {
+        const preloader = new Audio(`/audio/${this.audioFileName}`);
+        preloader.preload = 'metadata';
+
+        preloader.addEventListener('loadedmetadata', () => {
+            const totalMinutes = Math.ceil(preloader.duration / 60);
+            if (this.durationText) {
+                this.durationText.textContent = `${totalMinutes} min.`;
+                this.collapsedView.setAttribute('aria-label',
+                    `Listen to project description, duration about ${totalMinutes} minutes`);
+            }
+            preloader.src = ''; // Freigeben
+        });
     }
 
     /**
@@ -66,7 +82,7 @@ class PreGeneratedAudioPlayer {
             <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M8 5v14l11-7z"/>
             </svg>
-            <span class="duration-text">Listen</span>
+            <span class="duration-text">...</span>
         `;
 
         // Expanded View
@@ -95,15 +111,9 @@ class PreGeneratedAudioPlayer {
             </div>
         `;
 
-        // Disclaimer
-        const disclaimer = document.createElement('p');
-        disclaimer.className = 'audio-player-disclaimer';
-        disclaimer.innerHTML = 'This audio version was generated using <strong>Google Cloud TTS</strong> (Studio-Q).';
-
-        // Zusammenbauen
+        // Zusammenbauen (kein Disclaimer!)
         this.container.appendChild(this.collapsedView);
         this.container.appendChild(this.expandedView);
-        this.container.appendChild(disclaimer);
 
         const projectHeader = document.querySelector('.project-header');
         if (projectHeader) {
@@ -111,6 +121,7 @@ class PreGeneratedAudioPlayer {
         }
 
         // DOM-Referenzen
+        this.durationText = this.collapsedView.querySelector('.duration-text');
         this.playPauseBtn = this.expandedView.querySelector('.play-pause-btn');
         this.progressBar = this.expandedView.querySelector('.progress-bar');
         this.progressFill = this.expandedView.querySelector('.progress-fill');
@@ -122,13 +133,11 @@ class PreGeneratedAudioPlayer {
      * Event-Listener
      */
     attachEventListeners() {
-        // Collapsed → Expand & Play
         this.collapsedView.addEventListener('click', () => {
             this.expand();
             this.loadAndPlay();
         });
 
-        // Play/Pause Toggle
         this.playPauseBtn.addEventListener('click', () => {
             if (this.isPlaying) {
                 this.pause();
@@ -141,7 +150,6 @@ class PreGeneratedAudioPlayer {
             }
         });
 
-        // Tastatur: Space = Play/Pause
         document.addEventListener('keydown', (e) => {
             if (this.isExpanded && e.code === 'Space' && e.target === document.body) {
                 e.preventDefault();
@@ -163,34 +171,24 @@ class PreGeneratedAudioPlayer {
         window.addEventListener('beforeunload', () => {
             if (this.audioElement) this.audioElement.pause();
         });
-
         window.addEventListener('pagehide', () => {
             if (this.audioElement) this.audioElement.pause();
         });
     }
 
-    /**
-     * Expandiert Player
-     */
     expand() {
         this.isExpanded = true;
         this.collapsedView.style.display = 'none';
         this.expandedView.style.display = 'flex';
     }
 
-    /**
-     * Lädt und spielt Pre-Generated Audio
-     */
     async loadAndPlay() {
         this.showLoadingState();
 
         try {
-            console.log(`Loading audio: /audio/${this.audioFileName}`);
-
             this.audioElement = new Audio(`/audio/${this.audioFileName}`);
 
             this.audioElement.addEventListener('loadedmetadata', () => {
-                console.log(`Audio loaded: ${Math.ceil(this.audioElement.duration)}s`);
                 this.hideLoadingState();
             });
 
@@ -242,11 +240,9 @@ class PreGeneratedAudioPlayer {
         const playIcon = this.playPauseBtn.querySelector('.play-icon');
         const pauseIcon = this.playPauseBtn.querySelector('.pause-icon');
         const loadingIcon = this.playPauseBtn.querySelector('.loading-icon');
-
         playIcon.style.display = 'none';
         pauseIcon.style.display = 'none';
         loadingIcon.style.display = 'block';
-
         this.playPauseBtn.setAttribute('aria-label', 'Loading audio...');
         this.timeDisplay.textContent = 'Lädt...';
     }
@@ -267,7 +263,6 @@ class PreGeneratedAudioPlayer {
         const playIcon = this.playPauseBtn.querySelector('.play-icon');
         const pauseIcon = this.playPauseBtn.querySelector('.pause-icon');
         const loadingIcon = this.playPauseBtn.querySelector('.loading-icon');
-
         loadingIcon.style.display = 'none';
 
         if (this.isPlaying) {
@@ -283,13 +278,10 @@ class PreGeneratedAudioPlayer {
 
     updateProgress() {
         if (!this.audioElement) return;
-
         const percentage = (this.currentTime / this.audioElement.duration) * 100;
-
         this.progressFill.style.width = `${percentage}%`;
         this.progressIndicator.style.left = `${percentage}%`;
         this.progressBar.setAttribute('aria-valuenow', Math.round(percentage));
-
         const remaining = this.audioElement.duration - this.currentTime;
         this.timeDisplay.textContent = `-${this.formatTime(remaining)}`;
     }
@@ -304,22 +296,17 @@ class PreGeneratedAudioPlayer {
     onPlaybackEnd() {
         this.isPlaying = false;
         this.updatePlayPauseButton();
-
-        setTimeout(() => {
-            this.collapse();
-        }, 2000);
+        setTimeout(() => { this.collapse(); }, 2000);
     }
 
     collapse() {
         this.isExpanded = false;
         this.expandedView.style.display = 'none';
         this.collapsedView.style.display = 'flex';
-
         if (this.audioElement) {
             this.audioElement.pause();
             this.audioElement = null;
         }
-
         this.currentTime = 0;
         this.isPlaying = false;
     }
