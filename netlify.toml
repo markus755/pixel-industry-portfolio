@@ -2,22 +2,24 @@
 # Audio Pre-Generation Setup
 
 [build]
-  # Build-Befehl führt Audio-Generierung aus
   command = "npm install && npm run build:audio"
-  
-  # Publish-Verzeichnis (dein Website-Root)
   publish = "."
-  
-  # Node.js Version
   environment = { NODE_VERSION = "18" }
 
-# Audio-Verzeichnis wird mit deployed
+# Cache Plugin - Speichert /audio/ zwischen Builds!
+[[plugins]]
+  package = "@netlify/plugin-cache"
+
+  [plugins.inputs]
+    paths = ["audio"]
+
+# Audio-Verzeichnis Headers
 [[headers]]
   for = "/audio/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
     Access-Control-Allow-Origin = "*"
 
-# Optional: Netlify Functions (für Fallback)
+# Netlify Functions
 [functions]
   directory = "netlify/functions"

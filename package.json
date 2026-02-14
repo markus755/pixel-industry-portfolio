@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "@google-cloud/text-to-speech": "^5.0.0",
+    "@netlify/plugin-cache": "^1.0.0",
     "glob": "^10.3.10",
     "jsdom": "^23.0.1"
   },

@@ -1,5 +1,0 @@
-{
-  "dependencies": {
-    "@google-cloud/text-to-speech": "^5.0.0"
-  }
-}
