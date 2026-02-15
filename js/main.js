@@ -165,6 +165,21 @@ function fixHeaderPaths(basePath) {
         if (logoLink) {
             logoLink.href = basePath + 'index.html';
             console.log('Logo Link:', logoLink.href);
+            
+            // A11y: Wenn Logo per Tab fokussiert wird, Header einblenden und nach oben scrollen
+            logoLink.addEventListener('focus', function() {
+                const header = document.querySelector('header');
+                if (header) {
+                    // Header einblenden
+                    header.classList.remove('header-hidden');
+                    
+                    // Nach oben scrollen damit Header und Logo sichtbar sind
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
+            });
         }
     });
     

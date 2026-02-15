@@ -284,36 +284,8 @@ function closePrivacySettings() {
         if (privacySettingsLink && typeof privacySettingsLink.focus === 'function') {
             setTimeout(() => {
                 privacySettingsLink.focus();
-                
-                // Add one-time Tab handler to jump to logo
-                const handleNextTab = (e) => {
-                    if (e.key === 'Tab' && !e.shiftKey && document.activeElement === privacySettingsLink) {
-                        e.preventDefault();
-                        
-                        // Scroll to top and focus logo
-                        window.scrollTo({
-                            top: 0,
-                            behavior: 'smooth'
-                        });
-                        
-                        const logoLink = document.querySelector('.logo-link');
-                        if (logoLink) {
-                            setTimeout(() => {
-                                logoLink.focus();
-                            }, 300);
-                        }
-                        
-                        // Remove this listener after use
-                        document.removeEventListener('keydown', handleNextTab);
-                    }
-                };
-                
-                document.addEventListener('keydown', handleNextTab);
-                
-                // Clean up if user doesn't press Tab (e.g., clicks somewhere)
-                setTimeout(() => {
-                    document.removeEventListener('keydown', handleNextTab);
-                }, 5000);
+                // Nächster Tab geht natürlich zur Browser-Adressleiste
+                // (Privacy Settings ist das letzte fokussierbare Element im Footer)
             }, 100);
         }
     }

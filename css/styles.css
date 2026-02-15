@@ -1333,12 +1333,14 @@ footer a:hover {
     padding: 30px 40px;
     z-index: 9999;
     transform: translateY(100%);
-    transition: transform 0.4s ease-in-out;
+    transition: transform 0.4s ease-in-out, visibility 0.4s;
     box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+    visibility: hidden; /* Verhindert Tab-Focus wenn Banner versteckt */
 }
 
 .cookie-banner.visible {
     transform: translateY(0);
+    visibility: visible;
 }
 
 .cookie-banner-content {
@@ -1407,40 +1409,16 @@ footer a:hover {
     color: #0a0a0d !important;
 }
 
-/* Cookie Banner Dark Mode */
-@media (prefers-color-scheme: dark) {
-    .cookie-banner {
-        background-color: #ffffff;
-        color: #0a0a0d;
-    }
-    
-    .cookie-banner-content p {
-        color: #0a0a0d;
-    }
-    
-    .cookie-btn {
-        border-color: #0a0a0d;
-    }
-    
-    .cookie-btn-accept {
-        background-color: #0a0a0d;
-        color: #ffffff;
-    }
-    
-    .cookie-btn-accept:hover {
-        background-color: transparent;
-        color: #0a0a0d;
-    }
-    
-    .cookie-btn-decline {
-        color: #0a0a0d;
-    }
-    
-    .cookie-btn-decline:hover {
-        background-color: #0a0a0d;
-        color: #ffffff;
-    }
+/* Cookie Banner Focus States (Light Mode)
+   Banner hat dunklen Hintergrund (#0a0a0d) → weißer Outline
+   WCAG 2.2 AA: Sichtbarer Fokus-Indikator für Tastatur-Navigation */
+.cookie-banner .cookie-btn:focus,
+.cookie-banner .cookie-btn:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
 }
+
+/* Cookie Banner behält immer schwarzen Hintergrund - keine Dark Mode Änderungen nötig */
 
 /* Cookie Banner Mobile */
 @media (max-width: 768px) {
@@ -1477,12 +1455,14 @@ footer a:hover {
     color: #ffffff !important;
     z-index: 10000;
     transform: translateY(100%);
-    transition: transform 0.4s ease-in-out;
+    transition: transform 0.4s ease-in-out, visibility 0.4s;
     padding: 40px 0;
+    visibility: hidden; /* Verhindert Tab-Focus wenn Panel versteckt */
 }
 
 .privacy-settings-panel.visible {
     transform: translateY(0);
+    visibility: visible;
 }
 
 .privacy-settings-container {
