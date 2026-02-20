@@ -353,7 +353,7 @@ function fixCtaButtons() {
         }
         
         // Email Button
-        if (text === 'Start a project') {
+        if (text === 'Get in touch') {
             button.href = 'mailto:' + CONFIG.email;
             console.log('Email Button aktualisiert:', CONFIG.email);
         }
