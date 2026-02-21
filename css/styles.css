@@ -42,6 +42,35 @@ h1, h2, h3, h4, h5, h6 {
     outline-offset: 2px;
 }
 
+/* ============================================================
+   SKIP NAVIGATION LINK (A11y)
+   Visuell versteckt, wird beim Fokus per Tastatur sichtbar.
+   Muss IMMER das erste fokussierbare Element im DOM sein.
+   ============================================================ */
+.skip-link {
+    position: absolute;
+    top: -100px;           /* Standardmäßig außerhalb des Viewports */
+    left: 20px;
+    z-index: 9999;         /* Über allem anderen, auch über dem Header */
+    padding: 12px 24px;
+    background-color: #0a0a0d;
+    color: #ffffff;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    text-decoration: none;
+    border: 2px solid #ffffff;
+    outline: none;          /* Eigenes Styling übernimmt die Focus-Anzeige */
+    transition: top 0.2s ease;
+    white-space: nowrap;
+}
+
+/* Beim Fokus per Tab in den Viewport schieben */
+.skip-link:focus {
+    top: 20px;
+    outline: none;          /* Kein doppelter Ring, das Border reicht */
+}
+
 /* Privacy Panel - Immer weiße Outline (schwarzer Hintergrund) */
 .privacy-settings-panel *:focus,
 .privacy-settings-panel *:focus-visible {
@@ -734,15 +763,16 @@ main.content-page {
 .portfolio-video {
     width: 100%;
     height: auto;
-    aspect-ratio: 1400/1094;
+    aspect-ratio: 1400 / 1094;
     object-fit: cover;
-    transition: transform 0.5s ease;
     display: block;
+    transition: opacity 0.3s ease;
 }
 
+/* Hover-Feedback: nur Opacity – Container bleibt zu 100% stabil */
 .portfolio-item:hover img,
 .portfolio-item:hover .portfolio-video {
-    transform: scale(1.05);
+    opacity: 0.85;
 }
 
 .portfolio-item h3 {
@@ -1172,6 +1202,13 @@ footer a:hover {
     body {
         background-color: #0a0a0d;
         color: #ffffff;
+    }
+    
+    /* Skip Link - invertierte Farben im Dark Mode */
+    .skip-link {
+        background-color: #ffffff;
+        color: #0a0a0d;
+        border-color: #0a0a0d;
     }
     
     /* Header */

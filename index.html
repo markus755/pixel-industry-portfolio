@@ -10,11 +10,14 @@
     <link rel="icon" type="image/svg+xml" href="images/favicon.svg?v=2">
 </head>
 <body>
+    <!-- Skip Navigation Link (A11y) - Muss ERSTES Element in <body> sein -->
+    <a href="#work" class="skip-link">Skip to content</a>
+
     <!-- Header Placeholder -->
     <div id="header-placeholder"></div>
 
     <!-- Main Content -->
-    <main id="work">
+    <main id="work" tabindex="-1">
         <!-- Hero Section -->
         <section class="hero">
             <h1> UX Strategy & Digital Product Consulting by Markus Mueller</h1>

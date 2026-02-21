@@ -1,7 +1,7 @@
 // === KONFIGURATION ===
 // Hier kannst du zentrale Links ändern
 const CONFIG = {
-    cvLink: 'https://pixelindustry-my.sharepoint.com/:b:/g/personal/mueller_pixel-industry_de/IQCKhnvWmNR4R4VP2yiDYz0dATEzXS2l7o5YwwvfKttRozI?e=Q1pLEg',
+        cvLink: '/cv_markus_mueller.pdf',
     email: 'mueller@pixel-industry.de',
     googleAnalyticsId: 'G-SFH038KZHN' // TODO: Replace with your actual GA4 ID
 };
@@ -59,6 +59,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Dark Mode Icon Swapping
                 updateMobileIconsForDarkMode(basePath);
+                
+                // Skip-Link: Header beim Fokus einblenden, damit Navigation sichtbar ist
+                // wenn Nutzer NICHT skippt (d.h. durch Header tabbt)
+                const skipLink = document.querySelector('.skip-link');
+                if (skipLink) {
+                    skipLink.addEventListener('focus', function() {
+                        const header = document.querySelector('header');
+                        if (header) {
+                            header.classList.remove('header-hidden');
+                            window.scrollTo({ top: 0, behavior: 'instant' });
+                        }
+                    });
+                }
                 
                 // Warte kurz bis Header vollständig geladen ist
                 setTimeout(() => {
@@ -497,8 +510,26 @@ function initHeaderScroll() {
     }, 100);
 }
 
-// Smooth scroll - nur für echte Anker-Links, nicht für Platzhalter
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+// Skip-Link: Fokus auf Sprungziel setzen beim Klick/Enter
+// Muss VOR dem allgemeinen Smooth-Scroll stehen, damit kein Konflikt entsteht
+const skipLink = document.querySelector('.skip-link');
+if (skipLink) {
+    skipLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').replace('#', '');
+        const target = document.getElementById(targetId);
+        if (target) {
+            // tabindex="-1" sicherstellen (defensiv, falls nicht im HTML)
+            target.setAttribute('tabindex', '-1');
+            // Fokus setzen – das ist der entscheidende Schritt
+            target.focus({ preventScroll: false });
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+}
+
+// Smooth scroll - nur für echte Anker-Links, nicht für Platzhalter und nicht für Skip-Link
+document.querySelectorAll('a[href^="#"]:not(.skip-link)').forEach(anchor => {
     // Ignoriere Links die nur "#" sind (Platzhalter)
     if (anchor.getAttribute('href') === '#') {
         return;
