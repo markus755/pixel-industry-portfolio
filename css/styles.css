@@ -1437,13 +1437,13 @@ footer a:hover {
 }
 
 .cookie-btn-decline {
-    background-color: transparent !important;
-    color: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #0a0a0d !important;
 }
 
 .cookie-btn-decline:hover {
-    background-color: #ffffff !important;
-    color: #0a0a0d !important;
+    background-color: transparent !important;
+    color: #ffffff !important;
 }
 
 /* Cookie Banner Focus States (Light Mode)

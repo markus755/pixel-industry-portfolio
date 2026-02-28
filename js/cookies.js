@@ -1,30 +1,34 @@
 /**
  * Cookie & Privacy Management
- * Handles: Cookie Banner, Google Analytics, Privacy Settings Panel
- * Dependencies: Needs CONFIG.googleAnalyticsId from main.js
+ * Handles: Cookie Banner, Google Analytics, Contentsquare, Privacy Settings Panel
+ * Dependencies: Needs CONFIG.googleAnalyticsId from main.js (optional)
  */
 
-// Google Analytics Functions
+// ============================================================
+// GOOGLE ANALYTICS
+// ============================================================
+
 function initGoogleAnalytics() {
-    const functionalCookies = localStorage.getItem('functionalCookies') === 'true';
-    
-    if (functionalCookies && CONFIG.googleAnalyticsId !== 'G-XXXXXXXXXX') {
-        // Load Google Analytics script
+    // Only load if CONFIG.googleAnalyticsId is defined and valid
+    if (
+        typeof CONFIG !== 'undefined' &&
+        CONFIG.googleAnalyticsId &&
+        CONFIG.googleAnalyticsId !== 'G-XXXXXXXXXX'
+    ) {
         const script = document.createElement('script');
         script.async = true;
         script.src = `https://www.googletagmanager.com/gtag/js?id=${CONFIG.googleAnalyticsId}`;
         document.head.appendChild(script);
-        
-        // Initialize gtag
+
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         window.gtag = gtag;
-        
+
         gtag('js', new Date());
         gtag('config', CONFIG.googleAnalyticsId, {
             'anonymize_ip': true
         });
-        
+
         console.log('Google Analytics initialized');
     } else {
         console.log('Google Analytics disabled - no consent or invalid ID');
@@ -32,34 +36,80 @@ function initGoogleAnalytics() {
 }
 
 function disableGoogleAnalytics() {
-    // Disable Google Analytics
-    if (window.gtag) {
+    if (typeof CONFIG !== 'undefined' && CONFIG.googleAnalyticsId && window.gtag) {
         window[`ga-disable-${CONFIG.googleAnalyticsId}`] = true;
         console.log('Google Analytics disabled');
     }
-    
+
     // Remove GA cookies
-    const gaCookies = document.cookie.split(';').filter(cookie => 
-        cookie.trim().startsWith('_ga') || cookie.trim().startsWith('_gid')
-    );
-    
-    gaCookies.forEach(cookie => {
-        const cookieName = cookie.split('=')[0].trim();
-        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    document.cookie.split(';').forEach(cookie => {
+        const name = cookie.split('=')[0].trim();
+        if (name.startsWith('_ga') || name.startsWith('_gid')) {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        }
     });
 }
 
-// Cookie Banner Funktionen
+// ============================================================
+// CONTENTSQUARE
+// ============================================================
+
+/**
+ * Loads the Contentsquare script dynamically.
+ * Must only be called after explicit user consent.
+ */
+function initContentsquare() {
+    // Prevent loading the script twice
+    if (document.querySelector('script[src*="contentsquare.net"]')) {
+        console.log('Contentsquare already loaded');
+        return;
+    }
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://t.contentsquare.net/uxa/af0bfc5b39917.js';
+    document.head.appendChild(script);
+
+    console.log('Contentsquare initialized');
+}
+
+/**
+ * Disables Contentsquare tracking and removes its cookies.
+ * Uses the official CS opt-out mechanism where available.
+ */
+function disableContentsquare() {
+    // Official Contentsquare opt-out flag
+    window._uxa = window._uxa || [];
+    window._uxa.push(['optout']);
+
+    // Remove known Contentsquare cookies
+    // CS typically uses cookies starting with _cs_ or cs_
+    document.cookie.split(';').forEach(cookie => {
+        const name = cookie.split('=')[0].trim();
+        if (name.startsWith('_cs') || name.startsWith('cs_')) {
+            // Delete for current domain and root path
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname}`;
+        }
+    });
+
+    console.log('Contentsquare disabled');
+}
+
+// ============================================================
+// COOKIE BANNER
+// ============================================================
+
 function initCookieBanner() {
     const cookieConsent = localStorage.getItem('cookieConsent');
     const cookieBanner = document.getElementById('cookie-banner');
-    
+
     if (cookieBanner) {
         if (!cookieConsent) {
             // Show banner after short delay
             setTimeout(() => {
                 cookieBanner.classList.add('visible');
-                
+
                 // Focus first button (Accept) for accessibility
                 const acceptBtn = cookieBanner.querySelector('.cookie-btn-accept');
                 if (acceptBtn) {
@@ -67,54 +117,43 @@ function initCookieBanner() {
                         acceptBtn.focus();
                     }, 100);
                 }
-                
-                // Add keyboard navigation support
+
                 setupCookieBannerKeyboardNav(cookieBanner);
             }, 1000);
+        } else if (cookieConsent === 'accepted') {
+            // Consent already given – initialize trackers silently
+            initGoogleAnalytics();
+            initContentsquare();
         }
     }
 }
 
-// Keyboard Navigation für Cookie Banner
+// Keyboard navigation for cookie banner
 function setupCookieBannerKeyboardNav(banner) {
-    const buttons = banner.querySelectorAll('.cookie-btn');
-    
-    // Tab zwischen Accept/Decline
     banner.addEventListener('keydown', (e) => {
         if (e.key === 'Tab') {
             e.preventDefault();
-            
+
             const acceptBtn = banner.querySelector('.cookie-btn-accept');
             const declineBtn = banner.querySelector('.cookie-btn-decline');
-            
+
             if (document.activeElement === acceptBtn) {
-                declineBtn.focus();
+                if (declineBtn) declineBtn.focus();
             } else {
-                acceptBtn.focus();
+                if (acceptBtn) acceptBtn.focus();
             }
         }
-        
-        // Enter/Space aktiviert fokussierten Button
+
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            
-            // Merke dass Tastatur genutzt wurde
             lastInteractionWasKeyboard = true;
-            
+
             if (document.activeElement.classList.contains('cookie-btn-accept')) {
                 acceptCookies();
             } else if (document.activeElement.classList.contains('cookie-btn-decline')) {
                 declineCookies();
             }
         }
-    });
-    
-    // Track Maus-Klicks (setzen Flag NICHT)
-    buttons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            // Bei Maus-Klick bleibt lastInteractionWasKeyboard = false
-            // onclick handler in HTML wird trotzdem ausgeführt
-        });
     });
 }
 
@@ -123,8 +162,7 @@ function acceptCookies() {
     localStorage.setItem('functionalCookies', 'true');
     hideCookieBanner();
     initGoogleAnalytics();
-    
-    // Fokus zurück nur bei Tastatur-Navigation
+    initContentsquare();
     returnFocusAfterBanner();
 }
 
@@ -132,16 +170,15 @@ function declineCookies() {
     localStorage.setItem('cookieConsent', 'declined');
     localStorage.setItem('functionalCookies', 'false');
     hideCookieBanner();
-    
-    // Fokus zurück nur bei Tastatur-Navigation
+    disableGoogleAnalytics();
+    disableContentsquare();
     returnFocusAfterBanner();
 }
 
-// Track ob letzte Interaktion per Tastatur war
+// Track whether last interaction was via keyboard (for focus management)
 let lastInteractionWasKeyboard = false;
 
 function returnFocusAfterBanner() {
-    // Nur fokussieren wenn User Tastatur nutzt
     if (lastInteractionWasKeyboard) {
         setTimeout(() => {
             const logo = document.querySelector('.logo-link');
@@ -150,7 +187,6 @@ function returnFocusAfterBanner() {
             }
         }, 100);
     }
-    // Reset flag
     lastInteractionWasKeyboard = false;
 }
 
@@ -161,133 +197,108 @@ function hideCookieBanner() {
     }
 }
 
-// Privacy Settings Panel Functions
+// ============================================================
+// PRIVACY SETTINGS PANEL
+// ============================================================
+
 function openPrivacySettings() {
     const panel = document.getElementById('privacy-settings-panel');
-    if (panel) {
-        panel.classList.add('visible');
-        document.body.style.overflow = 'hidden';
-        
-        // Get all ACTUALLY focusable elements (not disabled, not hidden)
-        const getFocusableElements = () => {
-            const elements = Array.from(panel.querySelectorAll('button, a, [tabindex]:not([tabindex="-1"])'));
-            // Filter out disabled buttons and elements outside the panel
-            return elements.filter(el => {
-                return !el.disabled && 
-                       el.offsetParent !== null && // Element is visible
-                       panel.contains(el); // Element is inside panel
-            });
-        };
-        
-        // Focus first element (close button)
-        const focusableElements = getFocusableElements();
-        const firstFocusable = focusableElements[0];
-        
-        if (firstFocusable && typeof firstFocusable.focus === 'function') {
-            setTimeout(() => {
-                try {
-                    firstFocusable.focus();
-                } catch (e) {
-                    console.log('Could not focus first element:', e);
-                }
-            }, 100);
-        }
-        
-        // Focus Trap - Tab bleibt im Panel gefangen
-        const handleTab = (e) => {
-            if (e.key === 'Tab') {
-                // Re-get focusable elements (in case Save button became enabled/disabled)
-                const currentFocusable = getFocusableElements();
-                const firstElement = currentFocusable[0];
-                const lastElement = currentFocusable[currentFocusable.length - 1];
-                
-                if (e.shiftKey) {
-                    // Shift + Tab (rückwärts)
-                    if (document.activeElement === firstElement) {
-                        e.preventDefault();
-                        lastElement.focus();
-                    }
-                } else {
-                    // Tab (vorwärts)
-                    if (document.activeElement === lastElement) {
-                        e.preventDefault();
-                        firstElement.focus();
-                    }
-                }
+    if (!panel) return;
+
+    panel.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+
+    const getFocusableElements = () => {
+        return Array.from(
+            panel.querySelectorAll('button, a, [tabindex]:not([tabindex="-1"])')
+        ).filter(el => !el.disabled && el.offsetParent !== null && panel.contains(el));
+    };
+
+    const focusableElements = getFocusableElements();
+    if (focusableElements[0]) {
+        setTimeout(() => {
+            try { focusableElements[0].focus(); } catch (e) { /* noop */ }
+        }, 100);
+    }
+
+    // Focus trap
+    const handleTab = (e) => {
+        if (e.key !== 'Tab') return;
+
+        const current = getFocusableElements();
+        const first = current[0];
+        const last = current[current.length - 1];
+
+        if (e.shiftKey) {
+            if (document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
             }
-        };
-        
-        // ESC key to close
-        const handleEscape = (e) => {
-            if (e.key === 'Escape') {
-                closePrivacySettings();
-                document.removeEventListener('keydown', handleTab);
-                document.removeEventListener('keydown', handleEscape);
+        } else {
+            if (document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
             }
-        };
-        
-        document.addEventListener('keydown', handleTab);
-        document.addEventListener('keydown', handleEscape);
-        
-        // Store handlers so we can remove them later
-        panel.dataset.trapActive = 'true';
-        panel._handleTab = handleTab;
-        panel._handleEscape = handleEscape;
-        
-        // Load saved settings
-        const functionalCookies = localStorage.getItem('functionalCookies') === 'true';
-        const toggle = document.getElementById('analytics-toggle');
-        const icon = document.getElementById('analytics-toggle-icon');
-        
-        // Store original state for comparison
-        if (toggle) {
-            toggle.dataset.originalState = functionalCookies ? 'true' : 'false';
         }
-        
-        if (functionalCookies && toggle && icon) {
+    };
+
+    const handleEscape = (e) => {
+        if (e.key === 'Escape') {
+            closePrivacySettings();
+            document.removeEventListener('keydown', handleTab);
+            document.removeEventListener('keydown', handleEscape);
+        }
+    };
+
+    document.addEventListener('keydown', handleTab);
+    document.addEventListener('keydown', handleEscape);
+
+    panel._handleTab = handleTab;
+    panel._handleEscape = handleEscape;
+
+    // Load saved settings into toggle
+    const functionalCookies = localStorage.getItem('functionalCookies') === 'true';
+    const toggle = document.getElementById('analytics-toggle');
+    const icon = document.getElementById('analytics-toggle-icon');
+
+    if (toggle) {
+        toggle.dataset.originalState = functionalCookies ? 'true' : 'false';
+
+        if (functionalCookies && icon) {
             toggle.classList.add('active');
             icon.src = 'images/toggle_on.svg';
             icon.alt = 'Toggle on';
-        } else if (toggle && icon) {
+        } else if (icon) {
             toggle.classList.remove('active');
             icon.src = 'images/toggle_off.svg';
             icon.alt = 'Toggle off';
         }
-        
-        // Reset save button to disabled
-        const saveBtn = document.getElementById('save-btn');
-        if (saveBtn) {
-            saveBtn.disabled = true;
-        }
     }
+
+    const saveBtn = document.getElementById('save-btn');
+    if (saveBtn) saveBtn.disabled = true;
 }
 
 function closePrivacySettings() {
     const panel = document.getElementById('privacy-settings-panel');
-    if (panel) {
-        panel.classList.remove('visible');
-        document.body.style.overflow = '';
-        
-        // Remove focus trap event listeners
-        if (panel._handleTab) {
-            document.removeEventListener('keydown', panel._handleTab);
-            panel._handleTab = null;
-        }
-        if (panel._handleEscape) {
-            document.removeEventListener('keydown', panel._handleEscape);
-            panel._handleEscape = null;
-        }
-        panel.dataset.trapActive = 'false';
-        
-        // Return focus to Privacy Settings link
-        const privacySettingsLink = document.querySelector('a[onclick*="openPrivacySettings"]');
-        if (privacySettingsLink && typeof privacySettingsLink.focus === 'function') {
-            setTimeout(() => {
-                privacySettingsLink.focus();
-                // Nächster Tab geht natürlich zur Browser-Adressleiste
-                // (Privacy Settings ist das letzte fokussierbare Element im Footer)
-            }, 100);
-        }
+    if (!panel) return;
+
+    panel.classList.remove('visible');
+    document.body.style.overflow = '';
+
+    if (panel._handleTab) {
+        document.removeEventListener('keydown', panel._handleTab);
+        panel._handleTab = null;
+    }
+    if (panel._handleEscape) {
+        document.removeEventListener('keydown', panel._handleEscape);
+        panel._handleEscape = null;
+    }
+
+    // Return focus to Privacy Settings link
+    const privacySettingsLink = document.querySelector('a[onclick*="openPrivacySettings"]');
+    if (privacySettingsLink) {
+        setTimeout(() => privacySettingsLink.focus(), 100);
     }
 }
 
@@ -295,49 +306,49 @@ function toggleAnalytics() {
     const toggle = document.getElementById('analytics-toggle');
     const icon = document.getElementById('analytics-toggle-icon');
     const saveBtn = document.getElementById('save-btn');
-    
-    if (toggle && icon && saveBtn) {
-        toggle.classList.toggle('active');
-        
-        if (toggle.classList.contains('active')) {
-            icon.src = 'images/toggle_on.svg';
-            icon.alt = 'Toggle on';
-        } else {
-            icon.src = 'images/toggle_off.svg';
-            icon.alt = 'Toggle off';
-        }
-        
-        // Check if current state differs from original state
-        const currentState = toggle.classList.contains('active') ? 'true' : 'false';
-        const originalState = toggle.dataset.originalState || 'false';
-        
-        // Enable save button only if state has changed
-        saveBtn.disabled = (currentState === originalState);
+
+    if (!toggle || !icon || !saveBtn) return;
+
+    toggle.classList.toggle('active');
+
+    if (toggle.classList.contains('active')) {
+        icon.src = 'images/toggle_on.svg';
+        icon.alt = 'Toggle on';
+    } else {
+        icon.src = 'images/toggle_off.svg';
+        icon.alt = 'Toggle off';
     }
+
+    const currentState = toggle.classList.contains('active') ? 'true' : 'false';
+    const originalState = toggle.dataset.originalState || 'false';
+    saveBtn.disabled = (currentState === originalState);
 }
 
 function savePrivacySettings() {
     const toggle = document.getElementById('analytics-toggle');
-    if (toggle) {
-        const analyticsEnabled = toggle.classList.contains('active');
-        
-        localStorage.setItem('functionalCookies', analyticsEnabled.toString());
-        localStorage.setItem('cookieConsent', 'custom');
-        
-        if (analyticsEnabled) {
-            // Enable Google Analytics
-            initGoogleAnalytics();
-        } else {
-            // Disable Google Analytics
-            disableGoogleAnalytics();
-        }
-        
-        closePrivacySettings();
-        hideCookieBanner();
+    if (!toggle) return;
+
+    const analyticsEnabled = toggle.classList.contains('active');
+
+    localStorage.setItem('functionalCookies', analyticsEnabled.toString());
+    localStorage.setItem('cookieConsent', 'custom');
+
+    if (analyticsEnabled) {
+        initGoogleAnalytics();
+        initContentsquare();
+    } else {
+        disableGoogleAnalytics();
+        disableContentsquare();
     }
+
+    closePrivacySettings();
+    hideCookieBanner();
 }
 
-// Track CV clicks with Google Analytics
+// ============================================================
+// ANALYTICS EVENT TRACKING
+// ============================================================
+
 function trackCVClick(origin, pageName) {
     if (window.gtag && typeof window.gtag === 'function') {
         gtag('event', 'cv_view', {
