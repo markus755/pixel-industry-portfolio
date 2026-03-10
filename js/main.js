@@ -107,12 +107,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Scroll-Animationen initialisieren nach kurzer Verzögerung
     setTimeout(initProjectAnimations, 250);
-    
+
     // CTA Buttons mit Config-Links aktualisieren
     setTimeout(fixCtaButtons, 300);
-    
+
     // Portfolio Items: Scroll-Position speichern vor Navigation
     setTimeout(initPortfolioLinks, 300);
+
+    // Tab Navigation (About-Seite)
+    initAboutTabs();
     
     // Initialize Google Analytics if consent given (wird durch cookies.js bereitgestellt)
     if (typeof initGoogleAnalytics === 'function') {
@@ -205,55 +208,41 @@ function fixHeaderPaths(basePath) {
     
     // Desktop Navigation
     const navHome = document.querySelector('.nav-home');
+    const navAbout = document.querySelector('.nav-about');
     const navContact = document.querySelector('.nav-contact');
     const cvLink = document.querySelector('.cv-link');
     if (navHome) navHome.href = basePath + 'index.html';
+    if (navAbout) navAbout.href = basePath + 'about.html';
     if (navContact) navContact.href = basePath + 'contact.html';
     if (cvLink) cvLink.href = CONFIG.cvLink;
-    
+
     // Active State Indicator - zeigt aktuelle Seite
     const currentPath = window.location.pathname;
     const currentPage = currentPath.split('/').pop() || 'index.html';
-    
+
     // Work (index.html oder /) ist aktiv
     if (currentPage === 'index.html' || currentPage === '' || currentPath === '/') {
         if (navHome) navHome.classList.add('active');
     }
-    
+
+    // About ist aktiv
+    if (currentPage === 'about.html') {
+        if (navAbout) navAbout.classList.add('active');
+    }
+
     // Contact ist aktiv
     if (currentPage === 'contact.html') {
         if (navContact) navContact.classList.add('active');
     }
     
-    // Header Icons
-    const linkedinIcon = document.querySelector('.linkedin-icon');
-    const mailIcon = document.querySelector('.mail-icon');
-    if (linkedinIcon) {
-        linkedinIcon.src = basePath + 'images/linkedin_icon.svg';
-        console.log('LinkedIn Icon:', linkedinIcon.src);
-    }
-    if (mailIcon) {
-        mailIcon.src = basePath + 'images/mail.svg';
-        console.log('Mail Icon:', mailIcon.src);
-    }
-    
-    // Mobile Menu Icons
-    const mobileLinkedinIcon = document.querySelector('.mobile-linkedin-icon');
-    const mobileMailIcon = document.querySelector('.mobile-mail-icon');
-    if (mobileLinkedinIcon) {
-        mobileLinkedinIcon.src = basePath + 'images/linkedin_icon_mobile.svg';
-        console.log('Mobile LinkedIn Icon:', mobileLinkedinIcon.src);
-    }
-    if (mobileMailIcon) {
-        mobileMailIcon.src = basePath + 'images/mail_mobile.svg';
-        console.log('Mobile Mail Icon:', mobileMailIcon.src);
-    }
     
     // Mobile Menu
     const mobileNavHome = document.querySelector('.mobile-nav-home');
+    const mobileNavAbout = document.querySelector('.mobile-nav-about');
     const mobileNavContact = document.querySelector('.mobile-nav-contact');
     const mobileNavCv = document.querySelector('.mobile-nav-cv');
     if (mobileNavHome) mobileNavHome.href = basePath + 'index.html';
+    if (mobileNavAbout) mobileNavAbout.href = basePath + 'about.html';
     if (mobileNavContact) mobileNavContact.href = basePath + 'contact.html';
     if (mobileNavCv) mobileNavCv.href = CONFIG.cvLink;
     
@@ -356,6 +345,8 @@ function fixCtaButtons() {
                 if (typeof trackCVClick === 'function') {
                     if (isProjectPage) {
                         trackCVClick('project_page', pageName);
+                    } else if (pageName === 'about') {
+                        trackCVClick('about_page', pageName);
                     } else {
                         trackCVClick('other_page', pageName);
                     }
@@ -367,8 +358,12 @@ function fixCtaButtons() {
         
         // Email Button
         if (text === 'Get in touch') {
-            button.href = 'mailto:' + CONFIG.email;
-            console.log('Email Button aktualisiert:', CONFIG.email);
+            if (pageName === 'about' || isProjectPage) {
+                button.href = isProjectPage ? '../contact.html' : 'contact.html';
+            } else {
+                button.href = 'mailto:' + CONFIG.email;
+            }
+            console.log('Email Button aktualisiert:', (pageName === 'about' || isProjectPage) ? 'contact.html' : CONFIG.email);
         }
     });
     
@@ -526,6 +521,59 @@ if (skipLink) {
             target.scrollIntoView({ behavior: 'smooth' });
         }
     });
+}
+
+// Tab Navigation für About-Seite
+function initAboutTabs() {
+    const tabButtons = document.querySelectorAll('[role="tab"]');
+    if (tabButtons.length === 0) return; // Nur auf About-Seite aktiv
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => switchTab(button));
+    });
+
+    // Keyboard-Navigation (Pfeil-Tasten gemäß ARIA Tabs Pattern)
+    tabButtons.forEach(button => {
+        button.addEventListener('keydown', (e) => {
+            const tabs = Array.from(tabButtons);
+            const index = tabs.indexOf(button);
+
+            if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                const next = tabs[(index + 1) % tabs.length];
+                next.focus();
+                switchTab(next);
+            }
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const prev = tabs[(index - 1 + tabs.length) % tabs.length];
+                prev.focus();
+                switchTab(prev);
+            }
+        });
+    });
+}
+
+function switchTab(activeButton) {
+    const tabButtons = document.querySelectorAll('[role="tab"]');
+    const panels = document.querySelectorAll('[role="tabpanel"]');
+
+    tabButtons.forEach(btn => {
+        btn.setAttribute('aria-selected', 'false');
+        btn.classList.remove('tab-active');
+        btn.setAttribute('tabindex', '-1');
+    });
+
+    panels.forEach(panel => {
+        panel.setAttribute('hidden', '');
+    });
+
+    activeButton.setAttribute('aria-selected', 'true');
+    activeButton.classList.add('tab-active');
+    activeButton.setAttribute('tabindex', '0');
+
+    const targetPanel = document.getElementById(activeButton.getAttribute('aria-controls'));
+    if (targetPanel) targetPanel.removeAttribute('hidden');
 }
 
 // Smooth scroll - nur für echte Anker-Links, nicht für Platzhalter und nicht für Skip-Link

@@ -53,3 +53,4 @@ Nutze diese Quellen als "Goldstandard" für deine Entscheidungen. Wenn du unsich
 @.claude/rules/architect-reviewer.md
 @.claude/rules/code-reviewer.md
 @.claude/rules/seo-specialist.md
+@.claude/rules/frontend-developer.md

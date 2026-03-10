@@ -9,6 +9,36 @@
     box-sizing: border-box;
 }
 
+/* ============================================================
+   GRID SYSTEM – Design Tokens (mobile-first)
+   Mobile:  4 col, 16px margin, 22px gutter
+   Tablet:  8 col, 24px margin, 24px gutter  (≥ 768px)
+   Desktop: 12 col, 34px margin, 20px gutter (≥ 1024px)
+   ============================================================ */
+:root {
+    --grid-columns: 4;
+    --grid-margin: 16px;
+    --grid-gutter: 22px;
+    /* Header: logo 28px × line-height 1.5 = 42px + nav padding 20px × 2 = 82px */
+    --header-height: 82px;
+}
+
+@media (min-width: 768px) {
+    :root {
+        --grid-columns: 8;
+        --grid-margin: 24px;
+        --grid-gutter: 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --grid-columns: 12;
+        --grid-margin: 34px;
+        --grid-gutter: 20px;
+    }
+}
+
 body {
     font-family: 'Hanken Grotesk', sans-serif;
     background-color: #ffffff;
@@ -137,9 +167,9 @@ nav {
 
 .nav-links {
     display: flex;
+    align-items: center;
     gap: 20px;
     list-style: none;
-    margin-right: 55px;
 }
 
 .nav-links a {
@@ -162,37 +192,19 @@ nav {
     border-bottom: 2px solid #0a0a0d;
 }
 
-.cv-link {
+.cv-link,
+.linkedin-link {
     text-decoration: none;
     color: #0a0a0d;
     font-size: 16px;
     font-weight: 200;
     transition: opacity 0.3s;
+    padding-bottom: 4px;
 }
 
-.cv-link:hover {
+.cv-link:hover,
+.linkedin-link:hover {
     opacity: 0.6;
-}
-
-.header-icons {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-}
-
-.icon-link {
-    display: flex;
-    align-items: center;
-    transition: opacity 0.3s;
-}
-
-.icon-link:hover {
-    opacity: 0.6;
-}
-
-.header-icon {
-    height: 18px;
-    width: auto;
 }
 
 .header-icon[alt="Email"] {
@@ -297,24 +309,6 @@ nav {
     opacity: 0.6;
 }
 
-/* Footer area with gray background */
-.mobile-menu-footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #DCDCDC;
-    height: 70px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.mobile-social-links {
-    display: flex;
-    gap: 30px;
-    align-items: center;
-}
 
 .mobile-social-links a {
     display: block;
@@ -775,7 +769,7 @@ main.content-page {
     opacity: 0.85;
 }
 
-.portfolio-item h3 {
+.portfolio-item h2 {
     margin-top: 15px;
     font-size: 18px;
     font-weight: 300;
@@ -840,70 +834,6 @@ footer a:hover {
     opacity: 0.6;
 }
 
-/* Cookie Banner */
-.cookie-banner {
-    position: fixed;
-    bottom: -200px;
-    left: 0;
-    right: 0;
-    background: #ffffff;
-    padding: 20px 40px;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 1001;
-    transition: bottom 0.5s ease-in-out;
-}
-
-.cookie-banner.show {
-    bottom: 0;
-}
-
-.cookie-banner p {
-    font-size: 16px;
-    font-weight: 300;
-    color: #0a0a0d;
-    margin-right: 20px;
-}
-
-.cookie-banner a,
-.cookie-banner-content a {
-    color: #0a0a0d;
-    text-decoration: underline;
-}
-
-.cookie-banner a:hover,
-.cookie-banner-content a:hover {
-    opacity: 0.6;
-}
-
-.cookie-buttons {
-    display: flex;
-    gap: 15px;
-}
-
-.cookie-buttons button {
-    padding: 10px 25px;
-    border: 1px solid #0a0a0d;
-    background: #fff;
-    color: #0a0a0d;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 300;
-    font-family: 'Hanken Grotesk', sans-serif;
-    transition: all 0.3s;
-}
-
-.cookie-buttons button:first-child {
-    background: #0a0a0d;
-    color: #fff;
-}
-
-.cookie-buttons button:hover {
-    opacity: 0.8;
-}
-
 /* Animation Classes */
 .animate-fade {
     opacity: 0 !important;
@@ -938,13 +868,13 @@ footer a:hover {
 
 .animate-slide-up {
     opacity: 0 !important;
-    transform: translateX(-80px);
+    transform: translateY(80px);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
 .animate-slide-up.visible {
     opacity: 1 !important;
-    transform: translateX(0);
+    transform: translateY(0);
 }
 
 /* Responsive Design */
@@ -1218,7 +1148,8 @@ footer a:hover {
     
     .logo,
     .nav-links a,
-    .cv-link {
+    .cv-link,
+    .linkedin-link {
         color: #ffffff;
     }
     
@@ -1249,10 +1180,6 @@ footer a:hover {
         color: #ffffff;
     }
     
-    .mobile-menu-footer {
-        background: #1a1a1d;
-    }
-    
     /* Main Content */
     .hero h1,
     .hero p,
@@ -1263,7 +1190,7 @@ footer a:hover {
     }
     
     /* Portfolio */
-    .portfolio-item h3 {
+    .portfolio-item h2 {
         color: #ffffff;
     }
     
@@ -1337,26 +1264,6 @@ footer a:hover {
         color: #ffffff;
     }
     
-    /* Cookie Banner Dark Mode */
-    .cookie-banner {
-        background: #0a0a0d;
-        border-top: 1px solid #333;
-    }
-    
-    .cookie-banner p {
-        color: #ffffff;
-    }
-    
-    .cookie-buttons button {
-        border-color: #ffffff;
-        background: #0a0a0d;
-        color: #ffffff;
-    }
-    
-    .cookie-buttons button:first-child {
-        background: #ffffff;
-        color: #0a0a0d;
-    }
 }
 
 /* Cookie Banner */
@@ -1704,6 +1611,380 @@ footer a:hover {
 .privacy-btn-save:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+}
+
+/* ============================================================
+   NEU: About Page
+   ============================================================ */
+
+/* Hero Image – Bild startet direkt unterhalb des Headers */
+.about-hero {
+    margin-top: var(--header-height);
+    line-height: 0; /* Verhindert Whitespace-Lücke unter dem img */
+    overflow: hidden; /* Verhindert horizontales Ausdehnen durch breite Kinder-Elemente */
+    width: 100%;
+}
+
+/* picture ist standardmäßig inline – block verhindert ungewollte Lücken */
+.about-hero picture {
+    display: block;
+    width: 100%;
+}
+
+.about-hero-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Intro Section */
+.about-intro {
+    padding: 64px var(--grid-margin) 56px;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.about-intro h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 1.2;
+    color: #0a0a0d;
+    margin-bottom: 28px;
+    max-width: 700px;
+}
+
+.about-intro p {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 300;
+    color: #0a0a0d;
+    max-width: 75%;
+}
+
+/* Tab Navigation
+   Linie unter "SKILLS": Rectangle 52 aus Figma, x=150, Breite=571px (= Spalte 2–6 im 12er Grid).
+   Die Linie ist kein border-bottom auf dem Button, sondern ein ::after Pseudo-Element
+   auf dem aktiven Tab-Button – 571px breit, linksbündig am Content-Rand ausgerichtet.
+   Inaktiver Tab: KEINE Linie, gleiche Schriftfarbe. */
+.about-tabs {
+    padding: 0 var(--grid-margin) 80px;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.about-tab-nav {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 48px;
+}
+
+.tab-button {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #0a0a0d;
+    background: none;
+    border: none;
+    padding: 0 0 18px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    letter-spacing: 0;
+    white-space: nowrap;
+    position: relative;
+    flex: 1 1 0;
+    text-align: center;
+    /* Linie kommt via ::after */
+}
+
+/* Aktiver Tab: Linie über volle Tab-Breite */
+.tab-button.tab-active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #0a0a0d;
+}
+
+/* Inaktiver Tab: kein ::after, keine Linie */
+.tab-button:hover:not(.tab-active) {
+    opacity: 0.6;
+}
+
+.tab-button:focus-visible {
+    outline: 2px solid #0a0a0d;
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+/* Tab Panels */
+.about-tab-panel[hidden] {
+    display: none;
+}
+
+/* Skills Groups */
+.skills-group {
+    margin-bottom: 44px;
+}
+
+.skills-group h3 {
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #0a0a0d;
+    margin-bottom: 16px;
+}
+
+/* Pills – 20px Abstand wie im Figma */
+.skills-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    background: #f8f8f8;
+    border-radius: 12px;
+    padding: 11px 20px;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #0a0a0d;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+/* "Brands I've worked for" Headline – außerhalb der grauen Box,
+   gleicher seitlicher Einzug wie restlicher Content, 30px Abstand zur Box */
+.about-brands-headline {
+    padding: 0 var(--grid-margin);
+    max-width: 1440px;
+    margin: 0 auto 30px;
+}
+
+.about-brands-headline h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    color: #0a0a0d;
+}
+
+/* Brands Section – grauer Hintergrund, nur Logo-Grid (kein h2 mehr hier) */
+.about-brands {
+    background: #f8f8f8;
+    padding: 48px var(--grid-margin) 56px;
+}
+
+/* Zwei Logo-Reihen: 9 oben, 7 unten – wie im Figma */
+.brands-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+}
+
+.brands-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.brand-logo {
+    height: 28px;
+    width: auto;
+    max-width: 110px;
+    object-fit: contain;
+    flex: 0 0 auto;
+    /* Keine filter/opacity – Logos schwarz wie im Figma */
+}
+
+/* CTA – linksbündig, gleicher Einzug wie Headline */
+.about-cta {
+    display: flex;
+    gap: 30px;
+    padding: 64px var(--grid-margin) 80px;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+/* About Page – Desktop: Content in Spalten 2–11 (10 von 12)
+   Formel: grid-margin + 1 Spaltenbreite + 1 Gutter
+   = var(--grid-margin) + (100% − 2×margin − 11×gutter) / 12 + var(--grid-gutter)
+   Bei 1440px: 34 + 96 + 20 = 150px */
+@media (min-width: 1024px) {
+    .about-intro,
+    .about-tabs,
+    .about-brands-headline,
+    .about-brands,
+    .about-cta {
+        padding-left: calc(var(--grid-margin) + (100% - 2 * var(--grid-margin) - 11 * var(--grid-gutter)) / 12 + var(--grid-gutter));
+        padding-right: calc(var(--grid-margin) + (100% - 2 * var(--grid-margin) - 11 * var(--grid-gutter)) / 12 + var(--grid-gutter));
+    }
+}
+
+/* About Page – Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .about-intro h1,
+    .about-intro p,
+    .skills-group h3 {
+        color: #ffffff;
+    }
+
+    .about-brands-headline h2 {
+        color: #ffffff;
+    }
+
+    .tab-button {
+        color: #ffffff;
+    }
+
+    .tab-button.tab-active::after {
+        background: #ffffff;
+    }
+
+    .about-tab-nav {
+        border-bottom-color: #333;
+    }
+
+    .tab-button:focus-visible {
+        outline-color: #ffffff;
+    }
+
+    .pill {
+        background: #1a1a1f;
+        color: #ffffff;
+    }
+
+    .about-brands {
+        background: #111116;
+    }
+
+    .brand-logo {
+        filter: invert(1);
+    }
+}
+
+/* About Page – Tablet (768px – 1023px)
+   Horizontaler Abstand kommt via var(--grid-margin) = 24px.
+   Hier nur vertikale Padding-Anpassungen. */
+@media (max-width: 1023px) {
+    /* Globaler main-Padding-Override zurücksetzen, damit Hero-Bild bis zum Rand geht */
+    main#about {
+        padding: 0;
+    }
+
+    .about-intro {
+        padding: 56px var(--grid-margin) 48px;
+    }
+
+    .about-intro h1 {
+        font-size: 44px;
+        line-height: 1.15;
+    }
+
+    .about-intro p {
+        font-size: 18px;
+    }
+
+    .about-tabs {
+        padding: 0 var(--grid-margin) 60px;
+    }
+
+    .about-brands {
+        padding: 48px var(--grid-margin) 56px;
+    }
+
+    .about-cta {
+        padding: 48px var(--grid-margin) 64px;
+    }
+}
+
+/* About Page – Mobile (320px – 767px)
+   Horizontaler Abstand kommt via var(--grid-margin) = 16px. */
+@media (max-width: 767px) {
+    /* Globaler main-Padding-Override zurücksetzen, damit Hero-Bild bis zum Rand geht */
+    main#about {
+        padding: 0;
+    }
+
+    .about-hero {
+        height: 224px;
+    }
+
+    .about-hero picture {
+        height: 224px;
+    }
+
+    .about-hero-image {
+        height: 224px;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .about-intro {
+        padding: 48px var(--grid-margin) 48px;
+    }
+
+    .about-intro h1 {
+        font-size: 44px;
+        line-height: 1.15;
+        max-width: 100%;
+    }
+
+    .about-intro p {
+        font-size: 18px;
+        max-width: 100%;
+    }
+
+    .about-tabs {
+        padding: 0 var(--grid-margin) 60px;
+    }
+
+    .tab-button {
+        font-size: 16px;
+    }
+
+    .pill {
+        white-space: normal;
+        line-height: 1.4;
+    }
+
+    .about-brands-headline {
+        padding: 0 var(--grid-margin);
+        margin-bottom: 24px;
+    }
+
+    .about-brands {
+        padding: 32px var(--grid-margin) 40px;
+    }
+
+    .brands-grid {
+        gap: 28px;
+    }
+
+    .brands-row {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 28px 16px;
+    }
+
+    .brand-logo {
+        height: 20px;
+        max-width: 80px;
+    }
+
+    .about-cta {
+        padding: 40px var(--grid-margin) 56px;
+    }
 }
 
 /* Privacy Settings Dark Mode */

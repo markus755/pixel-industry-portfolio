@@ -1,24 +1,18 @@
 <header>
-    
+
     <nav>
         <a href="index.html" class="logo-link logo">Pixel-Industry</a>
         <div class="nav-right">
             <ul class="nav-links">
                 <li><a href="#" class="nav-home">WORK</a></li>
+                <li><a href="#" class="nav-about">ABOUT</a></li>
                 <li><a href="#" class="nav-contact">CONTACT</a></li>
+                <li><a href="#" class="cv-link">CV</a></li>
+                <li><a href="https://www.linkedin.com/in/muellermarkus/" target="_blank" rel="noopener noreferrer" class="linkedin-link">LINKEDIN</a></li>
             </ul>
-            <a href="#" class="cv-link">CV</a>
-            <div class="header-icons">
-                <a href="https://www.linkedin.com/in/muellermarkus/" target="_blank" class="icon-link">
-                    <img src="images/linkedin_icon.svg" alt="LinkedIn icon" class="header-icon linkedin-icon">
-                </a>
-                <a href="mailto:mueller@pixel-industry.de" class="icon-link">
-                    <img src="images/mail.svg" alt="Email icon" class="header-icon mail-icon">
-                </a>
-            </div>
         </div>
-        <button class="mobile-menu-btn" 
-                onclick="toggleMobileMenu()" 
+        <button class="mobile-menu-btn"
+                onclick="toggleMobileMenu()"
                 aria-label="Hauptmenü"
                 aria-expanded="false"
                 aria-controls="mobileMenu">
@@ -34,18 +28,10 @@
 <div class="mobile-menu-overlay" id="mobileMenu">
     <ul class="nav-links">
         <li><a href="#" class="mobile-nav-home" onclick="toggleMobileMenu()">WORK</a></li>
+        <li><a href="#" class="mobile-nav-about" onclick="toggleMobileMenu()">ABOUT</a></li>
         <li><a href="#" class="mobile-nav-contact" onclick="toggleMobileMenu()">CONTACT</a></li>
         <li><a href="#" class="mobile-nav-cv" onclick="toggleMobileMenu()">CV</a></li>
+        <li><a href="https://www.linkedin.com/in/muellermarkus/" target="_blank" rel="noopener noreferrer" onclick="toggleMobileMenu()">LINKEDIN</a></li>
     </ul>
-    
-    <div class="mobile-menu-footer">
-        <div class="mobile-social-links">
-            <a href="https://www.linkedin.com/in/muellermarkus/" target="_blank">
-                <img src="images/linkedin_icon_mobile.svg" alt="LinkedIn" class="mobile-linkedin-icon">
-            </a>
-            <a href="mailto:mueller@pixel-industry.de">
-                <img src="images/mail_mobile.svg" alt="Email" class="mobile-mail-icon">
-            </a>
-        </div>
-    </div>
+
 </div>
