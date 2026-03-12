@@ -1640,7 +1640,7 @@ footer a:hover {
 
 /* Intro Section */
 .about-intro {
-    padding: 64px var(--grid-margin) 56px;
+    padding: 140px var(--grid-margin) 56px;
     max-width: 1440px;
     margin: 0 auto;
 }
@@ -1883,7 +1883,7 @@ footer a:hover {
     }
 
     .about-intro {
-        padding: 56px var(--grid-margin) 48px;
+        padding: 120px var(--grid-margin) 48px;
     }
 
     .about-intro h1 {
@@ -1931,7 +1931,7 @@ footer a:hover {
     }
 
     .about-intro {
-        padding: 48px var(--grid-margin) 48px;
+        padding: 120px var(--grid-margin) 48px;
     }
 
     .about-intro h1 {
