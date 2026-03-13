@@ -1679,6 +1679,24 @@ footer a:hover {
     display: flex;
     gap: 20px;
     margin-bottom: 48px;
+    /* Sticky: Tab-Leiste klebt unterhalb des Headers */
+    position: sticky;
+    top: var(--header-height);
+    z-index: 100;
+    background: #ffffff;
+    /* Sync mit der Header-Ein-/Ausblend-Transition (0.3s ease-in-out) */
+    transition: top 0.3s ease-in-out;
+    /* Breakout: Hintergrund reicht bis zu den Padding-Kanten des Containers,
+       damit kein Seiteninhalt durch die Tab-Leiste schimmert */
+    margin-left: calc(-1 * var(--grid-margin));
+    margin-right: calc(-1 * var(--grid-margin));
+    padding: 18px var(--grid-margin) 0;
+}
+
+/* Wenn der Header ausgeblendet ist (header-hidden), sitzt die Tab-Nav direkt
+   oben ohne Lücke. :has() wird in allen modernen Browsern unterstützt. */
+#header-placeholder:has(header.header-hidden) ~ main .about-tab-nav {
+    top: 0;
 }
 
 .tab-button {
@@ -1853,6 +1871,7 @@ footer a:hover {
 
     .about-tab-nav {
         border-bottom-color: #333;
+        background: #0a0a0d;
     }
 
     .tab-button:focus-visible {

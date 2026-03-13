@@ -6,6 +6,9 @@ const CONFIG = {
     googleAnalyticsId: 'G-SFH038KZHN' // TODO: Replace with your actual GA4 ID
 };
 
+// Flag: verhindert Header-Einblenden bei programmatischem Scroll (z.B. Tab-Wechsel)
+let skipHeaderScrollUpdate = false;
+
 // Scroll-Position Management
 function saveScrollPosition() {
     const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
@@ -483,7 +486,13 @@ function initHeaderScroll() {
         
         window.addEventListener('scroll', function() {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
+
+            // Bei programmatischem Scroll (Tab-Wechsel) Header-Logik überspringen
+            if (skipHeaderScrollUpdate) {
+                lastScrollTop = scrollTop;
+                return;
+            }
+
             if (scrollTop > headerHeight) {
                 if (scrollTop > lastScrollTop + scrollThreshold) {
                     // Runterscrollen - Header verstecken
@@ -499,7 +508,7 @@ function initHeaderScroll() {
                 header.classList.remove('header-hidden');
                 header.classList.remove('header-sticky');
             }
-            
+
             lastScrollTop = scrollTop;
         });
     }, 100);
@@ -574,6 +583,19 @@ function switchTab(activeButton) {
 
     const targetPanel = document.getElementById(activeButton.getAttribute('aria-controls'));
     if (targetPanel) targetPanel.removeAttribute('hidden');
+
+    // Nach Tab-Wechsel scrollen, damit Panel-Inhalt direkt unterhalb der
+    // sticky Tab-Leiste sichtbar ist – ohne den Header wieder einzublenden.
+    const tabsSection = document.querySelector('.about-tabs');
+    const tabNav = document.querySelector('.about-tab-nav');
+    if (tabsSection && tabNav) {
+        const stickyTop = parseInt(getComputedStyle(tabNav).top) || 0;
+        const sectionAbsTop = tabsSection.getBoundingClientRect().top + window.scrollY;
+        skipHeaderScrollUpdate = true;
+        window.scrollTo({ top: sectionAbsTop - stickyTop, behavior: 'smooth' });
+        // Flag nach dem Smooth-Scroll zurücksetzen (600ms > typische Scroll-Dauer)
+        setTimeout(() => { skipHeaderScrollUpdate = false; }, 600);
+    }
 }
 
 // Smooth scroll - nur für echte Anker-Links, nicht für Platzhalter und nicht für Skip-Link
