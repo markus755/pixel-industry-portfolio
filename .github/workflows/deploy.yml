@@ -5,7 +5,7 @@ name: Deploy Static Portfolio
 on:
   push:
     branches:
-      - main  # Startet den Prozess, wenn Code in den 'main'-Branch gepusht wird
+      - test2  # Startet den Prozess, wenn Code in den 'main'-Branch gepusht wird
   workflow_dispatch: # Ermöglicht das manuelle Starten der Action
 
 permissions:
