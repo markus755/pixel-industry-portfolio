@@ -295,10 +295,10 @@ function closePrivacySettings() {
         panel._handleEscape = null;
     }
 
-    // Return focus to Privacy Settings link
-    const privacySettingsLink = document.querySelector('a[onclick*="openPrivacySettings"]');
-    if (privacySettingsLink) {
-        setTimeout(() => privacySettingsLink.focus(), 100);
+    // Return focus to Privacy Settings trigger button
+    const privacySettingsBtn = document.getElementById('open-privacy-settings-btn');
+    if (privacySettingsBtn) {
+        setTimeout(() => privacySettingsBtn.focus(), 100);
     }
 }
 

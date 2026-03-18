@@ -113,6 +113,11 @@ main {
     flex-shrink: 0;
 }
 
+/* WCAG 1.4.12 – Zeilenhöhe Hauptinhalt: mindestens 1.6 für p und li */
+main {
+    line-height: 1.6;
+}
+
 #footer-placeholder {
     margin-top: auto;
 }
@@ -724,7 +729,7 @@ main.content-page {
     background: #0a0a0d;
     color: #ffffff;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 500;
     text-decoration: none;
     text-align: center;
     transition: all 0.3s ease;
@@ -822,7 +827,8 @@ footer p {
     gap: 20px;
 }
 
-footer a {
+footer a,
+footer .footer-links button {
     color: #0a0a0d;
     font-size: 14px;
     font-weight: 300;
@@ -830,7 +836,17 @@ footer a {
     transition: opacity 0.3s;
 }
 
-footer a:hover {
+/* Reset für den Privacy-Settings-Button im Footer */
+footer .footer-links button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+footer a:hover,
+footer .footer-links button:hover {
     opacity: 0.6;
 }
 
@@ -1658,7 +1674,7 @@ footer a:hover {
 .about-intro p {
     font-family: 'Hanken Grotesk', sans-serif;
     font-size: 16px;
-    line-height: 1.5;
+    line-height: 1.6;
     font-weight: 300;
     color: #0a0a0d;
     max-width: 75%;
@@ -1750,7 +1766,7 @@ footer a:hover {
     margin-bottom: 44px;
 }
 
-.skills-group h3 {
+.skills-group h2 {
     font-family: 'Hanken Grotesk', sans-serif;
     font-size: 18px;
     font-weight: 700;
@@ -1853,7 +1869,7 @@ footer a:hover {
 @media (prefers-color-scheme: dark) {
     .about-intro h1,
     .about-intro p,
-    .skills-group h3 {
+    .skills-group h2 {
         color: #ffffff;
     }
 
@@ -1890,6 +1906,7 @@ footer a:hover {
     .brand-logo {
         filter: invert(1);
     }
+
 }
 
 /* About Page – Tablet (768px – 1023px)

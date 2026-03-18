@@ -4,17 +4,21 @@
         <div class="footer-links">
             <a href="imprint.html">Imprint</a>
             <a href="privacy.html">Privacy Policy</a>
-            <a href="#" onclick="openPrivacySettings(); return false;">Privacy Settings</a>
+            <button type="button" id="open-privacy-settings-btn" onclick="openPrivacySettings()">Privacy Settings</button>
         </div>
     </div>
 </footer>
 
 <!-- Privacy Settings Panel -->
-<div id="privacy-settings-panel" class="privacy-settings-panel">
+<div id="privacy-settings-panel"
+     class="privacy-settings-panel"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="privacy-settings-heading">
     <div class="privacy-settings-container">
         <!-- Header -->
         <div class="privacy-settings-header">
-            <h2 class="privacy-settings-title">Privacy settings</h2>
+            <h2 class="privacy-settings-title" id="privacy-settings-heading">Privacy settings</h2>
             <button type="button" class="privacy-settings-close" onclick="closePrivacySettings()">
                 Close
                 <span class="material-symbols-outlined">close</span>
