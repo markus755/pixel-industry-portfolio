@@ -57,10 +57,10 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
 }
 
-/* Focus Outline - Schwarz statt Browser-Blau */
+/* Focus Outline – WCAG 2.4.7 / 2.4.11: sichtbarer Fokusring für alle interaktiven Elemente */
 *:focus {
-    outline: 2px solid #0a0a0d;
-    outline-offset: 2px;
+    outline: 3px solid #0a0a0d;
+    outline-offset: 3px;
 }
 
 *:focus:not(:focus-visible) {
@@ -68,8 +68,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 *:focus-visible {
-    outline: 2px solid #0a0a0d;
-    outline-offset: 2px;
+    outline: 3px solid #0a0a0d;
+    outline-offset: 3px;
 }
 
 /* ============================================================
@@ -181,7 +181,8 @@ nav {
     text-decoration: none;
     color: #0a0a0d;
     font-size: 16px;
-    font-weight: 200;
+    font-weight: 300;
+    text-transform: uppercase;
     transition: opacity 0.3s;
     position: relative;
     display: inline-block;
@@ -202,7 +203,8 @@ nav {
     text-decoration: none;
     color: #0a0a0d;
     font-size: 16px;
-    font-weight: 200;
+    font-weight: 300;
+    text-transform: uppercase;
     transition: opacity 0.3s;
     padding-bottom: 4px;
 }
@@ -302,7 +304,7 @@ nav {
 
 .mobile-menu-overlay .nav-links a {
     font-size: 30px;
-    font-weight: 200;
+    font-weight: 300;
     color: #0a0a0d;
     text-decoration: none;
     text-transform: uppercase;
@@ -1751,7 +1753,7 @@ footer .footer-links button:hover {
 }
 
 .tab-button:focus-visible {
-    outline: 2px solid #0a0a0d;
+    outline: 3px solid #0a0a0d;
     outline-offset: 4px;
     border-radius: 2px;
 }

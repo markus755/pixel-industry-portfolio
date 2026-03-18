@@ -258,26 +258,26 @@ function fixHeaderPaths(basePath) {
         mobileMenuBtn.tabIndex = isMobile ? 0 : -1;
     }
     
-    // Mobile Menu Links
+    // Mobile Menu Links: nur erreichbar wenn Menü tatsächlich offen ist
     const mobileMenu = document.getElementById('mobileMenu');
     const mobileMenuLinks = document.querySelectorAll('#mobileMenu a');
     if (mobileMenuLinks && mobileMenuLinks.length > 0) {
         mobileMenuLinks.forEach(link => {
             const isMenuOpen = mobileMenu && mobileMenu.classList.contains('active');
-            link.tabIndex = (isMobile || isMenuOpen) ? 0 : -1;
+            link.tabIndex = isMenuOpen ? 0 : -1;
         });
     }
-    
+
     // Bei Fenster-Resize aktualisieren
     window.addEventListener('resize', function() {
-        const isMobile = window.innerWidth <= 768;
+        const isMobileNow = window.innerWidth <= 768;
         if (mobileMenuBtn) {
-            mobileMenuBtn.tabIndex = isMobile ? 0 : -1;
+            mobileMenuBtn.tabIndex = isMobileNow ? 0 : -1;
         }
         if (mobileMenuLinks && mobileMenuLinks.length > 0) {
             mobileMenuLinks.forEach(link => {
                 const isMenuOpen = mobileMenu && mobileMenu.classList.contains('active');
-                link.tabIndex = (isMobile || isMenuOpen) ? 0 : -1;
+                link.tabIndex = isMenuOpen ? 0 : -1;
             });
         }
     });
@@ -409,37 +409,51 @@ function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
     const menuBtns = document.querySelectorAll('.mobile-menu-btn');
     const mobileMenuLinks = document.querySelectorAll('#mobileMenu a');
-    
-    console.log('Toggle called, found buttons:', menuBtns.length);
-    
+
     mobileMenu.classList.toggle('active');
-    
+
     // Check if menu is now active
     const isActive = mobileMenu.classList.contains('active');
-    
+
+    // Sync aria-hidden on the menu container (inverse of aria-expanded)
+    mobileMenu.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+
     // Toggle active class on all menu buttons for animation
-    menuBtns.forEach((btn, index) => {
+    menuBtns.forEach(btn => {
         btn.classList.toggle('active');
-        
-        // Update aria-expanded state
         btn.setAttribute('aria-expanded', isActive);
-        
-        console.log(`Button ${index} is now active:`, btn.classList.contains('active'));
     });
-    
+
     // Update tabindex für mobile menu links
     if (mobileMenuLinks && mobileMenuLinks.length > 0) {
         mobileMenuLinks.forEach(link => {
             link.tabIndex = isActive ? 0 : -1;
         });
     }
-    
-    // Body scroll verhindern wenn Menu offen ist
+
+    // Focus management: isolate tab order to [hamburger] → [menu links] → [browser chrome]
+    // when menu is open so Tab after the last link exits to browser chrome, not into page content.
+    const skipLink = document.querySelector('.skip-link');
+    const logoLink = document.querySelector('.logo-link');
+    const mainContent = document.querySelector('main');
+    const footerEl = document.getElementById('footer-placeholder');
+
     if (isActive) {
-        document.body.style.overflow = 'hidden';
+        // Remove background elements from tab order
+        if (skipLink) skipLink.setAttribute('tabindex', '-1');
+        if (logoLink) logoLink.setAttribute('tabindex', '-1');
+        if (mainContent) mainContent.setAttribute('inert', '');
+        if (footerEl) footerEl.setAttribute('inert', '');
     } else {
-        document.body.style.overflow = '';
+        // Restore tab order
+        if (skipLink) skipLink.removeAttribute('tabindex');
+        if (logoLink) logoLink.removeAttribute('tabindex');
+        if (mainContent) mainContent.removeAttribute('inert');
+        if (footerEl) footerEl.removeAttribute('inert');
     }
+
+    // Body scroll verhindern wenn Menu offen ist
+    document.body.style.overflow = isActive ? 'hidden' : '';
 }
 
 // Update Mobile Icons für Dark Mode
