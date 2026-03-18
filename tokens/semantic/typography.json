@@ -1,0 +1,171 @@
+{
+  "typography": {
+    "body": {
+      "value": {
+        "fontFamily": "{fontFamily.body}",
+        "fontWeight": "{fontWeight.light}",
+        "fontSize": "{fontSize.base}",
+        "lineHeight": "{lineHeight.relaxed}",
+        "letterSpacing": "{letterSpacing.none}"
+      },
+      "type": "typography",
+      "description": "Default body text across all pages"
+    },
+
+    "body-sm": {
+      "value": {
+        "fontFamily": "{fontFamily.body}",
+        "fontWeight": "{fontWeight.light}",
+        "fontSize": "{fontSize.sm}",
+        "lineHeight": "{lineHeight.relaxed}",
+        "letterSpacing": "{letterSpacing.none}"
+      },
+      "type": "typography",
+      "description": "Footer links, small captions"
+    },
+
+    "body-lg": {
+      "value": {
+        "fontFamily": "{fontFamily.body}",
+        "fontWeight": "{fontWeight.light}",
+        "fontSize": "{fontSize.lg}",
+        "lineHeight": "{lineHeight.relaxed}",
+        "letterSpacing": "{letterSpacing.none}"
+      },
+      "type": "typography",
+      "description": "Larger body on tablet breakpoints"
+    },
+
+    "nav-link": {
+      "value": {
+        "fontFamily": "{fontFamily.body}",
+        "fontWeight": "{fontWeight.extraLight}",
+        "fontSize": "{fontSize.base}",
+        "lineHeight": "{lineHeight.relaxed}",
+        "letterSpacing": "{letterSpacing.none}"
+      },
+      "type": "typography",
+      "description": "Header navigation links"
+    },
+
+    "h1": {
+      "value": {
+        "fontFamily": "{fontFamily.heading}",
+        "fontWeight": "{fontWeight.regular}",
+        "fontSize": "{fontSize.6xl}",
+        "lineHeight": "{lineHeight.snug}",
+        "letterSpacing": "{letterSpacing.none}"
+      },
+      "type": "typography",
+      "description": "Page title – desktop (40 px). Change fontSize here to update all H1s site-wide."
+    },
+
+    "h1-large": {
+      "value": {
+        "fontFamily": "{fontFamily.heading}",
+        "fontWeight": "{fontWeight.regular}",
+        "fontSize": "{fontSize.display}",
+        "lineHeight": "{lineHeight.tight}",
+        "letterSpacing": "{letterSpacing.none}"
+      },
+      "type": "typography",
+      "description": "Page title – large screens ≥ 768 px (44 px)"
+    },
+
+    "h2": {
+      "value": {
+        "fontFamily": "{fontFamily.heading}",
+        "fontWeight": "{fontWeight.regular}",
+        "fontSize": "{fontSize.5xl}",
+        "lineHeight": "{lineHeight.snug}",
+        "letterSpacing": "{letterSpacing.none}"
+      },
+      "type": "typography",
+      "description": "Portfolio card titles, section sub-headings (desktop: 30 px)"
+    },
+
+    "h2-tablet": {
+      "value": {
+        "fontFamily": "{fontFamily.heading}",
+        "fontWeight": "{fontWeight.regular}",
+        "fontSize": "{fontSize.lg}",
+        "lineHeight": "{lineHeight.snug}",
+        "letterSpacing": "{letterSpacing.none}"
+      },
+      "type": "typography",
+      "description": "Portfolio card title on tablet (18 px)"
+    },
+
+    "h3": {
+      "value": {
+        "fontFamily": "{fontFamily.heading}",
+        "fontWeight": "{fontWeight.regular}",
+        "fontSize": "{fontSize.xl}",
+        "lineHeight": "{lineHeight.snug}",
+        "letterSpacing": "{letterSpacing.none}"
+      },
+      "type": "typography",
+      "description": "Section headings inside project content (20 px)"
+    },
+
+    "h3-large": {
+      "value": {
+        "fontFamily": "{fontFamily.heading}",
+        "fontWeight": "{fontWeight.regular}",
+        "fontSize": "{fontSize.3xl}",
+        "lineHeight": "{lineHeight.snug}",
+        "letterSpacing": "{letterSpacing.none}"
+      },
+      "type": "typography",
+      "description": "Section headings on tablet+ (24 px)"
+    },
+
+    "logo": {
+      "value": {
+        "fontFamily": "{fontFamily.heading}",
+        "fontWeight": "{fontWeight.bold}",
+        "fontSize": "{fontSize.4xl}",
+        "lineHeight": "{lineHeight.relaxed}",
+        "letterSpacing": "{letterSpacing.none}"
+      },
+      "type": "typography",
+      "description": "Site name / logo in header (28 px)"
+    },
+
+    "cta-button": {
+      "value": {
+        "fontFamily": "{fontFamily.body}",
+        "fontWeight": "{fontWeight.regular}",
+        "fontSize": "{fontSize.base}",
+        "lineHeight": "{lineHeight.relaxed}",
+        "letterSpacing": "{letterSpacing.none}"
+      },
+      "type": "typography",
+      "description": "CTA buttons: Get in touch, Open CV"
+    },
+
+    "pill": {
+      "value": {
+        "fontFamily": "{fontFamily.body}",
+        "fontWeight": "{fontWeight.regular}",
+        "fontSize": "{fontSize.base}",
+        "lineHeight": "{lineHeight.none}",
+        "letterSpacing": "{letterSpacing.none}"
+      },
+      "type": "typography",
+      "description": "Skills / technology tag pills on the About page"
+    },
+
+    "label-bold": {
+      "value": {
+        "fontFamily": "{fontFamily.body}",
+        "fontWeight": "{fontWeight.bold}",
+        "fontSize": "{fontSize.base}",
+        "lineHeight": "{lineHeight.relaxed}",
+        "letterSpacing": "{letterSpacing.none}"
+      },
+      "type": "typography",
+      "description": "Project meta labels (Client:, Duration:)"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "borderRadius": {
+    "none": {
+      "value": "0",
+      "type": "borderRadius"
+    },
+    "sm": {
+      "value": "2",
+      "type": "borderRadius",
+      "description": "Focus ring outline"
+    },
+    "lg": {
+      "value": "12",
+      "type": "borderRadius",
+      "description": "Pills (skills tags) and cards"
+    }
+  }
+}
