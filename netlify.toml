@@ -8,7 +8,7 @@
 
 # Cache Plugin - Speichert /audio/ zwischen Builds!
 [[plugins]]
-  package = "@netlify/plugin-cache"
+  package = "netlify-plugin-cache"
 
   [plugins.inputs]
     paths = ["audio"]

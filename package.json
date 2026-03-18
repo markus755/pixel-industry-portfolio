@@ -10,7 +10,9 @@
     "glob": "^10.3.10",
     "jsdom": "^23.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "netlify-plugin-cache": "^1.0.3"
+  },
   "engines": {
     "node": ">=18.0.0"
   }
