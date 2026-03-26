@@ -575,6 +575,41 @@ function initAboutTabs() {
             }
         });
     });
+
+    // Swipe-Geste auf den Tab-Panels (Mobile)
+    // Horizontaler Swipe > 50px wechselt den aktiven Tab.
+    // passive: true verhindert, dass vertikales Scrollen blockiert wird.
+    const panels = document.querySelectorAll('[role="tabpanel"]');
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    panels.forEach(panel => {
+        panel.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        panel.addEventListener('touchend', (e) => {
+            const deltaX = e.changedTouches[0].clientX - touchStartX;
+            const deltaY = e.changedTouches[0].clientY - touchStartY;
+
+            // Nur auslösen wenn horizontale Bewegung dominiert (kein versehentlicher Scroll)
+            if (Math.abs(deltaX) < 50 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+
+            const tabs = Array.from(tabButtons);
+            const activeIndex = tabs.findIndex(btn => btn.getAttribute('aria-selected') === 'true');
+
+            if (deltaX < 0) {
+                // Swipe links → nächster Tab
+                const next = tabs[(activeIndex + 1) % tabs.length];
+                switchTab(next);
+            } else {
+                // Swipe rechts → vorheriger Tab
+                const prev = tabs[(activeIndex - 1 + tabs.length) % tabs.length];
+                switchTab(prev);
+            }
+        }, { passive: true });
+    });
 }
 
 function switchTab(activeButton) {
