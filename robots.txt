@@ -1,0 +1,45 @@
+User-agent: *
+Allow: /
+
+# Partielle HTML-Fragmente (kein vollständiger Seiteninhalt)
+Disallow: /header.html
+Disallow: /footer.html
+Disallow: /cookie-banner.html
+Disallow: /privacy-settings-panel.html
+
+# Build- und Serververzeichnisse
+Disallow: /netlify/
+Disallow: /audio/
+Disallow: /node_modules/
+
+Sitemap: https://www.pixel-industry.de/sitemap.xml
+
+# -------------------------------------------------------
+# KI-Trainings-Crawler
+# Auskommentiert = erlaubt (Standard für ein Portfolio).
+# Zeilen einkommentieren um den jeweiligen Crawler zu blockieren.
+# -------------------------------------------------------
+
+# OpenAI (ChatGPT)
+# User-agent: GPTBot
+# Disallow: /
+
+# Google KI-Training (Gemini)
+# User-agent: Google-Extended
+# Disallow: /
+
+# Anthropic (Claude)
+# User-agent: anthropic-ai
+# Disallow: /
+
+# Common Crawl (Basis vieler KI-Trainingsdatensätze)
+# User-agent: CCBot
+# Disallow: /
+
+# Perplexity
+# User-agent: PerplexityBot
+# Disallow: /
+
+# Meta (LLaMA)
+# User-agent: FacebookBot
+# Disallow: /
