@@ -53,12 +53,18 @@
                         aria-controls="panel-tools"
                         class="tab-button"
                         tabindex="-1">Tools &amp; Tech</button>
+                <!-- Gleitender Unterstrich-Indikator (JS positioniert ihn) -->
+                <span class="tab-indicator" aria-hidden="true"></span>
             </div>
+
+            <div class="tab-panels-wrapper">
+            <div class="tab-panels-track">
 
             <!-- Panel: Skills -->
             <div role="tabpanel"
                  id="panel-skills"
                  aria-labelledby="tab-skills"
+                 aria-hidden="false"
                  class="about-tab-panel">
 
                 <div class="skills-group">
@@ -116,8 +122,8 @@
             <div role="tabpanel"
                  id="panel-tools"
                  aria-labelledby="tab-tools"
-                 class="about-tab-panel"
-                 hidden>
+                 aria-hidden="true"
+                 class="about-tab-panel">
 
                 <div class="skills-group">
                     <h2>Design &amp; Prototyping</h2>
@@ -170,6 +176,9 @@
                     </ul>
                 </div>
             </div>
+
+            </div><!-- /.tab-panels-track -->
+            </div><!-- /.tab-panels-wrapper -->
 
         </section>
 

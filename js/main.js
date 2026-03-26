@@ -549,7 +549,7 @@ if (skipLink) {
 // Tab Navigation für About-Seite
 function initAboutTabs() {
     const tabButtons = document.querySelectorAll('[role="tab"]');
-    if (tabButtons.length === 0) return; // Nur auf About-Seite aktiv
+    if (tabButtons.length === 0) return;
 
     tabButtons.forEach(button => {
         button.addEventListener('click', () => switchTab(button));
@@ -560,7 +560,6 @@ function initAboutTabs() {
         button.addEventListener('keydown', (e) => {
             const tabs = Array.from(tabButtons);
             const index = tabs.indexOf(button);
-
             if (e.key === 'ArrowRight') {
                 e.preventDefault();
                 const next = tabs[(index + 1) % tabs.length];
@@ -576,62 +575,122 @@ function initAboutTabs() {
         });
     });
 
-    // Swipe-Geste auf den Tab-Panels (Mobile)
-    // Horizontaler Swipe > 50px wechselt den aktiven Tab.
-    // passive: true verhindert, dass vertikales Scrollen blockiert wird.
-    const panels = document.querySelectorAll('[role="tabpanel"]');
-    let touchStartX = 0;
-    let touchStartY = 0;
+    // Swipe-Geste auf dem Wrapper (Mobile) – single listener, kein per-panel
+    const wrapper = document.querySelector('.tab-panels-wrapper');
+    if (wrapper) {
+        let touchStartX = 0;
+        let touchStartY = 0;
 
-    panels.forEach(panel => {
-        panel.addEventListener('touchstart', (e) => {
+        wrapper.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
         }, { passive: true });
 
-        panel.addEventListener('touchend', (e) => {
+        wrapper.addEventListener('touchend', (e) => {
             const deltaX = e.changedTouches[0].clientX - touchStartX;
             const deltaY = e.changedTouches[0].clientY - touchStartY;
-
-            // Nur auslösen wenn horizontale Bewegung dominiert (kein versehentlicher Scroll)
             if (Math.abs(deltaX) < 50 || Math.abs(deltaX) < Math.abs(deltaY)) return;
 
             const tabs = Array.from(tabButtons);
             const activeIndex = tabs.findIndex(btn => btn.getAttribute('aria-selected') === 'true');
 
             if (deltaX < 0) {
-                // Swipe links → nächster Tab
                 const next = tabs[(activeIndex + 1) % tabs.length];
-                switchTab(next);
+                if (next) switchTab(next);
             } else {
-                // Swipe rechts → vorheriger Tab
                 const prev = tabs[(activeIndex - 1 + tabs.length) % tabs.length];
-                switchTab(prev);
+                if (prev) switchTab(prev);
             }
         }, { passive: true });
+    }
+
+    // Indicator und Wrapper-Höhe initial setzen (nach erstem Layout-Pass, ohne Transition)
+    requestAnimationFrame(() => {
+        const activeBtn = document.querySelector('[role="tab"][aria-selected="true"]');
+        const indicator = document.querySelector('.tab-indicator');
+        const wrapperEl = document.querySelector('.tab-panels-wrapper');
+        const activePanel = document.querySelector('[role="tabpanel"][aria-hidden="false"]');
+
+        if (activeBtn && indicator) {
+            indicator.classList.add('no-transition');
+            setTabIndicator(activeBtn);
+            requestAnimationFrame(() => indicator.classList.remove('no-transition'));
+        }
+
+        // Wrapper-Höhe ohne Transition initialisieren
+        if (wrapperEl && activePanel) {
+            wrapperEl.style.transition = 'none';
+            wrapperEl.style.height = activePanel.offsetHeight + 'px';
+            requestAnimationFrame(() => { wrapperEl.style.transition = ''; });
+        }
     });
+
+    // Track-Position und Indicator bei Resize neu berechnen (Orientierungswechsel etc.)
+    if (window.ResizeObserver) {
+        const ro = new ResizeObserver(() => {
+            const activeBtn = document.querySelector('[role="tab"][aria-selected="true"]');
+            const track = document.querySelector('.tab-panels-track');
+            const wrapperEl = document.querySelector('.tab-panels-wrapper');
+            const activePanel = document.querySelector('[role="tabpanel"][aria-hidden="false"]');
+            const tabs = Array.from(tabButtons);
+            const idx = tabs.findIndex(btn => btn.getAttribute('aria-selected') === 'true');
+            if (track && wrapperEl) {
+                track.style.transition = 'none';
+                wrapperEl.style.transition = 'none';
+                track.style.transform = `translateX(${-idx * wrapperEl.offsetWidth}px)`;
+                if (activePanel) wrapperEl.style.height = activePanel.offsetHeight + 'px';
+                requestAnimationFrame(() => {
+                    track.style.transition = '';
+                    wrapperEl.style.transition = '';
+                });
+            }
+            if (activeBtn) setTabIndicator(activeBtn);
+        });
+        const wrapperEl = document.querySelector('.tab-panels-wrapper');
+        if (wrapperEl) ro.observe(wrapperEl);
+    }
+}
+
+// Positioniert den gleitenden Unterstrich unter den aktiven Tab-Button
+function setTabIndicator(activeButton) {
+    const indicator = document.querySelector('.tab-indicator');
+    if (!indicator || !activeButton) return;
+    indicator.style.width = activeButton.offsetWidth + 'px';
+    indicator.style.transform = `translateX(${activeButton.offsetLeft}px)`;
 }
 
 function switchTab(activeButton) {
     const tabButtons = document.querySelectorAll('[role="tab"]');
     const panels = document.querySelectorAll('[role="tabpanel"]');
+    const tabs = Array.from(tabButtons);
+    const activeIndex = tabs.indexOf(activeButton);
 
+    // ARIA-States aktualisieren
     tabButtons.forEach(btn => {
         btn.setAttribute('aria-selected', 'false');
         btn.classList.remove('tab-active');
         btn.setAttribute('tabindex', '-1');
     });
-
-    panels.forEach(panel => {
-        panel.setAttribute('hidden', '');
-    });
+    panels.forEach(panel => panel.setAttribute('aria-hidden', 'true'));
 
     activeButton.setAttribute('aria-selected', 'true');
     activeButton.classList.add('tab-active');
     activeButton.setAttribute('tabindex', '0');
 
     const targetPanel = document.getElementById(activeButton.getAttribute('aria-controls'));
-    if (targetPanel) targetPanel.removeAttribute('hidden');
+    if (targetPanel) targetPanel.setAttribute('aria-hidden', 'false');
+
+    // Track verschieben – zeigt den Panel beim Index activeIndex
+    const track = document.querySelector('.tab-panels-track');
+    const wrapper = document.querySelector('.tab-panels-wrapper');
+    if (track && wrapper) {
+        track.style.transform = `translateX(${-activeIndex * wrapper.offsetWidth}px)`;
+        // Wrapper-Höhe auf die Höhe des aktiven Panels setzen
+        if (targetPanel) wrapper.style.height = targetPanel.offsetHeight + 'px';
+    }
+
+    // Indicator gleitet unter den neuen aktiven Tab
+    setTabIndicator(activeButton);
 
     // Nach Tab-Wechsel scrollen, damit Panel-Inhalt direkt unterhalb der
     // sticky Tab-Leiste sichtbar ist – ohne den Header wieder einzublenden.
@@ -642,7 +701,6 @@ function switchTab(activeButton) {
         const sectionAbsTop = tabsSection.getBoundingClientRect().top + window.scrollY;
         skipHeaderScrollUpdate = true;
         window.scrollTo({ top: sectionAbsTop - stickyTop, behavior: 'smooth' });
-        // Flag nach dem Smooth-Scroll zurücksetzen (600ms > typische Scroll-Dauer)
         setTimeout(() => { skipHeaderScrollUpdate = false; }, 600);
     }
 }
