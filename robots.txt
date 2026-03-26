@@ -12,6 +12,12 @@ Disallow: /netlify/
 Disallow: /audio/
 Disallow: /node_modules/
 
+# Interne Konfigurationsdateien (kein Seiteninhalt)
+Disallow: /package.json
+Disallow: /netlify.toml
+Disallow: /CLAUDE.md
+Disallow: /tokens/
+
 Sitemap: https://www.pixel-industry.de/sitemap.xml
 
 # -------------------------------------------------------

@@ -342,6 +342,7 @@ function fixCtaButtons() {
         if (text === 'Open CV') {
             button.href = CONFIG.cvLink;
             button.setAttribute('target', '_blank');
+            button.setAttribute('rel', 'noopener noreferrer');
             
             // Add Google Analytics tracking with page name (wird durch cookies.js bereitgestellt)
             button.addEventListener('click', function() {
