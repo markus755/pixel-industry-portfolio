@@ -193,12 +193,31 @@ async function processHTMLFile(filePath) {
 async function main() {
     console.log('🚀 Audio Pre-Generation Build Script v2');
     console.log('========================================\n');
-    
+
+    // Guard: Nur generieren wenn REGENERATE_AUDIO=true gesetzt ist.
+    // Verhindert unnötige Google TTS API-Aufrufe bei normalen Deploys.
+    if (process.env.REGENERATE_AUDIO !== 'true') {
+        const existing = fs.existsSync(AUDIO_DIR)
+            ? fs.readdirSync(AUDIO_DIR).filter(f => f.endsWith('.mp3'))
+            : [];
+        if (existing.length > 0) {
+            console.log(`✅ ${existing.length} Audio-Dateien gefunden – kein Rebuild nötig.`);
+            console.log('   Setze REGENERATE_AUDIO=true in Netlify um neu zu generieren.\n');
+            return;
+        }
+        // Kein Cache und kein REGENERATE_AUDIO → warnen aber nicht abbrechen
+        if (!process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+            console.warn('⚠️  Keine Audio-Dateien und keine Credentials – Audio-Player wird ohne Dateien deployt.');
+            console.warn('   Setze REGENERATE_AUDIO=true und GOOGLE_APPLICATION_CREDENTIALS_JSON um Audio zu generieren.\n');
+            return;
+        }
+    }
+
     if (!fs.existsSync(AUDIO_DIR)) {
         fs.mkdirSync(AUDIO_DIR, { recursive: true });
         console.log(`📁 Audio-Verzeichnis erstellt: ${AUDIO_DIR}\n`);
     }
-    
+
     if (!process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
         console.error('❌ FEHLER: GOOGLE_APPLICATION_CREDENTIALS_JSON nicht gesetzt!');
         process.exit(1);

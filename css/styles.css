@@ -173,7 +173,7 @@ nav {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 36px;
     list-style: none;
 }
 
@@ -1278,7 +1278,8 @@ footer .footer-links button:hover {
     }
     
     footer p,
-    footer a {
+    footer a,
+    footer .footer-links button {
         color: #ffffff;
     }
     

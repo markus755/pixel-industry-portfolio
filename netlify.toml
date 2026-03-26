@@ -1,17 +1,9 @@
 # Netlify Configuration
-# Audio Pre-Generation Setup
+# Nur als Fallback-Hosting – primäres Deployment läuft über GitHub Pages.
+# Audio-Dateien sind in Git versioniert (audio/*.mp3), kein Build nötig.
 
 [build]
-  command = "npm install && npm run build:audio"
   publish = "."
-  environment = { NODE_VERSION = "18" }
-
-# Cache Plugin - Speichert /audio/ zwischen Builds!
-[[plugins]]
-  package = "netlify-plugin-cache"
-
-  [plugins.inputs]
-    paths = ["audio"]
 
 # Audio-Verzeichnis Headers
 [[headers]]
