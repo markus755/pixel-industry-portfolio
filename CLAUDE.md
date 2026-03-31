@@ -48,9 +48,3 @@ Nutze diese Quellen als "Goldstandard" für deine Entscheidungen. Wenn du unsich
     * JavaScript: [MDN Web Docs - JS Guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
     * *Anweisung:* Halte dich an die Formatierungsregeln des Google Style Guides (z.B. Einrückung, Kleinschreibung).
 
-# Erweiterte Regeln
-@.claude/rules/accessibility-tester.md
-@.claude/rules/architect-reviewer.md
-@.claude/rules/code-reviewer.md
-@.claude/rules/seo-specialist.md
-@.claude/rules/frontend-developer.md

@@ -29,16 +29,12 @@ function initGoogleAnalytics() {
             'anonymize_ip': true
         });
 
-        console.log('Google Analytics initialized');
-    } else {
-        console.log('Google Analytics disabled - no consent or invalid ID');
     }
 }
 
 function disableGoogleAnalytics() {
     if (typeof CONFIG !== 'undefined' && CONFIG.googleAnalyticsId && window.gtag) {
         window[`ga-disable-${CONFIG.googleAnalyticsId}`] = true;
-        console.log('Google Analytics disabled');
     }
 
     // Remove GA cookies
@@ -61,7 +57,6 @@ function disableGoogleAnalytics() {
 function initContentsquare() {
     // Prevent loading the script twice
     if (document.querySelector('script[src*="contentsquare.net"]')) {
-        console.log('Contentsquare already loaded');
         return;
     }
 
@@ -70,7 +65,6 @@ function initContentsquare() {
     script.src = 'https://t.contentsquare.net/uxa/af0bfc5b39917.js';
     document.head.appendChild(script);
 
-    console.log('Contentsquare initialized');
 }
 
 /**
@@ -93,7 +87,6 @@ function disableContentsquare() {
         }
     });
 
-    console.log('Contentsquare disabled');
 }
 
 // ============================================================
@@ -266,11 +259,11 @@ function openPrivacySettings() {
 
         if (functionalCookies && icon) {
             toggle.classList.add('active');
-            icon.src = 'images/toggle_on.svg';
+            icon.src = '/images/toggle_on.svg';
             icon.alt = 'Toggle on';
         } else if (icon) {
             toggle.classList.remove('active');
-            icon.src = 'images/toggle_off.svg';
+            icon.src = '/images/toggle_off.svg';
             icon.alt = 'Toggle off';
         }
     }
@@ -312,10 +305,10 @@ function toggleAnalytics() {
     toggle.classList.toggle('active');
 
     if (toggle.classList.contains('active')) {
-        icon.src = 'images/toggle_on.svg';
+        icon.src = '/images/toggle_on.svg';
         icon.alt = 'Toggle on';
     } else {
-        icon.src = 'images/toggle_off.svg';
+        icon.src = '/images/toggle_off.svg';
         icon.alt = 'Toggle off';
     }
 
@@ -355,8 +348,5 @@ function trackCVClick(origin, pageName) {
             'button_origin': origin,
             'page_name': pageName
         });
-        console.log(`GA Event tracked: cv_view from ${origin} on page ${pageName}`);
-    } else {
-        console.log(`GA not loaded - would track: cv_view from ${origin} on page ${pageName}`);
     }
 }

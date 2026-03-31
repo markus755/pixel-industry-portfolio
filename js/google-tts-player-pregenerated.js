@@ -34,11 +34,9 @@ class PreGeneratedAudioPlayer {
         // Audio-Dateinamen direkt aus HTML lesen
         this.audioFileName = projectDetail.getAttribute('data-audio-file');
         if (!this.audioFileName) {
-            console.log('Pre-Gen Audio Player: Kein data-audio-file gefunden');
             return;
         }
 
-        console.log(`Pre-Gen Audio Player: ${this.audioFileName}`);
 
         this.createPlayer();
         this.preloadDuration();
@@ -206,8 +204,7 @@ class PreGeneratedAudioPlayer {
             });
 
             this.audioElement.addEventListener('error', (e) => {
-                console.error('Audio Loading Error:', e);
-                this.showError('Audio nicht gefunden');
+                    this.showError('Audio nicht gefunden');
             });
 
             await this.audioElement.play();
@@ -215,14 +212,16 @@ class PreGeneratedAudioPlayer {
             this.updatePlayPauseButton();
 
         } catch (error) {
-            console.error('Playback Error:', error);
             this.showError('Wiedergabe fehlgeschlagen');
         }
     }
 
     play() {
         if (this.audioElement) {
-            this.audioElement.play();
+            this.audioElement.play().catch(() => {
+                this.isPlaying = false;
+                this.updatePlayPauseButton();
+            });
             this.isPlaying = true;
             this.updatePlayPauseButton();
         }
