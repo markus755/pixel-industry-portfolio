@@ -10,10 +10,15 @@
 }
 
 /* ============================================================
-   GRID SYSTEM – Design Tokens (mobile-first)
-   Mobile:  4 col, 16px margin, 22px gutter
-   Tablet:  8 col, 24px margin, 24px gutter  (≥ 768px)
-   Desktop: 12 col, 34px margin, 20px gutter (≥ 1024px)
+   DESIGN TOKENS
+   Grid (mobile-first):
+     Mobile:  4 col, 16px margin, 22px gutter
+     Tablet:  8 col, 24px margin, 24px gutter  (≥ 768px)
+     Desktop: 12 col, 34px margin, 20px gutter (≥ 1024px)
+   Colors:
+     --color-text    Primärfarbe Text/Borders/Icons
+     --color-bg      Seitenhintergrund
+     --color-surface Erhöhte Flächen (Pills, Marken-Box)
    ============================================================ */
 :root {
     --grid-columns: 4;
@@ -21,6 +26,11 @@
     --grid-gutter: 22px;
     /* Header: logo 28px × line-height 1.5 = 42px + nav padding 20px × 2 = 82px */
     --header-height: 82px;
+
+    /* Color tokens – Light Mode */
+    --color-text:    #0a0a0d;
+    --color-bg:      #ffffff;
+    --color-surface: #f8f8f8;
 }
 
 @media (min-width: 768px) {
@@ -39,10 +49,19 @@
     }
 }
 
+/* Color tokens – Dark Mode */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-text:    #ffffff;
+        --color-bg:      #0a0a0d;
+        --color-surface: #111116;
+    }
+}
+
 body {
     font-family: 'Hanken Grotesk', sans-serif;
-    background-color: #ffffff;
-    color: #0a0a0d;
+    background-color: var(--color-bg);
+    color: var(--color-text);
     line-height: 1.5;
     min-height: 100vh;
     display: flex;
@@ -59,7 +78,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Focus Outline – WCAG 2.4.7 / 2.4.11: sichtbarer Fokusring für alle interaktiven Elemente */
 *:focus {
-    outline: 3px solid #0a0a0d;
+    outline: 3px solid var(--color-text);
     outline-offset: 3px;
 }
 
@@ -68,7 +87,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 *:focus-visible {
-    outline: 3px solid #0a0a0d;
+    outline: 3px solid var(--color-text);
     outline-offset: 3px;
 }
 
@@ -76,6 +95,7 @@ h1, h2, h3, h4, h5, h6 {
    SKIP NAVIGATION LINK (A11y)
    Visuell versteckt, wird beim Fokus per Tastatur sichtbar.
    Muss IMMER das erste fokussierbare Element im DOM sein.
+   Hardcodierte Farben: invertiertes Schema, unabhängig vom Dark Mode.
    ============================================================ */
 .skip-link {
     position: absolute;
@@ -128,9 +148,9 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    background: #ffffff;
+    background: var(--color-bg);
     z-index: 1000;
-    transition: all 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
 header.header-sticky {
@@ -160,7 +180,7 @@ nav {
     font-family: 'Hanken Grotesk', sans-serif;
     font-weight: 700;
     font-size: 28px;
-    color: #0a0a0d;
+    color: var(--color-text);
     text-decoration: none;
     text-transform: uppercase;
     transition: opacity 0.3s;
@@ -179,7 +199,7 @@ nav {
 
 .nav-links a {
     text-decoration: none;
-    color: #0a0a0d;
+    color: var(--color-text);
     font-size: 16px;
     font-weight: 300;
     text-transform: uppercase;
@@ -195,13 +215,13 @@ nav {
 
 /* Active State Indicator - 2px Strich unter dem aktiven Link */
 .nav-links a.active {
-    border-bottom: 2px solid #0a0a0d;
+    border-bottom: 2px solid var(--color-text);
 }
 
 .cv-link,
 .linkedin-link {
     text-decoration: none;
-    color: #0a0a0d;
+    color: var(--color-text);
     font-size: 16px;
     font-weight: 300;
     text-transform: uppercase;
@@ -238,7 +258,7 @@ nav {
     right: 0;
     width: 40px;
     height: 1px;
-    background-color: #0a0a0d;
+    background-color: var(--color-text);
     transition-property: top, bottom, transform;
     transition-duration: 0.3s;
     transition-timing-function: ease-in-out;
@@ -272,7 +292,7 @@ nav {
     left: 0;
     right: 0;
     bottom: 0;
-    background: #ffffff;
+    background: var(--color-bg);
     z-index: 999; /* Below header */
     display: flex;
     flex-direction: column;
@@ -305,7 +325,7 @@ nav {
 .mobile-menu-overlay .nav-links a {
     font-size: 30px;
     font-weight: 300;
-    color: #0a0a0d;
+    color: var(--color-text);
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 0;
@@ -352,7 +372,7 @@ main#work {
     font-weight: 400;
     line-height: 1.2;
     margin-bottom: 30px;
-    color: #0a0a0d;
+    color: var(--color-text);
     max-width: 900px;
 }
 
@@ -360,7 +380,7 @@ main#work {
     font-size: 16px;
     font-weight: 300;
     line-height: 1.5;
-    color: #0a0a0d;
+    color: var(--color-text);
     max-width: 900px;
 }
 
@@ -378,19 +398,19 @@ main.content-page {
     font-weight: 400;
     line-height: 1.2;
     margin-bottom: 40px;
-    color: #0a0a0d;
+    color: var(--color-text);
 }
 
 .content-section p {
     font-size: 16px;
     font-weight: 300;
     line-height: 1.5;
-    color: #0a0a0d;
+    color: var(--color-text);
     margin-bottom: 20px;
 }
 
 .content-section a {
-    color: #0a0a0d;
+    color: var(--color-text);
     text-decoration: none;
     transition: opacity 0.3s;
 }
@@ -427,7 +447,7 @@ main.content-page {
 }
 
 .contact-info-section a {
-    color: #0a0a0d;
+    color: var(--color-text);
     text-decoration: none;
     transition: opacity 0.3s;
 }
@@ -445,7 +465,7 @@ main.content-page {
     font-size: 40px;
     font-weight: 400;
     line-height: 1.2;
-    color: #0a0a0d;
+    color: var(--color-text);
     margin: 0;
 }
 
@@ -457,19 +477,19 @@ main.content-page {
     font-size: 40px;
     font-weight: 400;
     margin-bottom: 30px;
-    color: #0a0a0d;
+    color: var(--color-text);
 }
 
 .contact-info p {
     font-size: 16px;
     font-weight: 300;
     line-height: 1.5;
-    color: #0a0a0d;
+    color: var(--color-text);
     margin-bottom: 20px;
 }
 
 .contact-info a {
-    color: #0a0a0d;
+    color: var(--color-text);
     text-decoration: none;
     transition: opacity 0.3s;
 }
@@ -481,8 +501,8 @@ main.content-page {
 .download-cv {
     display: inline-block;
     padding: 12px 30px;
-    border: 1px solid #0a0a0d;
-    color: #0a0a0d;
+    border: 1px solid var(--color-text);
+    color: var(--color-text);
     font-size: 16px;
     font-weight: 300;
     text-decoration: none;
@@ -491,8 +511,8 @@ main.content-page {
 }
 
 .download-cv:hover {
-    background: #0a0a0d;
-    color: #fff;
+    background: var(--color-text);
+    color: var(--color-bg);
     opacity: 1;
 }
 
@@ -511,7 +531,7 @@ main.content-page {
     font-weight: 400;
     line-height: 1.2;
     margin-bottom: 30px;
-    color: #0a0a0d;
+    color: var(--color-text);
 }
 
 .project-meta {
@@ -522,7 +542,7 @@ main.content-page {
     font-size: 16px;
     font-weight: 300;
     line-height: 1.5;
-    color: #0a0a0d;
+    color: var(--color-text);
     margin-bottom: 5px;
 }
 
@@ -537,7 +557,7 @@ main.content-page {
     font-weight: 400;
     margin-bottom: 30px;
     padding-bottom: 20px;
-    color: #0a0a0d;
+    color: var(--color-text);
     position: relative;
 }
 
@@ -549,7 +569,7 @@ main.content-page {
     left: 0;
     width: 150px;
     height: 1px;
-    background-color: #0a0a0d;
+    background-color: var(--color-text);
 }
 
 .project-intro p:first-of-type,
@@ -562,7 +582,7 @@ main.content-page {
     font-size: 16px;
     font-weight: 300;
     line-height: 1.5;
-    color: #0a0a0d;
+    color: var(--color-text);
     margin-bottom: 20px;
 }
 
@@ -591,7 +611,7 @@ main.content-page {
     font-weight: 700;
     margin-top: 20px;
     margin-bottom: 5px;
-    color: #0a0a0d;
+    color: var(--color-text);
     font-size: 16px;
 }
 
@@ -605,7 +625,7 @@ main.content-page {
     font-size: 16px;
     font-weight: 300;
     line-height: 1.5;
-    color: #0a0a0d;
+    color: var(--color-text);
 }
 
 /* Responsibilities List Styles */
@@ -619,7 +639,7 @@ main.content-page {
     font-size: 16px;
     font-weight: 300;
     line-height: 1.5;
-    color: #0a0a0d;
+    color: var(--color-text);
     margin-bottom: 20px;
     padding-left: 25px;
     position: relative;
@@ -630,7 +650,7 @@ main.content-page {
     position: absolute;
     left: 0;
     font-weight: 700;
-    color: #0a0a0d;
+    color: var(--color-text);
 }
 
 .responsibilities-list li:last-child {
@@ -653,7 +673,7 @@ main.content-page {
     font-weight: 400;
     margin-bottom: 30px;
     padding-bottom: 20px;
-    color: #0a0a0d;
+    color: var(--color-text);
     position: relative;
 }
 
@@ -664,14 +684,14 @@ main.content-page {
     left: 0;
     width: 150px;
     height: 1px;
-    background-color: #0a0a0d;
+    background-color: var(--color-text);
 }
 
 .project-column p {
     font-size: 16px;
     font-weight: 300;
     line-height: 1.5;
-    color: #0a0a0d;
+    color: var(--color-text);
     margin-bottom: 20px;
 }
 
@@ -727,9 +747,9 @@ main.content-page {
 .cta-button {
     display: inline-block;
     padding: 12px 30px;
-    border: 1px solid #0a0a0d;
-    background: #0a0a0d;
-    color: #ffffff;
+    border: 1px solid var(--color-text);
+    background: var(--color-text);
+    color: var(--color-bg);
     font-size: 16px;
     font-weight: 500;
     text-decoration: none;
@@ -740,7 +760,7 @@ main.content-page {
 
 .cta-button:hover {
     background: transparent;
-    color: #0a0a0d;
+    color: var(--color-text);
 }
 
 /* Portfolio Grid */
@@ -780,7 +800,7 @@ main.content-page {
     margin-top: 15px;
     font-size: 18px;
     font-weight: 300;
-    color: #0a0a0d;
+    color: var(--color-text);
 }
 
 /* Back to Top */
@@ -791,7 +811,7 @@ main.content-page {
 
 .back-to-top a {
     text-decoration: none;
-    color: #0a0a0d;
+    color: var(--color-text);
     font-size: 16px;
     font-weight: 300;
     transition: opacity 0.3s;
@@ -803,7 +823,7 @@ main.content-page {
 
 /* Footer */
 footer {
-    background: #ffffff;
+    background: var(--color-bg);
     padding: 40px 40px;
     text-align: center;
     border-top: none;
@@ -820,7 +840,7 @@ footer {
 footer p {
     font-size: 14px;
     font-weight: 300;
-    color: #0a0a0d;
+    color: var(--color-text);
     margin: 0;
 }
 
@@ -831,7 +851,7 @@ footer p {
 
 footer a,
 footer .footer-links button {
-    color: #0a0a0d;
+    color: var(--color-text);
     font-size: 14px;
     font-weight: 300;
     text-decoration: none;
@@ -895,6 +915,32 @@ footer .footer-links button:hover {
     transform: translateY(0);
 }
 
+/* Reduced Motion – WCAG 2.3.3: Animationen für Nutzer mit Vestibulär-Störungen deaktivieren */
+@media (prefers-reduced-motion: reduce) {
+    .animate-fade,
+    .animate-slide-left,
+    .animate-slide-right,
+    .animate-slide-up {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .tab-panels-track,
+    .tab-panels-wrapper,
+    .tab-indicator {
+        transition: none !important;
+    }
+}
+
+/* Dark Mode – nur was Variablen nicht abdecken können */
+@media (prefers-color-scheme: dark) {
+    /* SVG-Icons via CSS-Filter invertieren */
+    .header-icon {
+        filter: invert(1) brightness(100);
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     nav {
@@ -924,7 +970,7 @@ footer .footer-links button:hover {
         grid-template-columns: 1fr;
         gap: 30px;
     }
-    
+
     /* Privacy Grid stapeln auf Tablet */
     .privacy-grid {
         grid-template-columns: 1fr;
@@ -950,7 +996,7 @@ footer .footer-links button:hover {
         font-size: 44px;
         line-height: 1.15;
     }
-    
+
     .hero p {
         font-size: 18px;
     }
@@ -973,7 +1019,7 @@ footer .footer-links button:hover {
         gap: 15px;
         align-items: center;
     }
-    
+
     .footer-links {
         gap: 15px;
     }
@@ -988,42 +1034,14 @@ footer .footer-links button:hover {
         margin-bottom: 15px;
         margin-right: 0;
     }
-    
+
     .cookie-buttons {
         width: 100%;
         flex-direction: column;
     }
-    
+
     .cookie-buttons button {
         width: 100%;
-    }
-
-    /* Privacy Settings Panel Mobile */
-    .privacy-settings-content {
-        padding: 30px 20px;
-        width: 95%;
-    }
-    
-    .privacy-header h2 {
-        font-size: 24px;
-    }
-    
-    .privacy-close {
-        font-size: 16px;
-        padding: 5px 10px;
-    }
-    
-    .privacy-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .privacy-box {
-        padding: 20px;
-    }
-    
-    .toggle-switch {
-        bottom: 20px;
-        right: 20px;
     }
 
     /* Contact Page Mobile */
@@ -1036,7 +1054,7 @@ footer .footer-links button:hover {
         font-size: 44px;
         line-height: 1.15;
     }
-    
+
     .content-section h1 {
         font-size: 44px;
         line-height: 1.15;
@@ -1045,7 +1063,7 @@ footer .footer-links button:hover {
     .contact-info h2 {
         font-size: 28px;
     }
-    
+
     .contact-info p,
     .content-section p {
         font-size: 18px;
@@ -1055,7 +1073,7 @@ footer .footer-links button:hover {
     #project-detail {
         padding: 120px 20px 40px 20px;
     }
-    
+
     /* Content Page Mobile */
     main.content-page {
         padding: 140px 20px 80px 20px;
@@ -1086,12 +1104,12 @@ footer .footer-links button:hover {
     .project-content p {
         font-size: 18px;
     }
-    
+
     .project-column h2,
     .project-column p {
         font-size: 18px;
     }
-    
+
     .project-column h2 {
         padding-bottom: 15px;
     }
@@ -1122,7 +1140,7 @@ footer .footer-links button:hover {
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
     }
-    
+
     /* CTA Buttons Mobile */
     .project-cta-buttons {
         flex-direction: column;
@@ -1145,154 +1163,18 @@ footer .footer-links button:hover {
     }
 }
 
-/* Dark Mode */
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: #0a0a0d;
-        color: #ffffff;
-    }
-    
-    /* Skip Link - invertierte Farben im Dark Mode */
-    .skip-link {
-        background-color: #ffffff;
-        color: #0a0a0d;
-        border-color: #0a0a0d;
-    }
-    
-    /* Header */
-    header {
-        background: #0a0a0d;
-    }
-    
-    .logo,
-    .nav-links a,
-    .cv-link,
-    .linkedin-link {
-        color: #ffffff;
-    }
-    
-    /* Active State - Weiß im Dark Mode */
-    .nav-links a.active {
-        border-bottom-color: #ffffff;
-    }
-    
-    .mobile-menu-header .logo {
-        color: #ffffff;
-    }
-    
-    .header-icon {
-        filter: invert(1) brightness(100);
-    }
-    
-    .mobile-menu-btn::before,
-    .mobile-menu-btn::after {
-        background-color: #ffffff;
-    }
-    
-    /* Mobile Menu */
-    .mobile-menu-overlay {
-        background: #0a0a0d;
-    }
-    
-    .mobile-menu-overlay .nav-links a {
-        color: #ffffff;
-    }
-    
-    /* Main Content */
-    .hero h1,
-    .hero p,
-    .content-section h1,
-    .content-section p,
-    .content-section a {
-        color: #ffffff;
-    }
-    
-    /* Portfolio */
-    .portfolio-item h2 {
-        color: #ffffff;
-    }
-    
-    /* Project Detail */
-    .project-header h1,
-    .project-meta p,
-    .project-intro h2,
-    .project-intro p,
-    .project-content h2,
-    .project-content p,
-    .project-column h2,
-    .project-column p {
-        color: #ffffff;
-    }
-    
-    .project-intro h2::after,
-    .project-content h2::after,
-    .project-column h2::after {
-        background-color: #ffffff;
-    }
-    
-    /* Contact Page */
-    .contact-hero h1,
-    .contact-info h2,
-    .contact-info p,
-    .contact-info a,
-    .contact-info-section a {
-        color: #ffffff;
-    }
-    
-    .download-cv {
-        border-color: #ffffff;
-        color: #ffffff;
-    }
-    
-    .download-cv:hover {
-        background: #ffffff;
-        color: #0a0a0d;
-    }
-    
-    .cta-button {
-        border-color: #ffffff;
-        background: #ffffff;
-        color: #0a0a0d;
-    }
-    
-    .cta-button:hover {
-        background: transparent;
-        color: #ffffff;
-    }
-    
-    /* Contributions List Dark Mode */
-    .contributions-list dt,
-    .contributions-list dd {
-        color: #ffffff;
-    }
-    
-    /* Responsibilities List Dark Mode */
-    .responsibilities-list li,
-    .responsibilities-list li::before {
-        color: #ffffff;
-    }
-    
-    /* Footer */
-    footer {
-        background: #0a0a0d;
-    }
-    
-    footer p,
-    footer a,
-    footer .footer-links button {
-        color: #ffffff;
-    }
-    
-}
-
-/* Cookie Banner */
+/* ============================================================
+   COOKIE BANNER
+   Hardcodierte Farben: immer dunkler Hintergrund, unabhängig
+   vom System-Dark-Mode.
+   ============================================================ */
 .cookie-banner {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #0a0a0d !important;
-    color: #ffffff !important;
+    background-color: #0a0a0d;
+    color: #ffffff;
     padding: 30px 40px;
     z-index: 9999;
     transform: translateY(100%);
@@ -1321,12 +1203,12 @@ footer .footer-links button:hover {
     font-weight: 300;
     line-height: 1.5;
     flex: 1;
-    color: #ffffff !important;
+    color: #ffffff;
 }
 
 .cookie-banner a,
 .cookie-banner-content a {
-    color: #ffffff !important;
+    color: #ffffff;
     text-decoration: underline;
 }
 
@@ -1348,31 +1230,31 @@ footer .footer-links button:hover {
     padding: 12px 30px;
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 2px solid #ffffff !important;
+    border: 2px solid #ffffff;
     background: none;
 }
 
 .cookie-btn-accept {
-    background-color: #ffffff !important;
-    color: #0a0a0d !important;
+    background-color: #ffffff;
+    color: #0a0a0d;
 }
 
 .cookie-btn-accept:hover {
-    background-color: transparent !important;
-    color: #ffffff !important;
+    background-color: transparent;
+    color: #ffffff;
 }
 
 .cookie-btn-decline {
-    background-color: #ffffff !important;
-    color: #0a0a0d !important;
+    background-color: #ffffff;
+    color: #0a0a0d;
 }
 
 .cookie-btn-decline:hover {
-    background-color: transparent !important;
-    color: #ffffff !important;
+    background-color: transparent;
+    color: #ffffff;
 }
 
-/* Cookie Banner Focus States (Light Mode)
+/* Cookie Banner Focus States
    Banner hat dunklen Hintergrund (#0a0a0d) → weißer Outline
    WCAG 2.2 AA: Sichtbarer Fokus-Indikator für Tastatur-Navigation */
 .cookie-banner .cookie-btn:focus,
@@ -1381,40 +1263,42 @@ footer .footer-links button:hover {
     outline-offset: 2px;
 }
 
-/* Cookie Banner behält immer schwarzen Hintergrund - keine Dark Mode Änderungen nötig */
-
 /* Cookie Banner Mobile */
 @media (max-width: 768px) {
     .cookie-banner {
         padding: 20px;
     }
-    
+
     .cookie-banner-content {
         flex-direction: column;
         align-items: flex-start;
         gap: 20px;
     }
-    
+
     .cookie-banner-buttons {
         flex-direction: column;
         width: 100%;
         gap: 10px;
     }
-    
+
     .cookie-btn {
         width: 100%;
         text-align: center;
     }
 }
 
-/* Privacy Settings Panel Page */
+/* ============================================================
+   PRIVACY SETTINGS PANEL
+   Hardcodierte Farben: immer dunkler Hintergrund, unabhängig
+   vom System-Dark-Mode. Im Dark Mode invertiert (weißer Hintergrund).
+   ============================================================ */
 .privacy-settings-panel {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #0a0a0d !important;
-    color: #ffffff !important;
+    background-color: #0a0a0d;
+    color: #ffffff;
     z-index: 10000;
     transform: translateY(100%);
     transition: transform 0.4s ease-in-out, visibility 0.4s;
@@ -1451,7 +1335,7 @@ footer .footer-links button:hover {
     font-weight: 500;
     line-height: 40px;
     margin: 0;
-    color: #ffffff !important;
+    color: #ffffff;
 }
 
 .privacy-settings-close {
@@ -1460,7 +1344,7 @@ footer .footer-links button:hover {
     gap: 8px;
     background: none;
     border: none;
-    color: #ffffff !important;
+    color: #ffffff;
     font-family: 'Hanken Grotesk', sans-serif;
     font-size: 16px;
     font-weight: 400;
@@ -1495,13 +1379,13 @@ footer .footer-links button:hover {
         gap: 30px;
         padding: 0 20px;
     }
-    
+
     .privacy-settings-header {
         width: 100%;
         max-width: 100%;
         padding: 0 20px;
     }
-    
+
     .privacy-settings-buttons {
         width: 100%;
         max-width: 100%;
@@ -1510,7 +1394,7 @@ footer .footer-links button:hover {
 }
 
 .privacy-settings-card {
-    border: 2px solid #ffffff !important;
+    border: 2px solid #ffffff;
     padding: 20px 25px;
     display: flex;
     justify-content: space-between;
@@ -1528,7 +1412,7 @@ footer .footer-links button:hover {
     font-weight: 500;
     line-height: 28px;
     margin: 0 0 10px 0;
-    color: #ffffff !important;
+    color: #ffffff;
 }
 
 .privacy-card-text {
@@ -1537,11 +1421,11 @@ footer .footer-links button:hover {
     font-weight: 400;
     line-height: 21px;
     margin: 0;
-    color: #ffffff !important;
+    color: #ffffff;
 }
 
 .privacy-card-link {
-    color: #ffffff !important;
+    color: #ffffff;
     text-decoration: underline;
     text-underline-offset: 2px;
     transition: opacity 0.3s;
@@ -1603,27 +1487,27 @@ footer .footer-links button:hover {
     padding: 12px 30px;
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 2px solid #ffffff !important;
+    border: 2px solid #ffffff;
 }
 
 .privacy-btn-cancel {
-    background-color: transparent !important;
-    color: #ffffff !important;
+    background-color: transparent;
+    color: #ffffff;
 }
 
 .privacy-btn-cancel:hover {
-    background-color: #ffffff !important;
-    color: #0a0a0d !important;
+    background-color: #ffffff;
+    color: #0a0a0d;
 }
 
 .privacy-btn-save {
-    background-color: #ffffff !important;
-    color: #0a0a0d !important;
+    background-color: #ffffff;
+    color: #0a0a0d;
 }
 
 .privacy-btn-save:hover:not(:disabled) {
-    background-color: transparent !important;
-    color: #ffffff !important;
+    background-color: transparent;
+    color: #ffffff;
 }
 
 .privacy-btn-save:disabled {
@@ -1631,8 +1515,59 @@ footer .footer-links button:hover {
     cursor: not-allowed;
 }
 
+
+/* Privacy Settings Mobile */
+@media (max-width: 768px) {
+    .privacy-settings-panel {
+        padding: 30px 0;
+    }
+
+    .privacy-settings-container {
+        padding: 30px 20px;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .privacy-settings-title {
+        font-size: 24px;
+        line-height: 32px;
+    }
+
+    .privacy-settings-cards {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .privacy-settings-card {
+        padding: 15px 20px;
+    }
+
+    .privacy-card-title {
+        font-size: 18px;
+    }
+
+    .privacy-card-text {
+        font-size: 14px;
+        line-height: 19px;
+    }
+
+    .privacy-settings-buttons {
+        flex-direction: column-reverse;
+        gap: 15px;
+        width: 100%;
+    }
+
+    .privacy-btn {
+        width: 100%;
+        text-align: center;
+        white-space: normal;
+        min-height: 48px;
+        padding: 12px 20px;
+    }
+}
+
 /* ============================================================
-   NEU: About Page
+   ABOUT PAGE
    ============================================================ */
 
 /* Hero Image – Bild startet direkt unterhalb des Headers */
@@ -1668,7 +1603,7 @@ footer .footer-links button:hover {
     font-weight: 400;
     font-size: 40px;
     line-height: 1.2;
-    color: #0a0a0d;
+    color: var(--color-text);
     margin-bottom: 28px;
     max-width: 700px;
 }
@@ -1678,7 +1613,7 @@ footer .footer-links button:hover {
     font-size: 16px;
     line-height: 1.6;
     font-weight: 300;
-    color: #0a0a0d;
+    color: var(--color-text);
     max-width: 75%;
 }
 
@@ -1701,7 +1636,7 @@ footer .footer-links button:hover {
     position: sticky;
     top: var(--header-height);
     z-index: 100;
-    background: #ffffff;
+    background: var(--color-bg);
     /* Sync mit der Header-Ein-/Ausblend-Transition (0.3s ease-in-out) */
     transition: top 0.3s ease-in-out;
     /* Breakout: Hintergrund reicht bis zu den Padding-Kanten des Containers,
@@ -1722,7 +1657,7 @@ footer .footer-links button:hover {
     font-weight: 300;
     font-size: 20px;
     text-transform: uppercase;
-    color: #0a0a0d;
+    color: var(--color-text);
     background: none;
     border: none;
     padding: 0 0 18px;
@@ -1741,7 +1676,7 @@ footer .footer-links button:hover {
     bottom: 0;
     left: 0;
     height: 3px;
-    background: #0a0a0d;
+    background: var(--color-text);
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
                 width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
@@ -1756,7 +1691,7 @@ footer .footer-links button:hover {
 }
 
 .tab-button:focus-visible {
-    outline: 3px solid #0a0a0d;
+    outline: 3px solid var(--color-text);
     outline-offset: 4px;
     border-radius: 2px;
 }
@@ -1788,7 +1723,7 @@ footer .footer-links button:hover {
     font-family: 'Hanken Grotesk', sans-serif;
     font-size: 18px;
     font-weight: 700;
-    color: #0a0a0d;
+    color: var(--color-text);
     margin-bottom: 16px;
 }
 
@@ -1805,13 +1740,13 @@ footer .footer-links button:hover {
 .pill {
     display: inline-flex;
     align-items: center;
-    background: #f8f8f8;
+    background: var(--color-surface);
     border-radius: 12px;
     padding: 11px 20px;
     font-family: 'Hanken Grotesk', sans-serif;
     font-size: 16px;
     font-weight: 400;
-    color: #0a0a0d;
+    color: var(--color-text);
     white-space: nowrap;
     line-height: 1;
 }
@@ -1828,12 +1763,12 @@ footer .footer-links button:hover {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 300;
     font-size: 24px;
-    color: #0a0a0d;
+    color: var(--color-text);
 }
 
 /* Brands Section – grauer Hintergrund, nur Logo-Grid (kein h2 mehr hier) */
 .about-brands {
-    background: #f8f8f8;
+    background: var(--color-surface);
     padding: 48px var(--grid-margin) 56px;
 }
 
@@ -1883,53 +1818,18 @@ footer .footer-links button:hover {
     }
 }
 
-/* About Page – Dark Mode */
+/* About Page – Dark Mode: nur was Variablen nicht abdecken */
 @media (prefers-color-scheme: dark) {
-    .about-intro h1,
-    .about-intro p,
-    .skills-group h2 {
-        color: #ffffff;
-    }
-
-    .about-brands-headline h2 {
-        color: #ffffff;
-    }
-
-    .tab-button {
-        color: #ffffff;
-    }
-
-    .tab-indicator {
-        background: #ffffff;
-    }
-
     .about-tab-nav {
         border-bottom-color: #333;
-        background: #0a0a0d;
-    }
-
-    .tab-button:focus-visible {
-        outline-color: #ffffff;
-    }
-
-    .pill {
-        background: #1a1a1f;
-        color: #ffffff;
-    }
-
-    .about-brands {
-        background: #111116;
     }
 
     .brand-logo {
         filter: invert(1);
     }
-
 }
 
-/* About Page – Tablet (768px – 1023px)
-   Horizontaler Abstand kommt via var(--grid-margin) = 24px.
-   Hier nur vertikale Padding-Anpassungen. */
+/* About Page – Tablet (768px – 1023px) */
 @media (max-width: 1023px) {
     /* Globaler main-Padding-Override zurücksetzen, damit Hero-Bild bis zum Rand geht */
     main#about {
@@ -1962,8 +1862,7 @@ footer .footer-links button:hover {
     }
 }
 
-/* About Page – Mobile (320px – 767px)
-   Horizontaler Abstand kommt via var(--grid-margin) = 16px. */
+/* About Page – Mobile (320px – 767px) */
 @media (max-width: 767px) {
     /* Globaler main-Padding-Override zurücksetzen, damit Hero-Bild bis zum Rand geht */
     main#about {
@@ -2038,113 +1937,5 @@ footer .footer-links button:hover {
 
     .about-cta {
         padding: 40px var(--grid-margin) 56px;
-    }
-}
-
-/* Privacy Settings Dark Mode */
-@media (prefers-color-scheme: dark) {
-    /* Focus Outline - Weiß im Dark Mode */
-    *:focus {
-        outline-color: #ffffff;
-    }
-    
-    *:focus-visible {
-        outline-color: #ffffff;
-    }
-    
-    .privacy-settings-panel {
-        background-color: #ffffff;
-        color: #0a0a0d;
-    }
-    
-    .privacy-settings-title,
-    .privacy-card-title,
-    .privacy-card-text {
-        color: #0a0a0d;
-    }
-    
-    .privacy-settings-close {
-        color: #0a0a0d;
-    }
-    
-    .privacy-settings-card {
-        border-color: #0a0a0d;
-    }
-    
-    .privacy-card-link {
-        color: #0a0a0d;
-    }
-    
-    .privacy-btn {
-        border-color: #0a0a0d;
-    }
-    
-    .privacy-btn-cancel {
-        color: #0a0a0d;
-    }
-    
-    .privacy-btn-cancel:hover {
-        background-color: #0a0a0d;
-        color: #ffffff;
-    }
-    
-    .privacy-btn-save {
-        background-color: #0a0a0d;
-        color: #ffffff;
-    }
-    
-    .privacy-btn-save:hover:not(:disabled) {
-        background-color: transparent;
-        color: #0a0a0d;
-    }
-}
-
-/* Privacy Settings Mobile */
-@media (max-width: 768px) {
-    .privacy-settings-panel {
-        padding: 30px 0;
-    }
-    
-    .privacy-settings-container {
-        padding: 30px 20px;
-        max-width: 100%;
-        overflow-x: hidden;
-    }
-    
-    .privacy-settings-title {
-        font-size: 24px;
-        line-height: 32px;
-    }
-    
-    .privacy-settings-cards {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .privacy-settings-card {
-        padding: 15px 20px;
-    }
-    
-    .privacy-card-title {
-        font-size: 18px;
-    }
-    
-    .privacy-card-text {
-        font-size: 14px;
-        line-height: 19px;
-    }
-    
-    .privacy-settings-buttons {
-        flex-direction: column-reverse;
-        gap: 15px;
-        width: 100%;
-    }
-    
-    .privacy-btn {
-        width: 100%;
-        text-align: center;
-        white-space: normal;
-        min-height: 48px;
-        padding: 12px 20px;
     }
 }
